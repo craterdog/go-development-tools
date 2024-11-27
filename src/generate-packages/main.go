@@ -29,10 +29,12 @@ func main() {
 	var version = getVersion()
 	fmt.Printf("Tool: %v %v\n", tool, version)
 	var moduleName, wikiPath, directory, force = retrieveArguments()
-	var syntax = validateSyntaxFile(directory)
-	generateAstPackage(moduleName, wikiPath, directory, syntax, force)
+	var syntaxFile = directory + "Syntax.cdsn"
+	var syntax = parseSyntax(syntaxFile)
+	validateSyntax(syntax)
+	generateAstPackage(moduleName, wikiPath, directory, syntax)
 	generateGrammarPackage(moduleName, wikiPath, directory, syntax, force)
-	generateModuleFile(moduleName, wikiPath, directory, force)
+	generateModuleFile(moduleName, wikiPath, directory)
 	fmt.Println("Done.")
 }
 
@@ -41,12 +43,12 @@ func generateAstPackage(
 	wikiPath string,
 	directory string,
 	syntax not.SyntaxLike,
-	force bool,
 ) {
-	fmt.Println("  Generating the /ast/Package.go file...")
-	remakeDirectory(directory, force)
-	var generator = gen.PackageGenerator()
 	var packageName = "ast"
+	var filename = directory + packageName + "/Package.go"
+	fmt.Printf("  Generating %v...\n", filename)
+	remakeDirectory(directory + packageName)
+	var generator = gen.PackageGenerator()
 	var astSynthesizer = gen.AstSynthesizer(syntax)
 	var source = generator.GeneratePackage(
 		moduleName,
@@ -54,10 +56,9 @@ func generateAstPackage(
 		packageName,
 		astSynthesizer,
 	)
-	var filename = directory + packageName + "/Package.go"
-	writeFile(filename, source, force)
+	writeFile(filename, source)
 	var astModel = parseModel(source)
-	generateClasses(moduleName, directory, packageName, astModel, force)
+	generateClasses(moduleName, directory, packageName, astModel)
 }
 
 func generateClasses(
@@ -65,7 +66,6 @@ func generateClasses(
 	directory string,
 	packageName string,
 	astModel mod.ModelLike,
-	force bool,
 ) {
 	var generator = gen.ClassGenerator()
 	var interfaceDeclarations = astModel.GetInterfaceDeclarations()
@@ -84,20 +84,19 @@ func generateClasses(
 			classSynthesizer,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
-		writeFile(filename, source, force)
+		writeFile(filename, source)
 	}
 }
 
 func generateFormatter(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "formatter"
-	var formatterSynthesizer = gen.FormatterSynthesizer(model)
+	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -105,8 +104,8 @@ func generateFormatter(
 		formatterSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	source = replaceMethodicalMethods(filename, source, force)
-	writeFile(filename, source, force)
+	source = replaceMethodicalMethods(filename, source)
+	writeFile(filename, source)
 }
 
 func generateGrammarPackage(
@@ -116,36 +115,37 @@ func generateGrammarPackage(
 	syntax not.SyntaxLike,
 	force bool,
 ) {
-	fmt.Println("  Generating the /grammar/Package.go file...")
-	remakeDirectory(directory, force)
-	var generator = gen.PackageGenerator()
 	var packageName = "grammar"
-	var grammarSynthesizer = gen.AstSynthesizer(syntax)
+	var filename = directory + packageName + "/Package.go"
+	fmt.Printf("  Generating %v...\n", filename)
+	if force {
+		remakeDirectory(directory + packageName)
+	}
+	var generator = gen.PackageGenerator()
+	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
 	var source = generator.GeneratePackage(
 		moduleName,
 		wikiPath,
 		packageName,
 		grammarSynthesizer,
 	)
-	var filename = directory + packageName + "/Package.go"
-	writeFile(filename, source, force)
-	var grammarModel = parseModel(source)
-	generateFormatter(moduleName, directory, grammarModel, force)
-	generateParser(moduleName, directory, grammarModel, force)
-	generateProcessor(moduleName, directory, grammarModel, force)
-	generateScanner(moduleName, directory, grammarModel, force)
-	generateToken(moduleName, directory, grammarModel, force)
-	generateValidator(moduleName, directory, grammarModel, force)
-	generateVisitor(moduleName, directory, grammarModel, force)
+	writeFile(filename, source)
+	generateFormatter(moduleName, directory, syntax)
+	generateParser(moduleName, directory, syntax)
+	generateProcessor(moduleName, directory, syntax)
+	generateScanner(moduleName, directory, syntax)
+	generateToken(moduleName, directory, syntax)
+	generateValidator(moduleName, directory, syntax)
+	generateVisitor(moduleName, directory, syntax)
 }
 
 func generateModuleFile(
 	moduleName string,
 	wikiPath string,
 	directory string,
-	force bool,
 ) {
-	fmt.Println("  Generating the /Module.go file...")
+	var filename = directory + "Module.go"
+	fmt.Printf("  Generating %v...\n", filename)
 	var packages = []string{
 		"ast",
 		"grammar",
@@ -164,21 +164,19 @@ func generateModuleFile(
 		wikiPath,
 		moduleSynthesizer,
 	)
-	var filename = directory + "Module.go"
-	source = replaceGlobalFunctions(filename, source, force)
-	writeFile(filename, source, force)
+	source = replaceGlobalFunctions(filename, source)
+	writeFile(filename, source)
 }
 
 func generateParser(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "parser"
-	var parserSynthesizer = gen.ParserSynthesizer(model)
+	var parserSynthesizer = gen.ParserSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -186,19 +184,18 @@ func generateParser(
 		parserSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source, force)
+	writeFile(filename, source)
 }
 
 func generateProcessor(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "processor"
-	var processorSynthesizer = gen.ProcessorSynthesizer(model)
+	var processorSynthesizer = gen.ProcessorSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -206,19 +203,18 @@ func generateProcessor(
 		processorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source, force)
+	writeFile(filename, source)
 }
 
 func generateScanner(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "scanner"
-	var scannerSynthesizer = gen.ScannerSynthesizer(model)
+	var scannerSynthesizer = gen.ScannerSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -226,19 +222,18 @@ func generateScanner(
 		scannerSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source, force)
+	writeFile(filename, source)
 }
 
 func generateToken(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "token"
-	var tokenSynthesizer = gen.TokenSynthesizer(model)
+	var tokenSynthesizer = gen.TokenSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -246,19 +241,18 @@ func generateToken(
 		tokenSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source, force)
+	writeFile(filename, source)
 }
 
 func generateValidator(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "validator"
-	var validatorSynthesizer = gen.ValidatorSynthesizer(model)
+	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -266,20 +260,19 @@ func generateValidator(
 		validatorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	source = replaceMethodicalMethods(filename, source, force)
-	writeFile(filename, source, force)
+	source = replaceMethodicalMethods(filename, source)
+	writeFile(filename, source)
 }
 
 func generateVisitor(
 	moduleName string,
 	directory string,
-	model mod.ModelLike,
-	force bool,
+	syntax not.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
 	var className = "visitor"
-	var visitorSynthesizer = gen.VisitorSynthesizer(model)
+	var visitorSynthesizer = gen.VisitorSynthesizer(syntax)
 	var source = generator.GenerateClass(
 		moduleName,
 		packageName,
@@ -287,7 +280,7 @@ func generateVisitor(
 		visitorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source, force)
+	writeFile(filename, source)
 }
 
 func getTool() string {
@@ -313,11 +306,9 @@ func parseModel(
 }
 
 func parseSyntax(syntaxFile string) not.SyntaxLike {
+	fmt.Printf("  Parsing %v...\n", syntaxFile)
 	if !pathExists(syntaxFile) {
-		fmt.Printf(
-			"The syntax file %v does not exist, aborting...",
-			syntaxFile,
-		)
+		fmt.Println("The syntax file does not exist, aborting...")
 		osx.Exit(1)
 	}
 	var source = readFile(syntaxFile)
@@ -349,15 +340,12 @@ func readFile(
 
 func remakeDirectory(
 	directory string,
-	force bool,
 ) {
-	if force {
-		var err = osx.RemoveAll(directory)
-		if err != nil {
-			panic(err)
-		}
+	var err = osx.RemoveAll(directory)
+	if err != nil {
+		panic(err)
 	}
-	var err = osx.MkdirAll(directory, 0755)
+	err = osx.MkdirAll(directory, 0755)
 	if err != nil {
 		panic(err)
 	}
@@ -366,9 +354,8 @@ func remakeDirectory(
 func replaceGlobalFunctions(
 	filename string,
 	generatedSource string,
-	force bool,
 ) string {
-	if !pathExists(filename) || !force {
+	if !pathExists(filename) {
 		return generatedSource
 	}
 	var matcher = reg.MustCompile(
@@ -388,9 +375,8 @@ func replaceGlobalFunctions(
 func replaceMethodicalMethods(
 	filename string,
 	generatedSource string,
-	force bool,
 ) string {
-	if !pathExists(filename) || !force {
+	if !pathExists(filename) {
 		return generatedSource
 	}
 	var matcher = reg.MustCompile(
@@ -428,26 +414,15 @@ func retrieveArguments() (
 	return
 }
 
-func validateSyntaxFile(directory string) not.SyntaxLike {
-	fmt.Println("  Validating the Syntax.cdsn file...")
-	var syntaxFile = directory + "Syntax.cdsn"
-	var syntax = parseSyntax(syntaxFile)
+func validateSyntax(syntax not.SyntaxLike) {
+	fmt.Println("  Validating the syntax...")
 	not.ValidateSyntax(syntax)
-	return syntax
 }
 
 func writeFile(
 	filename string,
 	source string,
-	force bool,
 ) {
-	if pathExists(filename) && !force {
-		fmt.Printf(
-			"    The following package already exists, not overwriting it:\n%v\n",
-			filename,
-		)
-		return
-	}
 	var bytes = []byte(source)
 	var err = osx.WriteFile(filename, bytes, 0644)
 	if err != nil {

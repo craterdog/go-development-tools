@@ -45,7 +45,7 @@ func getVersion() string {
 }
 
 func parseSyntax(syntaxFile string) not.SyntaxLike {
-	fmt.Printf("  Parsing the following syntax file:\n    %v\n", syntaxFile)
+	fmt.Printf("  Parsing %v...\n", syntaxFile)
 	if !pathExists(syntaxFile) {
 		fmt.Println("The syntax file does not exist, aborting...")
 		osx.Exit(1)

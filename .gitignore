@@ -1,9 +1,6 @@
 # Binaries
 bin/
 
-# Test Data
-tst/
-
 # Swap files for vi(m)
 *.swp
 
