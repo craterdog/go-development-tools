@@ -1,14 +1,23 @@
-echo "Compiling the following tools:"
+echo "Removing the old binaries..."
 rm -rf ./bin
 mkdir -p ./bin/
-echo "	version"
-go build -o ./bin/ ./src/version
-echo "	initialize"
-go build -o ./bin/ ./src/initialize
-echo "	validate"
-go build -o ./bin/ ./src/validate
-echo "	format"
-go build -o ./bin/ ./src/format
-echo "	generate"
-go build -o ./bin/ ./src/generate
+echo
+
+echo "Compiling the following tools:"
+echo "	format-model"
+go build -o ./bin/ ./src/format-model
+
+echo "	format-syntax"
+go build -o ./bin/ ./src/format-syntax
+
+echo "	generate-classes"
+go build -o ./bin/ ./src/generate-classes
+
+echo "	generate-module"
+go build -o ./bin/ ./src/generate-module
+
+echo "	generate-packages"
+go build -o ./bin/ ./src/generate-packages
+echo
+
 echo "Done."

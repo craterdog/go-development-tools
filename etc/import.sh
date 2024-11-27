@@ -1,14 +1,16 @@
-input=tst/input
-
-echo "Removing the old example language syntaxes:"
-rm -r $input/*
+echo "Removing the old test results..."
+rm -rf ./tst
+mkdir -p ./tst/
 echo
 
-echo "Importing the new example language syntaxes:"
-echo "    cdsn.cdsn"
-cp ../go-grammar-framework/v4/Syntax.cdsn $input/cdsn.cdsn
-echo "    gcmn.cdsn"
-cp ../go-model-framework/v4/Syntax.cdsn $input/gcmn.cdsn
+echo "Importing the following syntax notations:"
+echo "  go-syntax-notation"
+mkdir -p ./tst/go-syntax-notation/v5/
+cp ../go-syntax-notation/v5/Syntax.cdsn ./tst/go-syntax-notation/v5/
+
+echo "  go-class-model"
+mkdir -p ./tst/go-class-model/v5/
+cp ../go-class-model/v5/Syntax.cdsn ./tst/go-class-model/v5/
 echo
 
 echo "Done."
