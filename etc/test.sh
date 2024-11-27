@@ -1,15 +1,14 @@
-wikiPath=https://github.com/craterdog/example.wiki
-
-for directory in `ls -d ./tst/go-*/v*`; do
-	moduleName=github.com/craterdog/${directory:6}
-	bin/format-syntax $directory/Syntax.cdsn
+for directory in `ls -d ./tst/go-*`; do
+	moduleName=github.com/craterdog/${directory:6}/v5
+	wikiPath=https://github.com/craterdog/${directory:6}/wiki
+	bin/format-syntax ${directory}/v5/Syntax.cdsn
 	echo
-	bin/generate-packages $moduleName $wikiPath $directory/ force
+	bin/generate-packages ${moduleName} ${wikiPath} ${directory}/v5/ force
 	echo
-	cd $directory
+	cd ${directory}/v5
 	gofmt -s -w . >/dev/null
 	cat <<EOF > go.mod
-module $moduleName
+module ${moduleName}
 
 go 1.22
 EOF

@@ -1,7 +1,7 @@
 github.com/craterdog/go-class-model/v5 v5.10.1 h1:lMNbhy6RjDBgh7VlsZAb4eR8aWcsFC1QSiWRlum1SM4=
 github.com/craterdog/go-class-model/v5 v5.10.1/go.mod h1:63PBgoqHAl+7keyCpKp7k6HdUiFtUqKpCcvc0h+23GE=
-github.com/craterdog/go-code-generation/v5 v5.0.3 h1:r05Jvj9IrIFmNRqHxAwiGwW1H4JYtrNFGV1+U9PhqAo=
-github.com/craterdog/go-code-generation/v5 v5.0.3/go.mod h1:uxH5ovhDB7C8qT/gzq5NcEPFQ6P6xGo8bPRQrgAohPM=
+github.com/craterdog/go-code-generation/v5 v5.0.4 h1:MRtAP6GQmb3hOFLav3t+ZXrNWDy8H6Snu9T7wz0sTVE=
+github.com/craterdog/go-code-generation/v5 v5.0.4/go.mod h1:uxH5ovhDB7C8qT/gzq5NcEPFQ6P6xGo8bPRQrgAohPM=
 github.com/craterdog/go-collection-framework/v4 v4.17.0 h1:84f7EDOfpr4RXBEZxRJg53YgTDBfQsWRogiOYFY/1KY=
 github.com/craterdog/go-collection-framework/v4 v4.17.0/go.mod h1:Ts5n1OQIekrJTcuA43I8WE36lx3gROnj2NsISXtv0J4=
 github.com/craterdog/go-missing-utilities/v2 v2.1.0 h1:28Z4ZV9ndN+pGBDr3FQTyrAiCfePh6DaD7TBVIFb8KU=

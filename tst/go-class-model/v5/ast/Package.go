@@ -22,7 +22,7 @@ attributes associated with its corresponding rule definition found in the
 grammar.
 
 For detailed documentation on this package refer to the wiki:
-  - https://https://github.com/craterdog/example.wiki
+  - https://github.com/craterdog/go-class-model/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:

@@ -27,7 +27,7 @@ abstract syntax tree (AST) for this module:
   - Processor provides empty processor methods to be inherited by the processors.
 
 For detailed documentation on this package refer to the wiki:
-  - https://https://github.com/craterdog/example.wiki
+  - https://github.com/craterdog/go-syntax-notation/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:
