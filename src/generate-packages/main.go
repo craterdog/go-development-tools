@@ -28,12 +28,12 @@ func main() {
 	var tool = getTool()
 	var version = getVersion()
 	fmt.Printf("Tool: %v %v\n", tool, version)
-	var moduleName, wikiPath, directory, force = retrieveArguments()
+	var moduleName, wikiPath, directory = retrieveArguments()
 	var syntaxFile = directory + "Syntax.cdsn"
 	var syntax = parseSyntax(syntaxFile)
 	validateSyntax(syntax)
 	generateAstPackage(moduleName, wikiPath, directory, syntax)
-	generateGrammarPackage(moduleName, wikiPath, directory, syntax, force)
+	generateGrammarPackage(moduleName, wikiPath, directory, syntax)
 	generateModuleFile(moduleName, wikiPath, directory)
 	fmt.Println("Done.")
 }
@@ -113,14 +113,10 @@ func generateGrammarPackage(
 	wikiPath string,
 	directory string,
 	syntax not.SyntaxLike,
-	force bool,
 ) {
 	var packageName = "grammar"
 	var filename = directory + packageName + "/Package.go"
 	fmt.Printf("  Generating %v...\n", filename)
-	if force {
-		remakeDirectory(directory + packageName)
-	}
 	var generator = gen.PackageGenerator()
 	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
 	var source = generator.GeneratePackage(
@@ -397,11 +393,10 @@ func retrieveArguments() (
 	moduleName string,
 	wikiPath string,
 	directory string,
-	force bool,
 ) {
 	if len(osx.Args) < 4 {
 		var tool = getTool()
-		fmt.Printf("  Usage: %v <moduleName> <wikiPath> <directory> [force]\n", tool)
+		fmt.Printf("  Usage: %v <moduleName> <wikiPath> <directory>\n", tool)
 		osx.Exit(1)
 	}
 	moduleName = osx.Args[1]
@@ -410,7 +405,6 @@ func retrieveArguments() (
 	if !sts.HasSuffix(directory, "/") {
 		directory += "/"
 	}
-	force = len(osx.Args) == 5
 	return
 }
 

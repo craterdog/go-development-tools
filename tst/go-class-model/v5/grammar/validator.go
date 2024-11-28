@@ -867,42 +867,6 @@ func (v *validator_) PostprocessModel(
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessMultivalue(
-	multivalue ast.MultivalueLike,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) ProcessMultivalueSlot(
-	slot uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessMultivalue(
-	multivalue ast.MultivalueLike,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PreprocessNone(
-	none ast.NoneLike,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) ProcessNoneSlot(
-	slot uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessNone(
-	none ast.NoneLike,
-) {
-	// TBD - Add any validation checks.
-}
-
 func (v *validator_) PreprocessPackageDeclaration(
 	packageDeclaration ast.PackageDeclarationLike,
 ) {
@@ -957,6 +921,42 @@ func (v *validator_) PostprocessPackageImports(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessMultivalue(
+	multivalue ast.MultivalueLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessMultivalueSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessMultivalue(
+	multivalue ast.MultivalueLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PreprocessNone(
+	none ast.NoneLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessNoneSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessNone(
+	none ast.NoneLike,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessParameter(
 	parameter ast.ParameterLike,
 	index uint,
@@ -997,24 +997,6 @@ func (v *validator_) PostprocessPrefix(
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessPrimitiveDeclarations(
-	primitiveDeclarations ast.PrimitiveDeclarationsLike,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) ProcessPrimitiveDeclarationsSlot(
-	slot uint,
-) {
-	// TBD - Add any validation checks.
-}
-
-func (v *validator_) PostprocessPrimitiveDeclarations(
-	primitiveDeclarations ast.PrimitiveDeclarationsLike,
-) {
-	// TBD - Add any validation checks.
-}
-
 func (v *validator_) PreprocessPrincipalMethod(
 	principalMethod ast.PrincipalMethodLike,
 	index uint,
@@ -1051,6 +1033,24 @@ func (v *validator_) ProcessPrincipalSubsectionSlot(
 
 func (v *validator_) PostprocessPrincipalSubsection(
 	principalSubsection ast.PrincipalSubsectionLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PreprocessPrimitiveDeclarations(
+	primitiveDeclarations ast.PrimitiveDeclarationsLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessPrimitiveDeclarationsSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessPrimitiveDeclarations(
+	primitiveDeclarations ast.PrimitiveDeclarationsLike,
 ) {
 	// TBD - Add any validation checks.
 }
