@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/craterdog/go-class-model/v5 v5.10.1
-	github.com/craterdog/go-code-generation/v5 v5.0.5
+	github.com/craterdog/go-code-generation/v5 v5.0.6
 	github.com/craterdog/go-collection-framework/v4 v4.17.0
 	github.com/craterdog/go-missing-utilities/v2 v2.1.0
 	github.com/craterdog/go-syntax-notation/v5 v5.6.1
