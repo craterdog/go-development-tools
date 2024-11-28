@@ -408,7 +408,9 @@ func retrieveArguments() (
 	return
 }
 
-func validateSyntax(syntax not.SyntaxLike) {
+func validateSyntax(
+	syntax not.SyntaxLike,
+) {
 	fmt.Println("  Validating the syntax...")
 	not.ValidateSyntax(syntax)
 }

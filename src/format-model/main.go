@@ -98,7 +98,9 @@ func retrieveArguments() (
 	return
 }
 
-func validateModel(model mod.ModelLike) {
+func validateModel(
+	model mod.ModelLike,
+) {
 	fmt.Println("  Validating the model...")
 	mod.ValidateModel(model)
 }
