@@ -93,7 +93,7 @@ func generateFormatter(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
+	var generator = gen.ProcessorGenerator()
 	var packageName = "grammar"
 	var className = "formatter"
 	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
@@ -245,7 +245,7 @@ func generateValidator(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
+	var generator = gen.ProcessorGenerator()
 	var packageName = "grammar"
 	var className = "validator"
 	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
