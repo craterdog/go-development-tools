@@ -97,15 +97,19 @@ func generateFormatter(
 	var packageName = "grammar"
 	var className = "formatter"
 	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
 		formatterSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	source = replaceMethodicalMethods(filename, source)
-	writeFile(filename, source)
+	if pathExists(filename) {
+		var original = readFile(filename)
+		var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
+		generated = replacePattern(pattern, original, generated)
+	}
+	writeFile(filename, generated)
 }
 
 func generateGrammarPackage(
@@ -155,13 +159,17 @@ func generateModuleFile(
 	}
 	var generator = gen.ModuleGenerator()
 	var moduleSynthesizer = gen.ModuleSynthesizer(models)
-	var source = generator.GenerateModule(
+	var generated = generator.GenerateModule(
 		moduleName,
 		wikiPath,
 		moduleSynthesizer,
 	)
-	source = replaceGlobalFunctions(filename, source)
-	writeFile(filename, source)
+	if pathExists(filename) {
+		var original = readFile(filename)
+		var pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
+		generated = replacePattern(pattern, original, generated)
+	}
+	writeFile(filename, generated)
 }
 
 func generateParser(
@@ -249,15 +257,19 @@ func generateValidator(
 	var packageName = "grammar"
 	var className = "validator"
 	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var generated = generator.GenerateClass(
 		moduleName,
 		packageName,
 		className,
 		validatorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	source = replaceMethodicalMethods(filename, source)
-	writeFile(filename, source)
+	if pathExists(filename) {
+		var original = readFile(filename)
+		var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
+		generated = replacePattern(pattern, original, generated)
+	}
+	writeFile(filename, generated)
 }
 
 func generateVisitor(
@@ -347,46 +359,20 @@ func remakeDirectory(
 	}
 }
 
-func replaceGlobalFunctions(
-	filename string,
-	generatedSource string,
+func replacePattern(
+	pattern string,
+	original string,
+	generated string,
 ) string {
-	if !pathExists(filename) {
-		return generatedSource
-	}
-	var matcher = reg.MustCompile(
-		`// GLOBAL FUNCTIONS(.|\r?\n)*`,
+	var matcher = reg.MustCompile(pattern)
+	var originalPattern = matcher.FindString(original)
+	var generatedPattern = matcher.FindString(generated)
+	generated = sts.ReplaceAll(
+		generated,
+		generatedPattern,
+		originalPattern,
 	)
-	var originalSource = readFile(filename)
-	var originalFunctions = matcher.FindString(originalSource)
-	var generatedFunctions = matcher.FindString(generatedSource)
-	generatedSource = sts.ReplaceAll(
-		generatedSource,
-		generatedFunctions,
-		originalFunctions,
-	)
-	return generatedSource
-}
-
-func replaceMethodicalMethods(
-	filename string,
-	generatedSource string,
-) string {
-	if !pathExists(filename) {
-		return generatedSource
-	}
-	var matcher = reg.MustCompile(
-		`// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`,
-	)
-	var originalSource = readFile(filename)
-	var originalFunctions = matcher.FindString(originalSource)
-	var generatedFunctions = matcher.FindString(generatedSource)
-	generatedSource = sts.ReplaceAll(
-		generatedSource,
-		generatedFunctions,
-		originalFunctions,
-	)
-	return generatedSource
+	return generated
 }
 
 func retrieveArguments() (

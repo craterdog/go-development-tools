@@ -46,14 +46,20 @@ func generateModule(
 	}
 	var generator = gen.ModuleGenerator()
 	var moduleSynthesizer = gen.ModuleSynthesizer(models)
-	var source = generator.GenerateModule(
+	var generated = generator.GenerateModule(
 		moduleName,
 		wikiPath,
 		moduleSynthesizer,
 	)
 	var filename = directory + "Module.go"
-	source = replaceGlobalFunctions(filename, source)
-	writeFile(filename, source)
+	if pathExists(filename) {
+		var original = readFile(filename)
+		var pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
+		generated = replacePattern(pattern, original, generated)
+		pattern = `└──────────────────────────────────────────────────────────────────────────────┘(.|\r?\n)+package module`
+		generated = replacePattern(pattern, original, generated)
+	}
+	writeFile(filename, generated)
 }
 
 func getTool() string {
@@ -92,25 +98,20 @@ func readFile(
 	return source
 }
 
-func replaceGlobalFunctions(
-	filename string,
-	generatedSource string,
+func replacePattern(
+	pattern string,
+	original string,
+	generated string,
 ) string {
-	if !pathExists(filename) {
-		return generatedSource
-	}
-	var matcher = reg.MustCompile(
-		`// GLOBAL FUNCTIONS(.|\r?\n)*`,
+	var matcher = reg.MustCompile(pattern)
+	var originalPattern = matcher.FindString(original)
+	var generatedPattern = matcher.FindString(generated)
+	generated = sts.ReplaceAll(
+		generated,
+		generatedPattern,
+		originalPattern,
 	)
-	var originalSource = readFile(filename)
-	var originalFunctions = matcher.FindString(originalSource)
-	var generatedFunctions = matcher.FindString(generatedSource)
-	generatedSource = sts.ReplaceAll(
-		generatedSource,
-		generatedFunctions,
-		originalFunctions,
-	)
-	return generatedSource
+	return generated
 }
 
 func retrieveArguments() (
