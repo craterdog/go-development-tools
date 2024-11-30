@@ -20,7 +20,7 @@ import (
 	tes "testing"
 )
 
-var grammarFiles = []string{
+var syntaxFiles = []string{
 	"./Syntax.cdsn",
 	"./testdata/gcmn.cdsn",
 	"./testdata/full.cdsn",
@@ -28,19 +28,16 @@ var grammarFiles = []string{
 
 func TestRoundTrips(t *tes.T) {
 	fmt.Println("Round Trip Tests:")
-	for _, grammarFile := range grammarFiles {
-		fmt.Printf("   %v\n", grammarFile)
-		var bytes, err = osx.ReadFile(grammarFile)
+	for _, syntaxFile := range syntaxFiles {
+		fmt.Printf("   %v\n", syntaxFile)
+		var bytes, err = osx.ReadFile(syntaxFile)
 		if err != nil {
 			panic(err)
 		}
 		var source = string(bytes)
-		var parser = syn.Parser()
-		var syntax = parser.ParseSource(source)
-		var validator = syn.Validator()
-		validator.ValidateSyntax(syntax)
-		var formatter = syn.Formatter()
-		var actual = formatter.FormatSyntax(syntax)
+		var syntax = syn.ParseSource(source)
+		syn.ValidateSyntax(syntax)
+		var actual = syn.FormatSyntax(syntax)
 		ass.Equal(t, source, actual)
 	}
 	fmt.Println("Done.")
