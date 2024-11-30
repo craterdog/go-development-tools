@@ -14,7 +14,7 @@ package main
 
 import (
 	fmt "fmt"
-	syn "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v5"
 	osx "os"
 	sts "strings"
 )
@@ -44,14 +44,14 @@ func getVersion() string {
 	return version
 }
 
-func parseSyntax(syntaxFile string) syn.SyntaxLike {
+func parseSyntax(syntaxFile string) not.SyntaxLike {
 	fmt.Printf("  Parsing %v...\n", syntaxFile)
 	if !pathExists(syntaxFile) {
 		fmt.Println("The syntax file does not exist, aborting...")
 		osx.Exit(1)
 	}
 	var source = readFile(syntaxFile)
-	var syntax = syn.ParseSource(source)
+	var syntax = not.ParseSource(source)
 	return syntax
 }
 
@@ -79,10 +79,10 @@ func readFile(
 
 func formatSyntaxFile(
 	syntaxFile string,
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) {
 	fmt.Println("  Formatting the syntax file...")
-	var source = syn.FormatSyntax(syntax)
+	var source = not.FormatSyntax(syntax)
 	writeFile(syntaxFile, source)
 }
 
@@ -99,10 +99,10 @@ func retrieveArguments() (
 }
 
 func validateSyntax(
-	syntax syn.SyntaxLike,
+	syntax not.SyntaxLike,
 ) {
 	fmt.Println("  Validating the syntax...")
-	syn.ValidateSyntax(syntax)
+	not.ValidateSyntax(syntax)
 }
 
 func writeFile(
