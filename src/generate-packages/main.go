@@ -18,7 +18,7 @@ import (
 	gen "github.com/craterdog/go-code-generation/v5"
 	col "github.com/craterdog/go-collection-framework/v4"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	syn "github.com/craterdog/go-syntax-notation/v5"
 	osx "os"
 	reg "regexp"
 	sts "strings"
@@ -42,7 +42,7 @@ func generateAstPackage(
 	moduleName string,
 	wikiPath string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var packageName = "ast"
 	var filename = directory + packageName + "/Package.go"
@@ -91,7 +91,7 @@ func generateClasses(
 func generateFormatter(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -116,7 +116,7 @@ func generateGrammarPackage(
 	moduleName string,
 	wikiPath string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var packageName = "grammar"
 	var filename = directory + packageName + "/Package.go"
@@ -175,7 +175,7 @@ func generateModuleFile(
 func generateParser(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -194,7 +194,7 @@ func generateParser(
 func generateProcessor(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -213,7 +213,7 @@ func generateProcessor(
 func generateScanner(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -232,7 +232,7 @@ func generateScanner(
 func generateToken(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -251,7 +251,7 @@ func generateToken(
 func generateValidator(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -275,7 +275,7 @@ func generateValidator(
 func generateVisitor(
 	moduleName string,
 	directory string,
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	var generator = gen.ClassGenerator()
 	var packageName = "grammar"
@@ -313,14 +313,14 @@ func parseModel(
 	return model
 }
 
-func parseSyntax(syntaxFile string) not.SyntaxLike {
+func parseSyntax(syntaxFile string) syn.SyntaxLike {
 	fmt.Printf("  Parsing %v...\n", syntaxFile)
 	if !pathExists(syntaxFile) {
 		fmt.Println("The syntax file does not exist, aborting...")
 		osx.Exit(1)
 	}
 	var source = readFile(syntaxFile)
-	var syntax = not.ParseSource(source)
+	var syntax = syn.ParseSource(source)
 	return syntax
 }
 
@@ -395,10 +395,10 @@ func retrieveArguments() (
 }
 
 func validateSyntax(
-	syntax not.SyntaxLike,
+	syntax syn.SyntaxLike,
 ) {
 	fmt.Println("  Validating the syntax...")
-	not.ValidateSyntax(syntax)
+	syn.ValidateSyntax(syntax)
 }
 
 func writeFile(
