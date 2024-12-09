@@ -11,4 +11,10 @@ rm -rf ../${module}
 cp -r ./tst/${module} ../${module}
 echo
 
+#module=go-collection-framework/v5/
+#echo "  ${module}"
+#rm -rf ../${module}
+#cp -r ./tst/${module} ../${module}
+#echo
+
 echo "Done."

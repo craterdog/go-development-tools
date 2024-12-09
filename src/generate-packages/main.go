@@ -47,7 +47,7 @@ func generateAstPackage(
 	var packageName = "ast"
 	var filename = directory + packageName + "/Package.go"
 	fmt.Printf("  Generating %v...\n", filename)
-	remakeDirectory(directory + packageName)
+	uti.RemakeDirectory(directory + packageName)
 	var generator = gen.PackageGenerator()
 	var astSynthesizer = gen.AstSynthesizer(syntax)
 	var source = generator.GeneratePackage(
@@ -56,7 +56,7 @@ func generateAstPackage(
 		packageName,
 		astSynthesizer,
 	)
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 	var astModel = parseModel(source)
 	generateClasses(moduleName, directory, packageName, astModel)
 }
@@ -84,7 +84,7 @@ func generateClasses(
 			classSynthesizer,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
-		writeFile(filename, source)
+		uti.WriteFile(filename, source)
 	}
 }
 
@@ -104,12 +104,12 @@ func generateFormatter(
 		formatterSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	if pathExists(filename) {
-		var original = readFile(filename)
+	if uti.PathExists(filename) {
+		var original = uti.ReadFile(filename)
 		var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
 		generated = replacePattern(pattern, original, generated)
 	}
-	writeFile(filename, generated)
+	uti.WriteFile(filename, generated)
 }
 
 func generateGrammarPackage(
@@ -129,7 +129,7 @@ func generateGrammarPackage(
 		packageName,
 		grammarSynthesizer,
 	)
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 	generateFormatter(moduleName, directory, syntax)
 	generateParser(moduleName, directory, syntax)
 	generateProcessor(moduleName, directory, syntax)
@@ -153,7 +153,7 @@ func generateModuleFile(
 	var models = col.Catalog[string, mod.ModelLike]()
 	for _, packageName := range packages {
 		var filename = directory + packageName + "/Package.go"
-		var source = readFile(filename)
+		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
@@ -164,12 +164,12 @@ func generateModuleFile(
 		wikiPath,
 		moduleSynthesizer,
 	)
-	if pathExists(filename) {
-		var original = readFile(filename)
+	if uti.PathExists(filename) {
+		var original = uti.ReadFile(filename)
 		var pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
 		generated = replacePattern(pattern, original, generated)
 	}
-	writeFile(filename, generated)
+	uti.WriteFile(filename, generated)
 }
 
 func generateParser(
@@ -188,7 +188,7 @@ func generateParser(
 		parserSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 }
 
 func generateProcessor(
@@ -207,7 +207,7 @@ func generateProcessor(
 		processorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 }
 
 func generateScanner(
@@ -226,7 +226,7 @@ func generateScanner(
 		scannerSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 }
 
 func generateToken(
@@ -245,7 +245,7 @@ func generateToken(
 		tokenSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 }
 
 func generateValidator(
@@ -264,12 +264,12 @@ func generateValidator(
 		validatorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	if pathExists(filename) {
-		var original = readFile(filename)
+	if uti.PathExists(filename) {
+		var original = uti.ReadFile(filename)
 		var pattern = `// Methodical Methods(.|\r?\n)+// PROTECTED INTERFACE`
 		generated = replacePattern(pattern, original, generated)
 	}
-	writeFile(filename, generated)
+	uti.WriteFile(filename, generated)
 }
 
 func generateVisitor(
@@ -288,7 +288,7 @@ func generateVisitor(
 		visitorSynthesizer,
 	)
 	var filename = directory + packageName + "/" + className + ".go"
-	writeFile(filename, source)
+	uti.WriteFile(filename, source)
 }
 
 func getTool() string {
@@ -299,7 +299,7 @@ func getTool() string {
 
 func getVersion() string {
 	var modFile = "./go.mod"
-	var source = readFile(modFile)
+	var source = uti.ReadFile(modFile)
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
@@ -315,48 +315,13 @@ func parseModel(
 
 func parseSyntax(syntaxFile string) not.SyntaxLike {
 	fmt.Printf("  Parsing %v...\n", syntaxFile)
-	if !pathExists(syntaxFile) {
+	if !uti.PathExists(syntaxFile) {
 		fmt.Println("The syntax file does not exist, aborting...")
 		osx.Exit(1)
 	}
-	var source = readFile(syntaxFile)
+	var source = uti.ReadFile(syntaxFile)
 	var syntax = not.ParseSource(source)
 	return syntax
-}
-
-func pathExists(path string) bool {
-	var _, err = osx.Stat(path)
-	if err == nil {
-		return true
-	}
-	if osx.IsNotExist(err) {
-		return false
-	}
-	panic(err)
-}
-
-func readFile(
-	filename string,
-) string {
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
-	return source
-}
-
-func remakeDirectory(
-	directory string,
-) {
-	var err = osx.RemoveAll(directory)
-	if err != nil {
-		panic(err)
-	}
-	err = osx.MkdirAll(directory, 0755)
-	if err != nil {
-		panic(err)
-	}
 }
 
 func replacePattern(
@@ -399,15 +364,4 @@ func validateSyntax(
 ) {
 	fmt.Println("  Validating the syntax...")
 	not.ValidateSyntax(syntax)
-}
-
-func writeFile(
-	filename string,
-	source string,
-) {
-	var bytes = []byte(source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
 }

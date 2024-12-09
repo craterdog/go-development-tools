@@ -14,6 +14,7 @@ package main
 
 import (
 	fmt "fmt"
+	uti "github.com/craterdog/go-missing-utilities/v2"
 	not "github.com/craterdog/go-syntax-notation/v5"
 	osx "os"
 	sts "strings"
@@ -38,7 +39,7 @@ func getTool() string {
 
 func getVersion() string {
 	var modFile = "./go.mod"
-	var source = readFile(modFile)
+	var source = uti.ReadFile(modFile)
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
@@ -46,35 +47,13 @@ func getVersion() string {
 
 func parseSyntax(syntaxFile string) not.SyntaxLike {
 	fmt.Printf("  Parsing %v...\n", syntaxFile)
-	if !pathExists(syntaxFile) {
+	if !uti.PathExists(syntaxFile) {
 		fmt.Println("The syntax file does not exist, aborting...")
 		osx.Exit(1)
 	}
-	var source = readFile(syntaxFile)
+	var source = uti.ReadFile(syntaxFile)
 	var syntax = not.ParseSource(source)
 	return syntax
-}
-
-func pathExists(path string) bool {
-	var _, err = osx.Stat(path)
-	if err == nil {
-		return true
-	}
-	if osx.IsNotExist(err) {
-		return false
-	}
-	panic(err)
-}
-
-func readFile(
-	filename string,
-) string {
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
-	return source
 }
 
 func formatSyntaxFile(
@@ -83,7 +62,7 @@ func formatSyntaxFile(
 ) {
 	fmt.Println("  Formatting the syntax file...")
 	var source = not.FormatSyntax(syntax)
-	writeFile(syntaxFile, source)
+	uti.WriteFile(syntaxFile, source)
 }
 
 func retrieveArguments() (
@@ -103,15 +82,4 @@ func validateSyntax(
 ) {
 	fmt.Println("  Validating the syntax...")
 	not.ValidateSyntax(syntax)
-}
-
-func writeFile(
-	filename string,
-	source string,
-) {
-	var bytes = []byte(source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
 }

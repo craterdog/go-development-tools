@@ -17,6 +17,7 @@ import (
 	mod "github.com/craterdog/go-class-model/v5"
 	gen "github.com/craterdog/go-code-generation/v5"
 	col "github.com/craterdog/go-collection-framework/v4"
+	uti "github.com/craterdog/go-missing-utilities/v2"
 	osx "os"
 	reg "regexp"
 	sts "strings"
@@ -40,7 +41,7 @@ func generateModule(
 	var models = col.Catalog[string, mod.ModelLike]()
 	for _, packageName := range packages {
 		var filename = directory + packageName + "/Package.go"
-		var source = readFile(filename)
+		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
@@ -52,14 +53,14 @@ func generateModule(
 		moduleSynthesizer,
 	)
 	var filename = directory + "Module.go"
-	if pathExists(filename) {
-		var original = readFile(filename)
+	if uti.PathExists(filename) {
+		var original = uti.ReadFile(filename)
 		var pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
 		generated = replacePattern(pattern, original, generated)
 		pattern = `└──────────────────────────────────────────────────────────────────────────────┘(.|\r?\n)+package module`
 		generated = replacePattern(pattern, original, generated)
 	}
-	writeFile(filename, generated)
+	uti.WriteFile(filename, generated)
 }
 
 func getTool() string {
@@ -70,32 +71,10 @@ func getTool() string {
 
 func getVersion() string {
 	var modFile = "./go.mod"
-	var source = readFile(modFile)
+	var source = uti.ReadFile(modFile)
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
-}
-
-func pathExists(path string) bool {
-	var _, err = osx.Stat(path)
-	if err == nil {
-		return true
-	}
-	if osx.IsNotExist(err) {
-		return false
-	}
-	panic(err)
-}
-
-func readFile(
-	filename string,
-) string {
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
-	return source
 }
 
 func replacePattern(
@@ -133,15 +112,4 @@ func retrieveArguments() (
 	}
 	packages = osx.Args[4:]
 	return
-}
-
-func writeFile(
-	filename string,
-	source string,
-) {
-	var bytes = []byte(source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
 }

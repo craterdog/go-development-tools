@@ -15,6 +15,7 @@ package main
 import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5"
+	uti "github.com/craterdog/go-missing-utilities/v2"
 	osx "os"
 	sts "strings"
 )
@@ -38,7 +39,7 @@ func getTool() string {
 
 func getVersion() string {
 	var modFile = "./go.mod"
-	var source = readFile(modFile)
+	var source = uti.ReadFile(modFile)
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
@@ -46,35 +47,13 @@ func getVersion() string {
 
 func parseModel(modelFile string) mod.ModelLike {
 	fmt.Printf("  Parsing the following model file:\n    %v\n", modelFile)
-	if !pathExists(modelFile) {
+	if !uti.PathExists(modelFile) {
 		fmt.Println("The model file does not exist, aborting...")
 		osx.Exit(1)
 	}
-	var source = readFile(modelFile)
+	var source = uti.ReadFile(modelFile)
 	var model = mod.ParseSource(source)
 	return model
-}
-
-func pathExists(path string) bool {
-	var _, err = osx.Stat(path)
-	if err == nil {
-		return true
-	}
-	if osx.IsNotExist(err) {
-		return false
-	}
-	panic(err)
-}
-
-func readFile(
-	filename string,
-) string {
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
-	return source
 }
 
 func formatModelFile(
@@ -83,7 +62,7 @@ func formatModelFile(
 ) {
 	fmt.Println("  Formatting the model file...")
 	var source = mod.FormatModel(model)
-	writeFile(modelFile, source)
+	uti.WriteFile(modelFile, source)
 }
 
 func retrieveArguments() (
@@ -103,15 +82,4 @@ func validateModel(
 ) {
 	fmt.Println("  Validating the model...")
 	mod.ValidateModel(model)
-}
-
-func writeFile(
-	filename string,
-	source string,
-) {
-	var bytes = []byte(source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
 }

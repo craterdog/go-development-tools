@@ -2,6 +2,11 @@ echo "Importing the following modules:"
 rm -rf ./tst
 mkdir -p ./tst/
 
+module=go-collection-framework/v5/
+echo "  ${module}"
+mkdir -p ./tst/${module}
+cp -r ../${module} ./tst/${module}
+
 module=go-syntax-notation/v5/
 echo "  ${module}"
 mkdir -p ./tst/${module}

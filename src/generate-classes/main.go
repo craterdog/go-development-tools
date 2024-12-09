@@ -26,7 +26,7 @@ func main() {
 	var version = getVersion()
 	fmt.Printf("Tool: %v %v\n", tool, version)
 	var moduleName, directory, packageName, force = retrieveArguments()
-	var model = validateModelFile(directory)
+	var model = validateModelFile(directory + packageName)
 	generatePackage(moduleName, directory, packageName, model, force)
 	fmt.Println("Done.")
 }
@@ -39,10 +39,10 @@ func generatePackage(
 	force bool,
 ) {
 	if force {
-		remakeDirectory(directory+packageName, force)
+		uti.RemakeDirectory(directory + packageName)
 		var filename = directory + packageName + "/Package.go"
 		var source = mod.FormatModel(model)
-		writeFile(filename, source, force)
+		uti.WriteFile(filename, source)
 	}
 	var generator = gen.ClassGenerator()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
@@ -61,7 +61,7 @@ func generatePackage(
 			classSynthesizer,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
-		writeFile(filename, source, force)
+		uti.WriteFile(filename, source)
 	}
 }
 
@@ -73,67 +73,29 @@ func getTool() string {
 
 func getVersion() string {
 	var modFile = "./go.mod"
-	var source = readFile(modFile)
+	var source = uti.ReadFile(modFile)
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
 }
 
 func parseModel(modelFile string) mod.ModelLike {
-	if !pathExists(modelFile) {
+	if !uti.PathExists(modelFile) {
 		fmt.Printf(
 			"The model file %v does not exist, aborting...",
 			modelFile,
 		)
 		osx.Exit(1)
 	}
-	var source = readFile(modelFile)
+	var source = uti.ReadFile(modelFile)
 	var model = mod.ParseSource(source)
 	return model
 }
 
-func pathExists(path string) bool {
-	var _, err = osx.Stat(path)
-	if err == nil {
-		return true
-	}
-	if osx.IsNotExist(err) {
-		return false
-	}
-	panic(err)
-}
-
-func readFile(
-	filename string,
-) string {
-	var bytes, err = osx.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-	var source = string(bytes)
-	return source
-}
-
-func remakeDirectory(
-	directory string,
-	force bool,
-) {
-	if force {
-		var err = osx.RemoveAll(directory)
-		if err != nil {
-			panic(err)
-		}
-	}
-	var err = osx.MkdirAll(directory, 0755)
-	if err != nil {
-		panic(err)
-	}
-}
-
 func retrieveArguments() (
 	moduleName string,
-	packageName string,
 	directory string,
+	packageName string,
 	force bool,
 ) {
 	if len(osx.Args) < 4 {
@@ -153,27 +115,8 @@ func retrieveArguments() (
 
 func validateModelFile(directory string) mod.ModelLike {
 	fmt.Println("  Validating the Package.go file...")
-	var modelFile = directory + "Packet.go"
+	var modelFile = directory + "/Package.go"
 	var model = parseModel(modelFile)
 	mod.ValidateModel(model)
 	return model
-}
-
-func writeFile(
-	filename string,
-	source string,
-	force bool,
-) {
-	if pathExists(filename) && !force {
-		fmt.Printf(
-			"    The following package already exists, not overwriting it:\n%v\n",
-			filename,
-		)
-		return
-	}
-	var bytes = []byte(source)
-	var err = osx.WriteFile(filename, bytes, 0644)
-	if err != nil {
-		panic(err)
-	}
 }
