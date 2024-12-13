@@ -30,32 +30,27 @@ func ArrayClass[V any]() ArrayClassLike[V] {
 // Constructor Methods
 
 func (c *arrayClass_[V]) Make(
-	size Size,
+	size age.Size,
 ) ArrayLike[V] {
 	if uti.IsUndefined(size) {
 		panic("The \"size\" attribute is required by this class.")
 	}
-	var instance = &array_[V]{
-		// Initialize the instance attributes.
-		size_: size,
-	}
-	return instance
+	var array = make([]V, int(size)) // All values initialized to zero.
+	return array_[V](array)
 }
 
 func (c *arrayClass_[V]) MakeFromArray(
-	array []V,
+	values []V,
 ) ArrayLike[V] {
-	var instance ArrayLike[V]
-	// TBD - Add the constructor implementation.
-	return instance
+	var array = uti.CopyArray(values)
+	return array_[V](array)
 }
 
 func (c *arrayClass_[V]) MakeFromSequence(
-	sequence Sequential[V],
+	values Sequential[V],
 ) ArrayLike[V] {
-	var instance ArrayLike[V]
-	// TBD - Add the constructor implementation.
-	return instance
+	var array = values.AsArray() // This returns a copy of the array.
+	return array_[V](array)
 }
 
 // Constant Methods
@@ -66,7 +61,7 @@ func (c *arrayClass_[V]) MakeFromSequence(
 
 // Principal Methods
 
-func (v *array_[V]) GetClass() ArrayClassLike[V] {
+func (v array_[V]) GetClass() ArrayClassLike[V] {
 	return arrayClassReference[V]()
 }
 
@@ -74,95 +69,149 @@ func (v *array_[V]) GetClass() ArrayClassLike[V] {
 
 // Accessible[V] Methods
 
-func (v *array_[V]) GetValue(
+func (v array_[V]) GetValue(
 	index Index,
 ) V {
-	var result_ V
-	// TBD - Add the method implementation.
-	return result_
+	var goIndex = v.toZeroBased(index)
+	return v[goIndex]
 }
 
-func (v *array_[V]) GetValues(
+func (v array_[V]) GetValues(
 	first Index,
 	last Index,
 ) Sequential[V] {
-	var result_ Sequential[V]
-	// TBD - Add the method implementation.
-	return result_
+	var goFirst = v.toZeroBased(first)
+	var goLast = v.toZeroBased(last)
+	var values = v[goFirst : goLast+1]
+	var array = uti.CopyArray(values)
+	return array_[V](array)
 }
 
 // Sequential[V] Methods
 
-func (v *array_[V]) IsEmpty() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+func (v array_[V]) IsEmpty() bool {
+	return len(v) == 0
 }
 
-func (v *array_[V]) GetSize() int {
-	var result_ int
-	// TBD - Add the method implementation.
-	return result_
+func (v array_[V]) GetSize() age.Size {
+	var size = age.Size(len(v))
+	return size
 }
 
-func (v *array_[V]) AsArray() []V {
-	var result_ []V
-	// TBD - Add the method implementation.
-	return result_
+func (v array_[V]) AsArray() []V {
+	var array = uti.CopyArray(v)
+	return array
 }
 
-func (v *array_[V]) GetIterator() age.IteratorLike[V] {
-	var result_ age.IteratorLike[V]
-	// TBD - Add the method implementation.
-	return result_
+func (v array_[V]) GetIterator() age.IteratorLike[V] {
+	var array = uti.CopyArray(v)
+	var iteratorClass = age.IteratorClass[V]()
+	var iterator = iteratorClass.Make(array)
+	return iterator
 }
 
 // Sortable[V] Methods
 
-func (v *array_[V]) SortValues() {
-	// TBD - Add the method implementation.
+func (v array_[V]) SortValues() {
+	if v.GetSize() > 1 {
+		var iteratorClass = age.SorterClass[V]()
+		var sorter = iteratorClass.Make()
+		sorter.SortValues(v)
+	}
 }
 
-func (v *array_[V]) SortValuesWithRanker(
+func (v array_[V]) SortValuesWithRanker(
 	ranker age.RankingFunction[V],
 ) {
-	// TBD - Add the method implementation.
+	if v.GetSize() > 1 {
+		var sorterClass = age.SorterClass[V]()
+		var sorter = sorterClass.MakeWithRanker(ranker)
+		sorter.SortValues(v)
+	}
 }
 
-func (v *array_[V]) ReverseValues() {
-	// TBD - Add the method implementation.
+func (v array_[V]) ReverseValues() {
+	if v.GetSize() > 1 {
+		var sorterClass = age.SorterClass[V]()
+		var sorter = sorterClass.Make()
+		sorter.ReverseValues(v)
+	}
 }
 
-func (v *array_[V]) ShuffleValues() {
-	// TBD - Add the method implementation.
+func (v array_[V]) ShuffleValues() {
+	if v.GetSize() > 1 {
+		var sorterClass = age.SorterClass[V]()
+		var sorter = sorterClass.Make()
+		sorter.ShuffleValues(v)
+	}
 }
 
 // Updatable[V] Methods
 
-func (v *array_[V]) SetValue(
+func (v array_[V]) SetValue(
 	index Index,
 	value V,
 ) {
-	// TBD - Add the method implementation.
+	var goIndex = v.toZeroBased(index)
+	v[goIndex] = value
 }
 
-func (v *array_[V]) SetValues(
+func (v array_[V]) SetValues(
 	index Index,
 	values Sequential[V],
 ) {
-	// TBD - Add the method implementation.
+	var goIndex = v.toZeroBased(index)
+	copy(v[goIndex:], values.AsArray())
+}
+
+// Stringer Methods
+
+func (v array_[V]) String() string {
+	return uti.Format(v)
 }
 
 // PROTECTED INTERFACE
 
 // Private Methods
 
+// This private instance method normalizes a relative ORDINAL-based index into
+// this array to match the Go (ZERO-based) indexing.  The following
+// transformation is performed:
+//
+//	[-size..-1] and [1..size] => [0..size)
+//
+// Notice that the specified index cannot be zero since zero is NOT an ordinal.
+func (v array_[V]) toZeroBased(index Index) int {
+	var size = Index(v.GetSize())
+	switch {
+	case size == 0:
+		// The Array is empty.
+		panic("Cannot index an empty Array.")
+	case index == 0:
+		// Zero is not an ordinal.
+		panic("Indices must be positive or negative ordinals, not zero.")
+	case index < -size || index > size:
+		// The index is outside the bounds of the specified range.
+		panic(fmt.Sprintf(
+			"The specified index is outside the allowed ranges [-%v..-1] and [1..%v]: %v",
+			size,
+			size,
+			index))
+	case index < 0:
+		// Convert a negative index.
+		return int(index + size)
+	case index > 0:
+		// Convert a positive index.
+		return int(index - 1)
+	default:
+		// This should never happen so time to...
+		panic(fmt.Sprintf("Go compiler problem, unexpected index value: %v", index))
+	}
+}
+
 // Instance Structure
 
-type array_[V any] struct {
-	// Declare the instance attributes.
-	size_ Size
-}
+type array_[V any] []V
 
 // Class Structure
 

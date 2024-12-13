@@ -44,6 +44,16 @@ const (
 	GreaterRank
 )
 
+/*
+Size is a constrained type representing the size or capacity of something.
+*/
+type Size uint
+
+/*
+Slot is a constrained type representing a slot between values in a sequence.
+*/
+type Slot uint
+
 // FUNCTIONAL DECLARATIONS
 
 /*
@@ -62,15 +72,17 @@ CollatorClassLike[V any] is a class interface that declares the complete set
 of class constructors, constants and functions that must be supported by each
 concrete collator-like class.
 
-An optional maximum depth may be specified that limits the depth of the
-structures being collated in a way that avoids possible infinite recursion.
+A collator-like class is capable of recursively comparing and ranking two values
+of any type.  An optional maximum depth may be specified that limits the depth
+of the structures being collated to avoid possible infinite recursion.
+
 The default maximum depth is 16.
 */
 type CollatorClassLike[V any] interface {
 	// Constructor Methods
 	Make() CollatorLike[V]
 	MakeWithMaximumDepth(
-		maximumDepth int,
+		maximumDepth Size,
 	) CollatorLike[V]
 }
 
@@ -78,65 +90,6 @@ type CollatorClassLike[V any] interface {
 IteratorClassLike[V any] is a class interface that declares the complete set
 of class constructors, constants and functions that must be supported by each
 concrete iterator-like class.
-
-An iterator-like class can be used to iterate over the specified array of
-values.  The array is copied so that it is immutable during iteration.
-*/
-type IteratorClassLike[V any] interface {
-	// Constructor Methods
-	Make(
-		values []V,
-	) IteratorLike[V]
-}
-
-/*
-SorterClassLike[V any] is a class interface that declares the complete set
-of class constructors, constants and functions that must be supported by each
-concrete sorter-like class.
-
-An optional ranking function may be specified that is used to compare values.
-The default ranking function uses the value's "natural" ordering based on its
-type.
-*/
-type SorterClassLike[V any] interface {
-	// Constructor Methods
-	Make() SorterLike[V]
-	MakeWithRanker(
-		ranker RankingFunction[V],
-	) SorterLike[V]
-}
-
-// INSTANCE DECLARATIONS
-
-/*
-CollatorLike[V any] is an instance interface that declares the complete set of
-principal, attribute and aspect methods that must be supported by each
-instance of a concrete collator-like class.
-
-A collator-like class is capable of recursively comparing and ranking two values
-of any type.  The maximum depth attribute removes the possibility of infinite
-recursion in the case of cycles.
-*/
-type CollatorLike[V any] interface {
-	// Principal Methods
-	GetClass() CollatorClassLike[V]
-	CompareValues(
-		first V,
-		second V,
-	) bool
-	RankValues(
-		first V,
-		second V,
-	) Rank
-
-	// Attribute Methods
-	GetMaximumDepth() int
-}
-
-/*
-IteratorLike[V any] is an instance interface that declares the complete set of
-principal, attribute and aspect methods that must be supported by each
-instance of a concrete iterator-like class.
 
 An iterator-like class can be used to move forward and backward over the values
 in an array.  It implements the Gang of Four (GoF) Iterator Design Pattern:
@@ -153,7 +106,60 @@ It moves from slot to slot and has access to the values (if they exist) on each
 side of the slot.  At each slot an iterator has access to the previous value
 and next value in the array (assuming they exist). The slot at the start of
 the array has no PREVIOUS value, and the slot at the end of the array has no
-NEXT value.
+NEXT value.  The size of the array is static so that its values can be modified
+during iteration.
+*/
+type IteratorClassLike[V any] interface {
+	// Constructor Methods
+	Make(
+		array []V,
+	) IteratorLike[V]
+}
+
+/*
+SorterClassLike[V any] is a class interface that declares the complete set
+of class constructors, constants and functions that must be supported by each
+concrete sorter-like class.
+
+A sorter-like class implements a specific sorting algorithm.  It uses a ranking
+function to correlate the values.  If no ranking function is specified the
+values are sorted into their "natural" ordering by type of value.
+*/
+type SorterClassLike[V any] interface {
+	// Constructor Methods
+	Make() SorterLike[V]
+	MakeWithRanker(
+		ranker RankingFunction[V],
+	) SorterLike[V]
+}
+
+// INSTANCE DECLARATIONS
+
+/*
+CollatorLike[V any] is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each
+instance of a concrete collator-like class.
+*/
+type CollatorLike[V any] interface {
+	// Principal Methods
+	GetClass() CollatorClassLike[V]
+	CompareValues(
+		first V,
+		second V,
+	) bool
+	RankValues(
+		first V,
+		second V,
+	) Rank
+
+	// Attribute Methods
+	GetMaximumDepth() Size
+}
+
+/*
+IteratorLike[V any] is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each
+instance of a concrete iterator-like class.
 */
 type IteratorLike[V any] interface {
 	// Principal Methods
@@ -161,27 +167,23 @@ type IteratorLike[V any] interface {
 	IsEmpty() bool
 	ToStart()
 	ToSlot(
-		slot int,
+		slot Slot,
 	)
 	ToEnd()
-	GetNext() V
+	HasPrevious() bool
 	GetPrevious() V
 	HasNext() bool
-	HasPrevious() bool
+	GetNext() V
 
 	// Attribute Methods
-	GetSize() int
-	GetSlot() int
+	GetSize() Size
+	GetSlot() Slot
 }
 
 /*
 SorterLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete sorter-like class.
-
-A sorter-like class implements a specific sorting algorithm.  It uses a ranking
-function to correlate the values.  If no ranking function is specified the
-values are sorted into their "natural" ordering by type of value.
 */
 type SorterLike[V any] interface {
 	// Principal Methods

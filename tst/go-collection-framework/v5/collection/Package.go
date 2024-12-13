@@ -59,16 +59,6 @@ indices are symmetrical.  An index can NEVER be zero.
 */
 type Index int
 
-/*
-Size is a constrained type representing the size or capacity of something.
-*/
-type Size uint
-
-/*
-Slot is a constrained type representing a slot between values in a sequence.
-*/
-type Slot uint
-
 // FUNCTIONAL DECLARATIONS
 
 // CLASS DECLARATIONS
@@ -78,19 +68,24 @@ ArrayClassLike[V any] is a class interface that declares the complete set of
 class constructors, constants and functions that must be supported by each
 concrete array-like class.
 
-An array-like class extends the native Go array data type by adding useful
-methods to it.
+An array-like class maintains a fixed length indexed sequence of values.  Each
+value is associated with an implicit positive integer index.  An array-like
+class uses ORDINAL based indexing rather than the more common—and
+nonsensical—ZERO based indexing scheme (see the description of what this means
+in the Accessible[V] aspect definition).
+
+This type provides a higher level abstraction for the intrinsic Go array type.
 */
 type ArrayClassLike[V any] interface {
 	// Constructor Methods
 	Make(
-		size Size,
+		size age.Size,
 	) ArrayLike[V]
 	MakeFromArray(
-		array []V,
+		values []V,
 	) ArrayLike[V]
 	MakeFromSequence(
-		sequence Sequential[V],
+		values Sequential[V],
 	) ArrayLike[V]
 }
 
@@ -115,7 +110,8 @@ CatalogClassLike[K comparable, V any] is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete catalog-like class.
 
-A catalog-like class maintains a set of ordered key-value associations.
+A catalog-like class maintains an ordered set of generic typed key-value
+associations.
 
 The following class functions are supported:
 
@@ -157,7 +153,11 @@ ListClassLike[V any] is a class interface that declares the complete set of
 class constructors, constants and functions that must be supported by each
 concrete list-like class.
 
-A list-like class maintains an extensible sequence of generic typed values.
+A list-like class maintains a dynamic sequence of values which can grow or
+shrink as needed.  Each value is associated with an implicit positive integer
+index.  It uses ORDINAL based indexing rather than the more common—and
+nonsensical—ZERO based indexing scheme (see the description of what
+this means in the Accessible[V] interface definition).
 
 The following class functions are supported:
 
@@ -186,8 +186,10 @@ MapClassLike[K comparable, V any] is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete map-like class.
 
-A map-like class extends the native Go map data type by adding useful methods
-to it.
+A map-like class extends the intrinsic Go map data type and maintains a
+sequence of generic typed key-value associations.  The ordering of the
+key-value associations in an intrinsic Go map is random, even for two Go maps
+containing the same key-value associations.
 */
 type MapClassLike[K comparable, V any] interface {
 	// Constructor Methods
@@ -208,10 +210,12 @@ QueueClassLike[V any] is a class interface that declares the complete set of
 class constructors, constants and functions that must be supported by each
 concrete queue-like class.
 
-A queue-like class supports synchronized first-in-first-out (FIFO) symantics
-for generic typed values.  An optional queue capacity may be specified.  The
-default capacity is 16 values.  A full queue will block until a value has been
-removed before allowing a new value to be added.
+A queue-like class is generally used by multiple go-routines at the same time
+and therefore enforces synchronized, first-in-first-out (FIFO) symantics for
+generic typed values.  An optional queue capacity may be specified.  A request
+to add a value to a queue will block when the queue has reached its maximum
+capacity.  It will also block on attempts to remove a value when it is empty.
+The default capacity for a queue-like class is 16 values.
 
 The following class functions are supported:
 
@@ -240,7 +244,7 @@ type QueueClassLike[V any] interface {
 	// Constructor Methods
 	Make() QueueLike[V]
 	MakeWithCapacity(
-		capacity Size,
+		capacity age.Size,
 	) QueueLike[V]
 	MakeFromArray(
 		values []V,
@@ -249,19 +253,16 @@ type QueueClassLike[V any] interface {
 		values Sequential[V],
 	) QueueLike[V]
 
-	// Constant Methods
-	DefaultCapacity() Size
-
 	// Function Methods
 	Fork(
 		group Synchronized,
 		input QueueLike[V],
-		size Size,
+		size age.Size,
 	) Sequential[QueueLike[V]]
 	Split(
 		group Synchronized,
 		input QueueLike[V],
-		size Size,
+		size age.Size,
 	) Sequential[QueueLike[V]]
 	Join(
 		group Synchronized,
@@ -274,7 +275,9 @@ SetClassLike[V any] is a class interface that declares the complete set of
 class constructors, constants and functions that must be supported by each
 concrete set-like class.
 
-A set-like class maintains an ordered, unique set of generic typed values.
+A set-like class maintains an ordered sequence of unique generic typed
+values—which can grow or shrink as needed.  The order of the values is
+determined by a configurable collator agent.
 
 The following class functions are supported:
 
@@ -335,7 +338,7 @@ type StackClassLike[V any] interface {
 	// Constructor Methods
 	Make() StackLike[V]
 	MakeWithCapacity(
-		capacity Size,
+		capacity age.Size,
 	) StackLike[V]
 	MakeFromArray(
 		values []V,
@@ -343,9 +346,6 @@ type StackClassLike[V any] interface {
 	MakeFromSequence(
 		values Sequential[V],
 	) StackLike[V]
-
-	// Constant Methods
-	DefaultCapacity() Size
 }
 
 // INSTANCE DECLARATIONS
@@ -354,14 +354,6 @@ type StackClassLike[V any] interface {
 ArrayLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete array-like class.
-
-An array-like class maintains a fixed length indexed sequence of values.  Each
-value is associated with an implicit positive integer index.  An array-like
-class uses ORDINAL based indexing rather than the more common—and
-nonsensical—ZERO based indexing scheme (see the description of what this means
-in the Accessible[V] aspect definition).
-
-This type provides a higher level abstraction for the intrinsic Go array type.
 */
 type ArrayLike[V any] interface {
 	// Principal Methods
@@ -378,9 +370,6 @@ type ArrayLike[V any] interface {
 AssociationLike[K comparable, V any] is an instance interface that declares
 the complete set of principal, attribute and aspect methods that must be
 supported by each instance of a concrete association-like class.
-
-An association-like class is used by catalog-like instances to maintain their
-generic typed key-value associations.
 */
 type AssociationLike[K comparable, V any] interface {
 	// Principal Methods
@@ -398,8 +387,6 @@ type AssociationLike[K comparable, V any] interface {
 CatalogLike[K comparable, V any] is an instance interface that declares
 the complete set of principal, attribute and aspect methods that must be
 supported by each instance of a concrete catalog-like class.
-
-A catalog-like class maintains a set of generic typed key-value associations.
 */
 type CatalogLike[K comparable, V any] interface {
 	// Principal Methods
@@ -415,44 +402,14 @@ type CatalogLike[K comparable, V any] interface {
 ListLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete list-like class.
-
-A list-like class maintains a dynamic sequence of values which can grow or
-shrink as needed.  Each value is associated with an implicit positive integer
-index. An array-like class uses ORDINAL based indexing rather than the more
-common—and nonsensical—ZERO based indexing scheme (see the description of what
-this means in the Accessible[V] interface definition).
-
-All comparison and ranking of values in the sequence during sorting is done
-using a collator and a ranking function.
 */
 type ListLike[V any] interface {
 	// Principal Methods
 	GetClass() ListClassLike[V]
-	InsertValue(
-		slot Slot,
-		value V,
-	)
-	InsertValues(
-		slot Slot,
-		values Sequential[V],
-	)
-	AppendValue(
-		value V,
-	)
-	AppendValues(
-		values Sequential[V],
-	)
-	RemoveValue(
-		index Index,
-	) V
-	RemoveValues(
-		first Index,
-		last Index,
-	) Sequential[V]
-	RemoveAll()
 
 	// Aspect Interfaces
 	Accessible[V]
+	Malleable[V]
 	Searchable[V]
 	Sequential[V]
 	Sortable[V]
@@ -463,11 +420,6 @@ type ListLike[V any] interface {
 MapLike[K comparable, V any] is an instance interface that declares
 the complete set of principal, attribute and aspect methods that must be
 supported by each instance of a concrete map-like class.
-
-A map-like class extends the intrinsic Go map data type and maintains a
-sequence of generic typed key-value associations.  The ordering of the
-key-value associations in an intrinsic Go map is random, even for two Go maps
-containing the same key-value associations.
 */
 type MapLike[K comparable, V any] interface {
 	// Principal Methods
@@ -482,29 +434,16 @@ type MapLike[K comparable, V any] interface {
 QueueLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete queue-like class.
-
-A queue-like class is generally used by multiple go-routines at the same time
-and therefore enforces synchronized access.  A queue-like class enforces a
-maximum length and will block on attempts to add a value it is full.  It will
-also block on attempts to remove a value when it is empty.
 */
 type QueueLike[V any] interface {
 	// Principal Methods
 	GetClass() QueueClassLike[V]
-	AddValue(
-		value V,
-	)
-	RemoveHead() (
-		head V,
-		ok bool,
-	)
-	RemoveAll()
-	CloseQueue()
 
 	// Attribute Methods
-	GetCapacity() Size
+	GetCapacity() age.Size
 
 	// Aspect Interfaces
+	Fifo[V]
 	Sequential[V]
 }
 
@@ -512,33 +451,17 @@ type QueueLike[V any] interface {
 SetLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete set-like class.
-
-A set-like class maintains an ordered sequence of unique values which can grow
-or shrink as needed.  The order of the values is determined by a configurable
-collator agent.
 */
 type SetLike[V any] interface {
 	// Principal Methods
 	GetClass() SetClassLike[V]
-	AddValue(
-		value V,
-	)
-	AddValues(
-		values Sequential[V],
-	)
-	RemoveValue(
-		value V,
-	)
-	RemoveValues(
-		values Sequential[V],
-	)
-	RemoveAll()
 
 	// Attribute Methods
 	GetCollator() age.CollatorLike[V]
 
 	// Aspect Interfaces
 	Accessible[V]
+	Elastic[V]
 	Searchable[V]
 	Sequential[V]
 }
@@ -547,23 +470,16 @@ type SetLike[V any] interface {
 StackLike[V any] is an instance interface that declares the complete set of
 principal, attribute and aspect methods that must be supported by each
 instance of a concrete stack-like class.
-
-A stack-like class enforces a maximum depth and will panic if that depth is
-exceeded.  It will also panic on attempts to remove a value when it is empty.
 */
 type StackLike[V any] interface {
 	// Principal Methods
 	GetClass() StackClassLike[V]
-	AddValue(
-		value V,
-	)
-	RemoveTop() V
-	RemoveAll()
 
 	// Attribute Methods
-	GetCapacity() Size
+	GetCapacity() age.Size
 
 	// Aspect Interfaces
+	Lifo[V]
 	Sequential[V]
 }
 
@@ -630,6 +546,85 @@ type Associative[K comparable, V any] interface {
 }
 
 /*
+Elastic[V any] is an aspect interface that declares a set of method signatures
+that must be supported by each instance of an elastic concrete class.
+*/
+type Elastic[V any] interface {
+	AddValue(
+		value V,
+	)
+	AddValues(
+		values Sequential[V],
+	)
+	RemoveValue(
+		value V,
+	)
+	RemoveValues(
+		values Sequential[V],
+	)
+	RemoveAll()
+}
+
+/*
+Fifo[V any] is an aspect interface that declares a set of method signatures
+that must be supported by each instance of a synchronized first-in-first-out
+channel concrete class.
+*/
+type Fifo[V any] interface {
+	AddValue(
+		value V,
+	)
+	RemoveFirst() (
+		first V,
+		ok bool,
+	)
+	RemoveAll()
+	CloseChannel()
+}
+
+/*
+Lifo[V any] is an aspect interface that declares a set of method signatures
+that must be supported by each instance of a last-in-first-out class.
+*/
+type Lifo[V any] interface {
+	AddValue(
+		value V,
+	)
+	RemoveLast() V
+	RemoveAll()
+}
+
+/*
+Malleable[V any] is an aspect interface that declares a set of method
+signatures that must be supported by each instance of a malleable concrete
+class.
+*/
+type Malleable[V any] interface {
+	InsertValue(
+		slot age.Slot,
+		value V,
+	)
+	InsertValues(
+		slot age.Slot,
+		values Sequential[V],
+	)
+	AppendValue(
+		value V,
+	)
+	AppendValues(
+		values Sequential[V],
+	)
+	RemoveValue(
+		index Index,
+	) V
+	RemoveValues(
+		first Index,
+		last Index,
+	) Sequential[V]
+	RemoveAll()
+}
+
+/*
 Searchable[V any] is an aspect interface that declares a set of method
 signatures that must be supported by each instance of a searchable concrete
 class.
@@ -646,7 +641,7 @@ type Searchable[V any] interface {
 	) bool
 	GetIndex(
 		value V,
-	) int
+	) Index
 }
 
 /*
@@ -656,7 +651,7 @@ class.
 */
 type Sequential[V any] interface {
 	IsEmpty() bool
-	GetSize() int
+	GetSize() age.Size
 	AsArray() []V
 	GetIterator() age.IteratorLike[V]
 }

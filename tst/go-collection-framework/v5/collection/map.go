@@ -15,6 +15,7 @@ package collection
 import (
 	fmt "fmt"
 	age "github.com/craterdog/go-collection-framework/v5/agent"
+	uti "github.com/craterdog/go-missing-utilities/v2"
 	syn "sync"
 )
 
@@ -29,33 +30,43 @@ func MapClass[K comparable, V any]() MapClassLike[K, V] {
 // Constructor Methods
 
 func (c *mapClass_[K, V]) Make() MapLike[K, V] {
-	var instance = &map_[K, V]{
-		// Initialize the instance attributes.
-	}
+	var instance = map_[K, V](map[K]V{})
 	return instance
 }
 
 func (c *mapClass_[K, V]) MakeFromArray(
 	associations []AssociationLike[K, V],
 ) MapLike[K, V] {
-	var instance MapLike[K, V]
-	// TBD - Add the constructor implementation.
+	var instance = map_[K, V](map[K]V{})
+	for _, association := range associations {
+		var key = association.GetKey()
+		var value = association.GetValue()
+		instance[key] = value
+	}
 	return instance
 }
 
 func (c *mapClass_[K, V]) MakeFromMap(
 	associations map[K]V,
 ) MapLike[K, V] {
-	var instance MapLike[K, V]
-	// TBD - Add the constructor implementation.
+	var instance = map_[K, V](map[K]V{})
+	for key, value := range associations {
+		instance[key] = value
+	}
 	return instance
 }
 
 func (c *mapClass_[K, V]) MakeFromSequence(
 	associations Sequential[AssociationLike[K, V]],
 ) MapLike[K, V] {
-	var instance MapLike[K, V]
-	// TBD - Add the constructor implementation.
+	var instance = map_[K, V](map[K]V{})
+	var iterator = associations.GetIterator()
+	for iterator.HasNext() {
+		var association = iterator.GetNext()
+		var key = association.GetKey()
+		var value = association.GetValue()
+		instance[key] = value
+	}
 	return instance
 }
 
@@ -67,7 +78,7 @@ func (c *mapClass_[K, V]) MakeFromSequence(
 
 // Principal Methods
 
-func (v *map_[K, V]) GetClass() MapClassLike[K, V] {
+func (v map_[K, V]) GetClass() MapClassLike[K, V] {
 	return mapClassReference[K, V]()
 }
 
@@ -75,85 +86,125 @@ func (v *map_[K, V]) GetClass() MapClassLike[K, V] {
 
 // Associative[K, V] Methods
 
-func (v *map_[K, V]) AsMap() map[K]V {
-	var result_ map[K]V
-	// TBD - Add the method implementation.
-	return result_
+func (v map_[K, V]) AsMap() map[K]V {
+	var map_ = uti.CopyMap(v)
+	return map_
 }
 
-func (v *map_[K, V]) GetValue(
+func (v map_[K, V]) GetValue(
 	key K,
 ) V {
-	var result_ V
-	// TBD - Add the method implementation.
-	return result_
+	var value = v[key]
+	return value
 }
 
-func (v *map_[K, V]) SetValue(
+func (v map_[K, V]) SetValue(
 	key K,
 	value V,
 ) {
-	// TBD - Add the method implementation.
+	v[key] = value
 }
 
-func (v *map_[K, V]) GetKeys() Sequential[K] {
-	var result_ Sequential[K]
-	// TBD - Add the method implementation.
-	return result_
+func (v map_[K, V]) GetKeys() Sequential[K] {
+	var size = v.GetSize()
+	var arrayClass = ArrayClass[K]()
+	var keys = arrayClass.Make(size)
+	var index Index
+	for key := range v {
+		index++
+		keys.SetValue(index, key)
+	}
+	return keys
 }
 
-func (v *map_[K, V]) GetValues(
+func (v map_[K, V]) GetValues(
 	keys Sequential[K],
 ) Sequential[V] {
-	var result_ Sequential[V]
-	// TBD - Add the method implementation.
-	return result_
+	var size = keys.GetSize()
+	var arrayClass = ArrayClass[V]()
+	var values = arrayClass.Make(size)
+	var index Index
+	var iterator = keys.GetIterator()
+	for iterator.HasNext() {
+		index++
+		var key = iterator.GetNext()
+		var value = v.GetValue(key)
+		values.SetValue(index, value)
+	}
+	return values
 }
 
-func (v *map_[K, V]) RemoveValue(
+func (v map_[K, V]) RemoveValue(
 	key K,
 ) V {
-	var result_ V
-	// TBD - Add the method implementation.
-	return result_
+	var value, exists = v[key]
+	if exists {
+		delete(v, key)
+	}
+	return value
 }
 
-func (v *map_[K, V]) RemoveValues(
+func (v map_[K, V]) RemoveValues(
 	keys Sequential[K],
 ) Sequential[V] {
-	var result_ Sequential[V]
-	// TBD - Add the method implementation.
-	return result_
+	var size = keys.GetSize()
+	var arrayClass = ArrayClass[V]()
+	var values = arrayClass.Make(size)
+	var index Index
+	var iterator = keys.GetIterator()
+	for iterator.HasNext() {
+		index++
+		var key = iterator.GetNext()
+		var value = v.RemoveValue(key)
+		values.SetValue(index, value)
+	}
+	return values
 }
 
-func (v *map_[K, V]) RemoveAll() {
-	// TBD - Add the method implementation.
+func (v map_[K, V]) RemoveAll() {
+	var keys = v.GetKeys()
+	var iterator = keys.GetIterator()
+	for iterator.HasNext() {
+		var key = iterator.GetNext()
+		delete(v, key)
+	}
 }
 
 // Sequential[AssociationLike[K, V]] Methods
 
-func (v *map_[K, V]) IsEmpty() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+func (v map_[K, V]) IsEmpty() bool {
+	return len(v) == 0
 }
 
-func (v *map_[K, V]) GetSize() int {
-	var result_ int
-	// TBD - Add the method implementation.
-	return result_
+func (v map_[K, V]) GetSize() age.Size {
+	var size = age.Size(len(v))
+	return size
 }
 
-func (v *map_[K, V]) AsArray() []AssociationLike[K, V] {
-	var result_ []AssociationLike[K, V]
-	// TBD - Add the method implementation.
-	return result_
+func (v map_[K, V]) AsArray() []AssociationLike[K, V] {
+	var size = len(v)
+	var array = make([]AssociationLike[K, V], size)
+	var index = 0
+	var associationClass = AssociationClass[K, V]()
+	for key, value := range v {
+		var association = associationClass.Make(key, value)
+		array[index] = association
+		index++
+	}
+	return array
 }
 
-func (v *map_[K, V]) GetIterator() age.IteratorLike[AssociationLike[K, V]] {
-	var result_ age.IteratorLike[AssociationLike[K, V]]
-	// TBD - Add the method implementation.
-	return result_
+func (v map_[K, V]) GetIterator() age.IteratorLike[AssociationLike[K, V]] {
+	var array = v.AsArray()
+	var iteratorClass = age.IteratorClass[AssociationLike[K, V]]()
+	var iterator = iteratorClass.Make(array)
+	return iterator
+}
+
+// Stringer Methods
+
+func (v map_[K, V]) String() string {
+	return uti.Format(v)
 }
 
 // PROTECTED INTERFACE
@@ -162,9 +213,7 @@ func (v *map_[K, V]) GetIterator() age.IteratorLike[AssociationLike[K, V]] {
 
 // Instance Structure
 
-type map_[K comparable, V any] struct {
-	// Declare the instance attributes.
-}
+type map_[K comparable, V any] map[K]V
 
 // Class Structure
 
