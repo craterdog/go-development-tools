@@ -40,6 +40,8 @@ wikiPath=https://github.com/craterdog/${directory:6}/wiki
 bin/format-model ${directory}/v5/agent/Package.go
 bin/format-model ${directory}/v5/collection/Package.go
 echo
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v5/ agent collection
+echo
 bin/generate-classes ${moduleName} ${directory}/v5/ agent
 bin/generate-classes ${moduleName} ${directory}/v5/ collection
 echo

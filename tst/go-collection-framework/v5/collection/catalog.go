@@ -15,7 +15,6 @@ package collection
 import (
 	fmt "fmt"
 	age "github.com/craterdog/go-collection-framework/v5/agent"
-	uti "github.com/craterdog/go-missing-utilities/v2"
 	syn "sync"
 )
 
@@ -29,52 +28,35 @@ func CatalogClass[K comparable, V any]() CatalogClassLike[K, V] {
 
 // Constructor Methods
 
-func (c *catalogClass_[K, V]) Make() CatalogLike[K, V] {
-	var listClass = ListClass[AssociationLike[K, V]]()
-	var keys = map[K]AssociationLike[K, V]{}
-	var associations = listClass.Make()
+func (c *catalogClass_[K, V]) Catalog() CatalogLike[K, V] {
 	var instance = &catalog_[K, V]{
 		// Initialize the instance attributes.
-		keys_:         keys,
-		associations_: associations,
 	}
 	return instance
 }
 
-func (c *catalogClass_[K, V]) MakeFromArray(
+func (c *catalogClass_[K, V]) CatalogFromArray(
 	associations []AssociationLike[K, V],
 ) CatalogLike[K, V] {
-	var catalog = c.Make()
-	for _, association := range associations {
-		var key = association.GetKey()
-		var value = association.GetValue()
-		catalog.SetValue(key, value)
-	}
-	return catalog
+	var instance CatalogLike[K, V]
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
-func (c *catalogClass_[K, V]) MakeFromMap(
+func (c *catalogClass_[K, V]) CatalogFromMap(
 	associations map[K]V,
 ) CatalogLike[K, V] {
-	var catalog = c.Make()
-	for key, value := range associations {
-		catalog.SetValue(key, value)
-	}
-	return catalog
+	var instance CatalogLike[K, V]
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
-func (c *catalogClass_[K, V]) MakeFromSequence(
+func (c *catalogClass_[K, V]) CatalogFromSequence(
 	associations Sequential[AssociationLike[K, V]],
 ) CatalogLike[K, V] {
-	var catalog = c.Make()
-	var iterator = associations.GetIterator()
-	for iterator.HasNext() {
-		var association = iterator.GetNext()
-		var key = association.GetKey()
-		var value = association.GetValue()
-		catalog.SetValue(key, value)
-	}
-	return catalog
+	var instance CatalogLike[K, V]
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 // Constant Methods
@@ -85,29 +67,18 @@ func (c *catalogClass_[K, V]) Extract(
 	catalog CatalogLike[K, V],
 	keys Sequential[K],
 ) CatalogLike[K, V] {
-	var result = c.Make()
-	var iterator = keys.GetIterator()
-	for iterator.HasNext() {
-		var key = iterator.GetNext()
-		var value = catalog.GetValue(key)
-		result.SetValue(key, value)
-	}
-	return result
+	var result_ CatalogLike[K, V]
+	// TBD - Add the function implementation.
+	return result_
 }
 
 func (c *catalogClass_[K, V]) Merge(
 	first CatalogLike[K, V],
 	second CatalogLike[K, V],
 ) CatalogLike[K, V] {
-	var catalog = c.MakeFromSequence(first)
-	var iterator = second.GetIterator()
-	for iterator.HasNext() {
-		var association = iterator.GetNext()
-		var key = association.GetKey()
-		var value = association.GetValue()
-		catalog.SetValue(key, value)
-	}
-	return catalog
+	var result_ CatalogLike[K, V]
+	// TBD - Add the function implementation.
+	return result_
 }
 
 // INSTANCE INTERFACE
@@ -123,147 +94,104 @@ func (v *catalog_[K, V]) GetClass() CatalogClassLike[K, V] {
 // Associative[K, V] Methods
 
 func (v *catalog_[K, V]) AsMap() map[K]V {
-	var map_ = map[K]V{}
-	var iterator = v.associations_.GetIterator()
-	for iterator.HasNext() {
-		var association = iterator.GetNext()
-		var key = association.GetKey()
-		var value = association.GetValue()
-		map_[key] = value
-	}
-	return map_
+	var result_ map[K]V
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) GetValue(
 	key K,
 ) V {
-	var value V // Set the return value to its zero value.
-	var association, exists = v.keys_[key]
-	if exists {
-		// Extract the value.
-		value = association.GetValue()
-	}
-	return value
+	var result_ V
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) SetValue(
 	key K,
 	value V,
 ) {
-	var association, exists = v.keys_[key]
-	if exists {
-		// Set the value of an existing association.
-		association.SetValue(value)
-	} else {
-		// Add a new association.
-		var associationClass = AssociationClass[K, V]()
-		association = associationClass.Make(key, value)
-		v.associations_.AppendValue(association)
-		v.keys_[key] = association
-	}
+	// TBD - Add the method implementation.
 }
 
 func (v *catalog_[K, V]) GetKeys() Sequential[K] {
-	var listClass = ListClass[K]()
-	var keys = listClass.Make()
-	var iterator = v.associations_.GetIterator()
-	for iterator.HasNext() {
-		var association = iterator.GetNext()
-		keys.AppendValue(association.GetKey())
-	}
-	return keys
+	var result_ Sequential[K]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) GetValues(
 	keys Sequential[K],
 ) Sequential[V] {
-	var listClass = ListClass[V]()
-	var values = listClass.Make()
-	var iterator = keys.GetIterator()
-	for iterator.HasNext() {
-		var key = iterator.GetNext()
-		values.AppendValue(v.GetValue(key))
-	}
-	return values
+	var result_ Sequential[V]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) RemoveValue(
 	key K,
 ) V {
-	var old V // Set the return value to its zero value.
-	var association, exists = v.keys_[key]
-	if exists {
-		var index = v.associations_.GetIndex(association)
-		v.associations_.RemoveValue(index)
-		old = association.GetValue()
-		delete(v.keys_, key)
-	}
-	return old
+	var result_ V
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) RemoveValues(
 	keys Sequential[K],
 ) Sequential[V] {
-	var listClass = ListClass[V]()
-	var values = listClass.Make()
-	var iterator = keys.GetIterator()
-	for iterator.HasNext() {
-		var key = iterator.GetNext()
-		values.AppendValue(v.RemoveValue(key))
-	}
-	return values
+	var result_ Sequential[V]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) RemoveAll() {
-	v.keys_ = map[K]AssociationLike[K, V]{}
-	v.associations_.RemoveAll()
+	// TBD - Add the method implementation.
 }
 
 // Sequential[AssociationLike[K, V]] Methods
 
 func (v *catalog_[K, V]) IsEmpty() bool {
-	return v.associations_.IsEmpty()
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) GetSize() age.Size {
-	var size = v.associations_.GetSize()
-	return size
+	var result_ age.Size
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) AsArray() []AssociationLike[K, V] {
-	var array = v.associations_.AsArray()
-	return array
+	var result_ []AssociationLike[K, V]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *catalog_[K, V]) GetIterator() age.IteratorLike[AssociationLike[K, V]] {
-	var iterator = v.associations_.GetIterator()
-	return iterator
+	var result_ age.IteratorLike[AssociationLike[K, V]]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // Sortable[AssociationLike[K, V]] Methods
 
 func (v *catalog_[K, V]) SortValues() {
-	v.associations_.SortValues()
+	// TBD - Add the method implementation.
 }
 
 func (v *catalog_[K, V]) SortValuesWithRanker(
 	ranker age.RankingFunction[AssociationLike[K, V]],
 ) {
-	v.associations_.SortValuesWithRanker(ranker)
+	// TBD - Add the method implementation.
 }
 
 func (v *catalog_[K, V]) ReverseValues() {
-	v.associations_.ReverseValues()
+	// TBD - Add the method implementation.
 }
 
 func (v *catalog_[K, V]) ShuffleValues() {
-	v.associations_.ShuffleValues()
-}
-
-// Stringer Methods
-
-func (v *catalog_[K, V]) String() string {
-	return uti.Format(v)
+	// TBD - Add the method implementation.
 }
 
 // PROTECTED INTERFACE
@@ -274,8 +202,6 @@ func (v *catalog_[K, V]) String() string {
 
 type catalog_[K comparable, V any] struct {
 	// Declare the instance attributes.
-	associations_ ListLike[AssociationLike[K, V]]
-	keys_         map[K]AssociationLike[K, V]
 }
 
 // Class Structure

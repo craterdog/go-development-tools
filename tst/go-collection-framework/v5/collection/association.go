@@ -28,7 +28,7 @@ func AssociationClass[K comparable, V any]() AssociationClassLike[K, V] {
 
 // Constructor Methods
 
-func (c *associationClass_[K, V]) Make(
+func (c *associationClass_[K, V]) Association(
 	key K,
 	value V,
 ) AssociationLike[K, V] {
@@ -75,15 +75,6 @@ func (v *association_[K, V]) SetValue(
 		panic("The \"value\" attribute is required by this class.")
 	}
 	v.value_ = value
-}
-
-// Stringer Methods
-
-func (v *association_[K, V]) String() string {
-	var result = uti.Format(v.GetKey())
-	result += ": "
-	result += uti.Format(v.GetValue())
-	return result
 }
 
 // PROTECTED INTERFACE

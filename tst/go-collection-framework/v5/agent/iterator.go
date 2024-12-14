@@ -28,7 +28,7 @@ func IteratorClass[V any]() IteratorClassLike[V] {
 
 // Constructor Methods
 
-func (c *iteratorClass_[V]) Make(
+func (c *iteratorClass_[V]) Iterator(
 	array []V,
 ) IteratorLike[V] {
 	if uti.IsUndefined(array) {
@@ -36,8 +36,6 @@ func (c *iteratorClass_[V]) Make(
 	}
 	var instance = &iterator_[V]{
 		// Initialize the instance attributes.
-		size_:   Size(len(array)),
-		values_: array,
 	}
 	return instance
 }
@@ -55,53 +53,46 @@ func (v *iterator_[V]) GetClass() IteratorClassLike[V] {
 }
 
 func (v *iterator_[V]) IsEmpty() bool {
-	return v.size_ == 0
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *iterator_[V]) ToStart() {
-	v.slot_ = 0
+	// TBD - Add the method implementation.
 }
 
 func (v *iterator_[V]) ToSlot(
 	slot Slot,
 ) {
-	var size = Slot(v.size_)
-	if slot > size {
-		slot = size
-	}
-	v.slot_ = slot
+	// TBD - Add the method implementation.
 }
 
 func (v *iterator_[V]) ToEnd() {
-	var size = Slot(v.size_)
-	v.slot_ = size
+	// TBD - Add the method implementation.
 }
 
 func (v *iterator_[V]) HasPrevious() bool {
-	return v.slot_ > 0
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *iterator_[V]) GetPrevious() V {
 	var result_ V
-	if v.slot_ > 0 {
-		result_ = v.values_[v.slot_-1] // convert to ZERO based indexing
-		v.slot_ = v.slot_ - 1
-	}
+	// TBD - Add the method implementation.
 	return result_
 }
 
 func (v *iterator_[V]) HasNext() bool {
-	var size = Slot(v.size_)
-	return v.slot_ < size
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *iterator_[V]) GetNext() V {
 	var result_ V
-	var size = Slot(v.size_)
-	if v.slot_ < size {
-		v.slot_ = v.slot_ + 1
-		result_ = v.values_[v.slot_-1] // convert to ZERO based indexing
-	}
+	// TBD - Add the method implementation.
 	return result_
 }
 
@@ -123,9 +114,8 @@ func (v *iterator_[V]) GetSlot() Slot {
 
 type iterator_[V any] struct {
 	// Declare the instance attributes.
-	slot_   Slot
-	size_   Size
-	values_ []V
+	size_ Size
+	slot_ Slot
 }
 
 // Class Structure
