@@ -29,11 +29,8 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
-	fmt "fmt"
 	age "github.com/craterdog/go-collection-framework/v5/agent"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
-	uti "github.com/craterdog/go-missing-utilities/v2"
-	ref "reflect"
 )
 
 // TYPE ALIASES
@@ -64,7 +61,7 @@ type (
 
 // CLASS CONSTRUCTORS
 
-// agent/Collator
+// Agent/Collator
 
 func Collator[V any]() age.CollatorLike[V] {
 	return age.CollatorClass[V]().Collator()
@@ -78,7 +75,7 @@ func CollatorWithMaximumDepth[V any](
 	)
 }
 
-// agent/Iterator
+// Agent/Iterator
 
 func Iterator[V any](
 	array []V,
@@ -88,21 +85,21 @@ func Iterator[V any](
 	)
 }
 
-// agent/Sorter
+// Agent/Sorter
 
 func Sorter[V any]() age.SorterLike[V] {
 	return age.SorterClass[V]().Sorter()
 }
 
 func SorterWithRanker[V any](
-	ranker age.RankingFunction[V],
+	ranker RankingFunction[V],
 ) age.SorterLike[V] {
 	return age.SorterClass[V]().SorterWithRanker(
 		ranker,
 	)
 }
 
-// collection/Array
+// Collection/Array
 
 func Array[V any](
 	size age.Size,
@@ -121,14 +118,14 @@ func ArrayFromArray[V any](
 }
 
 func ArrayFromSequence[V any](
-	values col.Sequential[V],
+	values Sequential[V],
 ) col.ArrayLike[V] {
 	return col.ArrayClass[V]().ArrayFromSequence(
 		values,
 	)
 }
 
-// collection/Association
+// Collection/Association
 
 func Association[K comparable, V any](
 	key K,
@@ -140,14 +137,14 @@ func Association[K comparable, V any](
 	)
 }
 
-// collection/Catalog
+// Collection/Catalog
 
 func Catalog[K comparable, V any]() col.CatalogLike[K, V] {
 	return col.CatalogClass[K, V]().Catalog()
 }
 
 func CatalogFromArray[K comparable, V any](
-	associations []col.AssociationLike[K, V],
+	associations []AssociationLike[K, V],
 ) col.CatalogLike[K, V] {
 	return col.CatalogClass[K, V]().CatalogFromArray(
 		associations,
@@ -163,14 +160,14 @@ func CatalogFromMap[K comparable, V any](
 }
 
 func CatalogFromSequence[K comparable, V any](
-	associations col.Sequential[col.AssociationLike[K, V]],
+	associations Sequential[AssociationLike[K, V]],
 ) col.CatalogLike[K, V] {
 	return col.CatalogClass[K, V]().CatalogFromSequence(
 		associations,
 	)
 }
 
-// collection/List
+// Collection/List
 
 func List[V any]() col.ListLike[V] {
 	return col.ListClass[V]().List()
@@ -185,21 +182,21 @@ func ListFromArray[V any](
 }
 
 func ListFromSequence[V any](
-	values col.Sequential[V],
+	values Sequential[V],
 ) col.ListLike[V] {
 	return col.ListClass[V]().ListFromSequence(
 		values,
 	)
 }
 
-// collection/Map
+// Collection/Map
 
 func Map[K comparable, V any]() col.MapLike[K, V] {
 	return col.MapClass[K, V]().Map()
 }
 
 func MapFromArray[K comparable, V any](
-	associations []col.AssociationLike[K, V],
+	associations []AssociationLike[K, V],
 ) col.MapLike[K, V] {
 	return col.MapClass[K, V]().MapFromArray(
 		associations,
@@ -215,14 +212,14 @@ func MapFromMap[K comparable, V any](
 }
 
 func MapFromSequence[K comparable, V any](
-	associations col.Sequential[col.AssociationLike[K, V]],
+	associations Sequential[AssociationLike[K, V]],
 ) col.MapLike[K, V] {
 	return col.MapClass[K, V]().MapFromSequence(
 		associations,
 	)
 }
 
-// collection/Queue
+// Collection/Queue
 
 func Queue[V any]() col.QueueLike[V] {
 	return col.QueueClass[V]().Queue()
@@ -245,14 +242,14 @@ func QueueFromArray[V any](
 }
 
 func QueueFromSequence[V any](
-	values col.Sequential[V],
+	values Sequential[V],
 ) col.QueueLike[V] {
 	return col.QueueClass[V]().QueueFromSequence(
 		values,
 	)
 }
 
-// collection/Set
+// Collection/Set
 
 func Set[V any]() col.SetLike[V] {
 	return col.SetClass[V]().Set()
@@ -275,14 +272,14 @@ func SetFromArray[V any](
 }
 
 func SetFromSequence[V any](
-	values col.Sequential[V],
+	values Sequential[V],
 ) col.SetLike[V] {
 	return col.SetClass[V]().SetFromSequence(
 		values,
 	)
 }
 
-// collection/Stack
+// Collection/Stack
 
 func Stack[V any]() col.StackLike[V] {
 	return col.StackClass[V]().Stack()
@@ -305,7 +302,7 @@ func StackFromArray[V any](
 }
 
 func StackFromSequence[V any](
-	values col.Sequential[V],
+	values Sequential[V],
 ) col.StackLike[V] {
 	return col.StackClass[V]().StackFromSequence(
 		values,
