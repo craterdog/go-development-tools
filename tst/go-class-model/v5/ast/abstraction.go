@@ -10,6 +10,13 @@
 ................................................................................
 */
 
+/*
+┌────────────────────────────────── WARNING ───────────────────────────────────┐
+│                 This class file was automatically generated.                 │
+│                     Any updates to it may be overwritten.                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+*/
+
 package ast
 
 import (
@@ -27,9 +34,9 @@ func AbstractionClass() AbstractionClassLike {
 // Constructor Methods
 
 func (c *abstractionClass_) Abstraction(
-	optionalPrefix PrefixLike,
+	optionalWrapper WrapperLike,
+	optionalPrefix string,
 	name string,
-	optionalSuffix SuffixLike,
 	optionalArguments ArgumentsLike,
 ) AbstractionLike {
 	if uti.IsUndefined(name) {
@@ -37,17 +44,13 @@ func (c *abstractionClass_) Abstraction(
 	}
 	var instance = &abstraction_{
 		// Initialize the instance attributes.
+		optionalWrapper_:   optionalWrapper,
 		optionalPrefix_:    optionalPrefix,
 		name_:              name,
-		optionalSuffix_:    optionalSuffix,
 		optionalArguments_: optionalArguments,
 	}
 	return instance
 }
-
-// Constant Methods
-
-// Function Methods
 
 // INSTANCE INTERFACE
 
@@ -59,16 +62,16 @@ func (v *abstraction_) GetClass() AbstractionClassLike {
 
 // Attribute Methods
 
-func (v *abstraction_) GetOptionalPrefix() PrefixLike {
+func (v *abstraction_) GetOptionalWrapper() WrapperLike {
+	return v.optionalWrapper_
+}
+
+func (v *abstraction_) GetOptionalPrefix() string {
 	return v.optionalPrefix_
 }
 
 func (v *abstraction_) GetName() string {
 	return v.name_
-}
-
-func (v *abstraction_) GetOptionalSuffix() SuffixLike {
-	return v.optionalSuffix_
 }
 
 func (v *abstraction_) GetOptionalArguments() ArgumentsLike {
@@ -77,15 +80,13 @@ func (v *abstraction_) GetOptionalArguments() ArgumentsLike {
 
 // PROTECTED INTERFACE
 
-// Private Methods
-
 // Instance Structure
 
 type abstraction_ struct {
 	// Declare the instance attributes.
-	optionalPrefix_    PrefixLike
+	optionalWrapper_   WrapperLike
+	optionalPrefix_    string
 	name_              string
-	optionalSuffix_    SuffixLike
 	optionalArguments_ ArgumentsLike
 }
 

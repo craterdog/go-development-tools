@@ -76,12 +76,12 @@ func generateClasses(
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var classSynthesizer = gen.ClassSynthesizer(astModel, className)
+		var nodeSynthesizer = gen.NodeSynthesizer(astModel, className)
 		var source = generator.GenerateClass(
 			moduleName,
 			packageName,
 			className,
-			classSynthesizer,
+			nodeSynthesizer,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
 		uti.WriteFile(filename, source)

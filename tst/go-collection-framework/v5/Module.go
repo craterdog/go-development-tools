@@ -29,8 +29,11 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
+	fmt "fmt"
 	age "github.com/craterdog/go-collection-framework/v5/agent"
 	col "github.com/craterdog/go-collection-framework/v5/collection"
+	uti "github.com/craterdog/go-missing-utilities/v2"
+	ref "reflect"
 )
 
 // TYPE ALIASES
@@ -92,7 +95,7 @@ func Sorter[V any]() age.SorterLike[V] {
 }
 
 func SorterWithRanker[V any](
-	ranker RankingFunction[V],
+	ranker age.RankingFunction[V],
 ) age.SorterLike[V] {
 	return age.SorterClass[V]().SorterWithRanker(
 		ranker,
@@ -118,7 +121,7 @@ func ArrayFromArray[V any](
 }
 
 func ArrayFromSequence[V any](
-	values Sequential[V],
+	values col.Sequential[V],
 ) col.ArrayLike[V] {
 	return col.ArrayClass[V]().ArrayFromSequence(
 		values,
@@ -144,7 +147,7 @@ func Catalog[K comparable, V any]() col.CatalogLike[K, V] {
 }
 
 func CatalogFromArray[K comparable, V any](
-	associations []AssociationLike[K, V],
+	associations []col.AssociationLike[K, V],
 ) col.CatalogLike[K, V] {
 	return col.CatalogClass[K, V]().CatalogFromArray(
 		associations,
@@ -160,7 +163,7 @@ func CatalogFromMap[K comparable, V any](
 }
 
 func CatalogFromSequence[K comparable, V any](
-	associations Sequential[AssociationLike[K, V]],
+	associations col.Sequential[col.AssociationLike[K, V]],
 ) col.CatalogLike[K, V] {
 	return col.CatalogClass[K, V]().CatalogFromSequence(
 		associations,
@@ -182,7 +185,7 @@ func ListFromArray[V any](
 }
 
 func ListFromSequence[V any](
-	values Sequential[V],
+	values col.Sequential[V],
 ) col.ListLike[V] {
 	return col.ListClass[V]().ListFromSequence(
 		values,
@@ -196,7 +199,7 @@ func Map[K comparable, V any]() col.MapLike[K, V] {
 }
 
 func MapFromArray[K comparable, V any](
-	associations []AssociationLike[K, V],
+	associations []col.AssociationLike[K, V],
 ) col.MapLike[K, V] {
 	return col.MapClass[K, V]().MapFromArray(
 		associations,
@@ -212,7 +215,7 @@ func MapFromMap[K comparable, V any](
 }
 
 func MapFromSequence[K comparable, V any](
-	associations Sequential[AssociationLike[K, V]],
+	associations col.Sequential[col.AssociationLike[K, V]],
 ) col.MapLike[K, V] {
 	return col.MapClass[K, V]().MapFromSequence(
 		associations,
@@ -242,7 +245,7 @@ func QueueFromArray[V any](
 }
 
 func QueueFromSequence[V any](
-	values Sequential[V],
+	values col.Sequential[V],
 ) col.QueueLike[V] {
 	return col.QueueClass[V]().QueueFromSequence(
 		values,
@@ -272,7 +275,7 @@ func SetFromArray[V any](
 }
 
 func SetFromSequence[V any](
-	values Sequential[V],
+	values col.Sequential[V],
 ) col.SetLike[V] {
 	return col.SetClass[V]().SetFromSequence(
 		values,
@@ -302,7 +305,7 @@ func StackFromArray[V any](
 }
 
 func StackFromSequence[V any](
-	values Sequential[V],
+	values col.Sequential[V],
 ) col.StackLike[V] {
 	return col.StackClass[V]().StackFromSequence(
 		values,
