@@ -9,12 +9,11 @@ module=go-class-model/v5/
 echo "  ${module}"
 rm -rf ../${module}
 cp -r ./tst/${module} ../${module}
-echo
 
-#module=go-collection-framework/v5/
-#echo "  ${module}"
+module=go-collection-framework/v5/
+echo "  ${module}"
 #rm -rf ../${module}
-#cp -r ./tst/${module} ../${module}
-#echo
+cp ./tst/${module}/Module.go ../${module}/
+echo
 
 echo "Done."
