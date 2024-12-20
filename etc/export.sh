@@ -12,7 +12,6 @@ cp -r ./tst/${module} ../${module}
 
 module=go-collection-framework/v5/
 echo "  ${module}"
-#rm -rf ../${module}
 cp ./tst/${module}/Module.go ../${module}/
 echo
 

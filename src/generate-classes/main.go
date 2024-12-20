@@ -25,9 +25,9 @@ func main() {
 	var tool = getTool()
 	var version = getVersion()
 	fmt.Printf("Tool: %v %v\n", tool, version)
-	var moduleName, directory, packageName, force = retrieveArguments()
+	var moduleName, directory, packageName = retrieveArguments()
 	var model = validateModelFile(directory + packageName)
-	generatePackage(moduleName, directory, packageName, model, force)
+	generatePackage(moduleName, directory, packageName, model)
 	fmt.Println("Done.")
 }
 
@@ -36,14 +36,11 @@ func generatePackage(
 	directory string,
 	packageName string,
 	model mod.ModelLike,
-	force bool,
 ) {
-	if force {
-		uti.RemakeDirectory(directory + packageName)
-		var filename = directory + packageName + "/Package.go"
-		var source = mod.FormatModel(model)
-		uti.WriteFile(filename, source)
-	}
+	uti.RemakeDirectory(directory + packageName)
+	var filename = directory + packageName + "/Package.go"
+	var source = mod.FormatModel(model)
+	uti.WriteFile(filename, source)
 	var generator = gen.ClassGenerator()
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
@@ -58,6 +55,7 @@ func generatePackage(
 			moduleName,
 			packageName,
 			className,
+			"", // The class does not yet exist.
 			classSynthesizer,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
@@ -96,11 +94,10 @@ func retrieveArguments() (
 	moduleName string,
 	directory string,
 	packageName string,
-	force bool,
 ) {
 	if len(osx.Args) < 4 {
 		var tool = getTool()
-		fmt.Printf("  Usage: %v <moduleName> <directory> <packageName> [force]\n", tool)
+		fmt.Printf("  Usage: %v <moduleName> <directory> <packageName>\n", tool)
 		osx.Exit(1)
 	}
 	moduleName = osx.Args[1]
@@ -109,7 +106,6 @@ func retrieveArguments() (
 		directory += "/"
 	}
 	packageName = osx.Args[3]
-	force = len(osx.Args) == 5
 	return
 }
 

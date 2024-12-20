@@ -19,7 +19,6 @@ import (
 	col "github.com/craterdog/go-collection-framework/v5"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	osx "os"
-	reg "regexp"
 	sts "strings"
 )
 
@@ -46,20 +45,18 @@ func generateModule(
 		models.SetValue(packageName, model)
 	}
 	var generator = gen.ModuleGenerator()
+	var existing string
+	var filename = directory + "Module.go"
+	if uti.PathExists(filename) {
+		existing = uti.ReadFile(filename)
+	}
 	var moduleSynthesizer = gen.ModuleSynthesizer(models)
 	var generated = generator.GenerateModule(
 		moduleName,
 		wikiPath,
+		existing,
 		moduleSynthesizer,
 	)
-	var filename = directory + "Module.go"
-	if uti.PathExists(filename) {
-		var original = uti.ReadFile(filename)
-		var pattern = `// GLOBAL FUNCTIONS(.|\r?\n)*`
-		generated = replacePattern(pattern, original, generated)
-		pattern = `└──────────────────────────────────────────────────────────────────────────────┘(.|\r?\n)+package module`
-		generated = replacePattern(pattern, original, generated)
-	}
 	uti.WriteFile(filename, generated)
 }
 
@@ -75,22 +72,6 @@ func getVersion() string {
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
-}
-
-func replacePattern(
-	pattern string,
-	original string,
-	generated string,
-) string {
-	var matcher = reg.MustCompile(pattern)
-	var originalPattern = matcher.FindString(original)
-	var generatedPattern = matcher.FindString(generated)
-	generated = sts.ReplaceAll(
-		generated,
-		generatedPattern,
-		originalPattern,
-	)
-	return generated
 }
 
 func retrieveArguments() (
