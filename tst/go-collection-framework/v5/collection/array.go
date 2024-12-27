@@ -30,6 +30,18 @@ func ArrayClass[V any]() ArrayClassLike[V] {
 // Constructor Methods
 
 func (c *arrayClass_[V]) Array(
+	values []V,
+) ArrayLike[V] {
+	if uti.IsUndefined(values) {
+		panic("The \"values\" attribute is required by this class.")
+	}
+	var instance = &array_[V]{
+		// Initialize the instance attributes.
+	}
+	return instance
+}
+
+func (c *arrayClass_[V]) ArrayWithSize(
 	size age.Size,
 ) ArrayLike[V] {
 	if uti.IsUndefined(size) {
@@ -38,14 +50,6 @@ func (c *arrayClass_[V]) Array(
 	var instance = &array_[V]{
 		// Initialize the instance attributes.
 	}
-	return instance
-}
-
-func (c *arrayClass_[V]) ArrayFromArray(
-	values []V,
-) ArrayLike[V] {
-	var instance ArrayLike[V]
-	// TBD - Add the constructor implementation.
 	return instance
 }
 

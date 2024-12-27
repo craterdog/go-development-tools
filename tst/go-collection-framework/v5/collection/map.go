@@ -15,6 +15,7 @@ package collection
 import (
 	fmt "fmt"
 	age "github.com/craterdog/go-collection-framework/v5/agent"
+	uti "github.com/craterdog/go-missing-utilities/v2"
 	syn "sync"
 )
 
@@ -28,7 +29,12 @@ func MapClass[K comparable, V any]() MapClassLike[K, V] {
 
 // Constructor Methods
 
-func (c *mapClass_[K, V]) Map() MapLike[K, V] {
+func (c *mapClass_[K, V]) Map(
+	associations map[K]V,
+) MapLike[K, V] {
+	if uti.IsUndefined(associations) {
+		panic("The \"associations\" attribute is required by this class.")
+	}
 	var instance = &map_[K, V]{
 		// Initialize the instance attributes.
 	}
@@ -37,14 +43,6 @@ func (c *mapClass_[K, V]) Map() MapLike[K, V] {
 
 func (c *mapClass_[K, V]) MapFromArray(
 	associations []AssociationLike[K, V],
-) MapLike[K, V] {
-	var instance MapLike[K, V]
-	// TBD - Add the constructor implementation.
-	return instance
-}
-
-func (c *mapClass_[K, V]) MapFromMap(
-	associations map[K]V,
 ) MapLike[K, V] {
 	var instance MapLike[K, V]
 	// TBD - Add the constructor implementation.
