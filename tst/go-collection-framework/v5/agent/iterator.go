@@ -62,12 +62,6 @@ func (v *iterator_[V]) ToStart() {
 	// TBD - Add the method implementation.
 }
 
-func (v *iterator_[V]) ToSlot(
-	slot Slot,
-) {
-	// TBD - Add the method implementation.
-}
-
 func (v *iterator_[V]) ToEnd() {
 	// TBD - Add the method implementation.
 }
@@ -104,6 +98,15 @@ func (v *iterator_[V]) GetSize() Size {
 
 func (v *iterator_[V]) GetSlot() Slot {
 	return v.slot_
+}
+
+func (v *iterator_[V]) SetSlot(
+	slot Slot,
+) {
+	if uti.IsUndefined(slot) {
+		panic("The \"slot\" attribute is required by this class.")
+	}
+	v.slot_ = slot
 }
 
 // PROTECTED INTERFACE
