@@ -29,4 +29,4 @@ LICENSE		bin		go.mod		src
 README.md	etc		go.sum		tst
 ```
 
-<H5 align="center"> Copyright © 2009 - 2024  Crater Dog Technologies™. All rights reserved. </H5>
+<H5 align="center"> Copyright © 2009-2025. Crater Dog Technologies™. All rights reserved. </H5>
