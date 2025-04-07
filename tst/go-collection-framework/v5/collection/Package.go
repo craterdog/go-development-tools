@@ -13,8 +13,6 @@
 /*
 Package "collection" declares a set of collection classes that maintain values
 of a generic type:
-  - Array (an extended Go array)
-  - Map (an extended Go map)
   - List (a sortable list)
   - Catalog (a sortable map of key-value associations)
   - Set (an ordered set)
@@ -64,32 +62,6 @@ type Index int
 // CLASS DECLARATIONS
 
 /*
-ArrayClassLike[V any] is a class interface that declares the complete set of
-class constructors, constants and functions that must be supported by each
-concrete array-like class.
-
-An array-like class maintains a fixed length indexed sequence of values.  Each
-value is associated with an implicit positive integer index.  An array-like
-class uses ORDINAL based indexing rather than the more common—and
-nonsensical—ZERO based indexing scheme (see the description of what this means
-in the Accessible[V] aspect definition).
-
-This type provides a higher level abstraction for the intrinsic Go array type.
-*/
-type ArrayClassLike[V any] interface {
-	// Constructor Methods
-	Array(
-		values []V,
-	) ArrayLike[V]
-	ArrayWithSize(
-		size age.Size,
-	) ArrayLike[V]
-	ArrayFromSequence(
-		values Sequential[V],
-	) ArrayLike[V]
-}
-
-/*
 AssociationClassLike[K comparable, V any] is a class interface that declares
 the complete set of class constructors, constants and functions that must be
 supported by each concrete association-like class.
@@ -110,10 +82,13 @@ CatalogClassLike[K comparable, V any] is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete catalog-like class.
 
-A catalog-like class maintains an ordered set of generic typed key-value
-associations.
+A catalog-like class maintains a sortable set of generic typed key-value
+associations.  Unlike the intrinsic Go map data type, the order of the
+associations in a catalog is the order in which they were added to the catalog.
+A catalog can also be sorted using either the default "natural" ordering of the
+keys or using a custom association ranking function.
 
-The following class functions are supported:
+The following class functions are also supported:
 
 Extract() returns a new catalog containing only the associations that are in
 the specified catalog that have the specified keys.  The associations in the
@@ -179,29 +154,6 @@ type ListClassLike[V any] interface {
 		first ListLike[V],
 		second ListLike[V],
 	) ListLike[V]
-}
-
-/*
-MapClassLike[K comparable, V any] is a class interface that declares the
-complete set of class constructors, constants and functions that must be
-supported by each concrete map-like class.
-
-A map-like class extends the intrinsic Go map data type and maintains a
-sequence of generic typed key-value associations.  The ordering of the
-key-value associations in an intrinsic Go map is random, even for two Go maps
-containing the same key-value associations.
-*/
-type MapClassLike[K comparable, V any] interface {
-	// Constructor Methods
-	Map(
-		associations map[K]V,
-	) MapLike[K, V]
-	MapFromArray(
-		associations []AssociationLike[K, V],
-	) MapLike[K, V]
-	MapFromSequence(
-		associations Sequential[AssociationLike[K, V]],
-	) MapLike[K, V]
 }
 
 /*
@@ -350,22 +302,6 @@ type StackClassLike[V any] interface {
 // INSTANCE DECLARATIONS
 
 /*
-ArrayLike[V any] is an instance interface that declares the complete set of
-principal, attribute and aspect methods that must be supported by each
-instance of a concrete array-like class.
-*/
-type ArrayLike[V any] interface {
-	// Principal Methods
-	GetClass() ArrayClassLike[V]
-
-	// Aspect Interfaces
-	Accessible[V]
-	Sequential[V]
-	Sortable[V]
-	Updatable[V]
-}
-
-/*
 AssociationLike[K comparable, V any] is an instance interface that declares
 the complete set of principal, attribute and aspect methods that must be
 supported by each instance of a concrete association-like class.
@@ -413,20 +349,6 @@ type ListLike[V any] interface {
 	Sequential[V]
 	Sortable[V]
 	Updatable[V]
-}
-
-/*
-MapLike[K comparable, V any] is an instance interface that declares
-the complete set of principal, attribute and aspect methods that must be
-supported by each instance of a concrete map-like class.
-*/
-type MapLike[K comparable, V any] interface {
-	// Principal Methods
-	GetClass() MapClassLike[K, V]
-
-	// Aspect Interfaces
-	Associative[K, V]
-	Sequential[AssociationLike[K, V]]
 }
 
 /*
