@@ -54,6 +54,24 @@ go mod tidy >/dev/null 2>&1
 golangci-lint run
 cd - >/dev/null
 
+directory=./tst/go-component-framework
+moduleName=github.com/craterdog/${directory:6}/v3
+wikiPath=https://github.com/craterdog/${directory:6}/wiki
+bin/format-syntax ${directory}/v3/Syntax.cdsn
+echo
+bin/generate-packages ${moduleName} ${wikiPath} ${directory}/v3/
+echo
+cd ${directory}/v3
+gofmt -w . >/dev/null
+cat <<EOF > go.mod
+module ${moduleName}
+
+go 1.23
+EOF
+go mod tidy >/dev/null 2>&1
+golangci-lint run
+cd - >/dev/null
+
 directory=./tst/go-collection-framework
 moduleName=github.com/craterdog/${directory:6}/v5
 wikiPath=https://github.com/craterdog/${directory:6}/wiki

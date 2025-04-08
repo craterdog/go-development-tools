@@ -50,7 +50,10 @@ func generateModule(
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	var moduleSynthesizer = gen.ModuleSynthesizer(models)
+	var moduleSynthesizer = gen.ModuleSynthesizer(
+		moduleName,
+		models,
+	)
 	var generated = generator.GenerateModule(
 		moduleName,
 		wikiPath,
