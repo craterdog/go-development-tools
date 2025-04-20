@@ -11,10 +11,9 @@
 <!
 
 !>
-CRATER DOG SYNTAX NOTATION
-This document contains a formal definition of the Crater Dog Syntax Notation™
-(CDSN) using CDSN itself in homage to Douglas Hofstadter of Gödel, Escher, Bach
-fame.
+EXAMPLE NOTATION
+This document contains a formal definition of an example syntax notation using
+Crater Dog Syntax Notation™ (CDSN).
 
 For more information on CDSN see the wiki at:
   - https://github.com/craterdog/go-syntax-notation/wiki
@@ -23,107 +22,29 @@ For more information on CDSN see the wiki at:
 │                               RULE DEFINITIONS                               │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$Syntax: Notice comment Rule+ comment Expression+
+$Document: Component+  ! This is the top-level rule.
 
-$Notice: comment
+$Component:
+    Intrinsic
+    List
 
-$Rule: "$" uppercase ":" Definition
+$Intrinsic:
+    integer
+    rune  ! Add a comment midway through.
+    text
 
-$Definition:
-  - Multiline
-  - Inline
+$List: "[" Component Additional* "]"
 
-$Multiline: Line+
-
-$Line: "-" Identifier note?
-
-$Identifier:
-  - lowercase
-  - uppercase
-
-$Inline: Term+ note?
-
-$Term:
-  - Reference
-  - literal
-
-$Reference: Identifier Cardinality?  ! The default cardinality is one.
-
-$Cardinality:
-  - Constrained
-  - Quantified
-
-$Constrained:
-  - optional
-  - repeated
-
-$Quantified: "{" number Limit? "}"
-
-$Limit: ".." number?  ! The limit of a range of numbers is inclusive.
-
-$Expression: "$" lowercase ":" Pattern note?
-
-$Pattern: Option Alternative*
-
-$Alternative: "|" Option
-
-$Option: Repetition+
-
-$Repetition: Element Cardinality?  ! The default cardinality is one.
-
-$Element:
-  - Group
-  - Filter
-  - Text
-
-$Group: "(" Pattern ")"
-
-$Filter: excluded? "[" Character+ "]"
-
-$Character:
-  - Explicit
-  - intrinsic
-
-$Explicit: glyph Extent?
-
-$Extent: ".." glyph  ! The extent of a range of glyphs is inclusive.
-
-$Text:
-  - intrinsic
-  - glyph
-  - literal
-  - lowercase
+$Additional: "," Component
 
 !>
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                            EXPRESSION DEFINITIONS                            │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$base16: ['0'..'9' 'a'..'f']
+$integer: '0' | '-'? ['1'..'9'] DIGIT*
 
-$comment: "!>" EOL (ANY | EOL)* EOL "<!" EOL  ! Chooses the shortest possible match.
+$rune: "'" ~[CONTROL] "'"  ! Any single printable unicode character.
 
-$escape: '\' (unicode | ['a' 'b' 'f' 'n' 'r' 't' 'v' '"' '\'])
-
-$excluded: "~"
-
-$glyph: "'" ~[CONTROL] "'"  ! Any printable unicode character.
-
-$intrinsic: "ANY" | "CONTROL" | "DIGIT" | "EOL" | "LOWER" | "UPPER"
-
-$literal: '"' (escape | ~['"' CONTROL])+ '"'
-
-$lowercase: LOWER (DIGIT | LOWER | UPPER)*
-
-$note: "! " ~[CONTROL]*
-
-$number: DIGIT+
-
-$optional: "?"
-
-$repeated: "*" | "+"
-
-$unicode: ('x' base16{2}) | ('u' base16{4}) | ('U' base16{8})
-
-$uppercase: UPPER (DIGIT | LOWER | UPPER)*
+$text: '"' ~['"' CONTROL]+ '"'
 

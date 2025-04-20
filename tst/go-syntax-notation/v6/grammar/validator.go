@@ -21,7 +21,7 @@ package grammar
 
 import (
 	fmt "fmt"
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
 )
 
 // CLASS INTERFACE
@@ -85,12 +85,6 @@ func (v *validator_) ProcessIntrinsic(
 	v.validateToken(intrinsic, IntrinsicToken)
 }
 
-func (v *validator_) ProcessLiteral(
-	literal string,
-) {
-	v.validateToken(literal, LiteralToken)
-}
-
 func (v *validator_) ProcessLowercase(
 	lowercase string,
 ) {
@@ -119,6 +113,12 @@ func (v *validator_) ProcessOptional(
 	optional string,
 ) {
 	v.validateToken(optional, OptionalToken)
+}
+
+func (v *validator_) ProcessQuote(
+	quote string,
+) {
+	v.validateToken(quote, QuoteToken)
 }
 
 func (v *validator_) ProcessRepeated(
@@ -295,6 +295,28 @@ func (v *validator_) PostprocessExpression(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessExpressionOption(
+	expressionOption ast.ExpressionOptionLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessExpressionOptionSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessExpressionOption(
+	expressionOption ast.ExpressionOptionLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessExtent(
 	extent ast.ExtentLike,
 ) {
@@ -367,6 +389,24 @@ func (v *validator_) PostprocessIdentifier(
 	// TBD - Add any validation checks.
 }
 
+func (v *validator_) PreprocessImplicit(
+	implicit ast.ImplicitLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessImplicitSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessImplicit(
+	implicit ast.ImplicitLike,
+) {
+	// TBD - Add any validation checks.
+}
+
 func (v *validator_) PreprocessInline(
 	inline ast.InlineLike,
 ) {
@@ -403,42 +443,56 @@ func (v *validator_) PostprocessLimit(
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessLine(
-	line ast.LineLike,
-	index uint,
-	size uint,
+func (v *validator_) PreprocessLiteral(
+	literal ast.LiteralLike,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) ProcessLineSlot(
+func (v *validator_) ProcessLiteralSlot(
 	slot uint,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PostprocessLine(
-	line ast.LineLike,
-	index uint,
-	size uint,
+func (v *validator_) PostprocessLiteral(
+	literal ast.LiteralLike,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PreprocessMultiline(
-	multiline ast.MultilineLike,
+func (v *validator_) PreprocessMultiexpression(
+	multiexpression ast.MultiexpressionLike,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) ProcessMultilineSlot(
+func (v *validator_) ProcessMultiexpressionSlot(
 	slot uint,
 ) {
 	// TBD - Add any validation checks.
 }
 
-func (v *validator_) PostprocessMultiline(
-	multiline ast.MultilineLike,
+func (v *validator_) PostprocessMultiexpression(
+	multiexpression ast.MultiexpressionLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PreprocessMultirule(
+	multirule ast.MultiruleLike,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessMultiruleSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessMultirule(
+	multirule ast.MultiruleLike,
 ) {
 	// TBD - Add any validation checks.
 }
@@ -571,6 +625,28 @@ func (v *validator_) ProcessRuleSlot(
 
 func (v *validator_) PostprocessRule(
 	rule ast.RuleLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PreprocessRuleOption(
+	ruleOption ast.RuleOptionLike,
+	index uint,
+	size uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) ProcessRuleOptionSlot(
+	slot uint,
+) {
+	// TBD - Add any validation checks.
+}
+
+func (v *validator_) PostprocessRuleOption(
+	ruleOption ast.RuleOptionLike,
 	index uint,
 	size uint,
 ) {

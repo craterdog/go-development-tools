@@ -30,8 +30,8 @@ package module
 
 import (
 	col "github.com/craterdog/go-collection-framework/v5/collection"
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
-	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
+	gra "github.com/craterdog/go-syntax-notation/v6/grammar"
 )
 
 // TYPE ALIASES
@@ -39,61 +39,69 @@ import (
 // Ast
 
 type (
-	AlternativeClassLike = ast.AlternativeClassLike
-	CardinalityClassLike = ast.CardinalityClassLike
-	CharacterClassLike   = ast.CharacterClassLike
-	ConstrainedClassLike = ast.ConstrainedClassLike
-	DefinitionClassLike  = ast.DefinitionClassLike
-	ElementClassLike     = ast.ElementClassLike
-	ExplicitClassLike    = ast.ExplicitClassLike
-	ExpressionClassLike  = ast.ExpressionClassLike
-	ExtentClassLike      = ast.ExtentClassLike
-	FilterClassLike      = ast.FilterClassLike
-	GroupClassLike       = ast.GroupClassLike
-	IdentifierClassLike  = ast.IdentifierClassLike
-	InlineClassLike      = ast.InlineClassLike
-	LimitClassLike       = ast.LimitClassLike
-	LineClassLike        = ast.LineClassLike
-	MultilineClassLike   = ast.MultilineClassLike
-	NoticeClassLike      = ast.NoticeClassLike
-	OptionClassLike      = ast.OptionClassLike
-	PatternClassLike     = ast.PatternClassLike
-	QuantifiedClassLike  = ast.QuantifiedClassLike
-	ReferenceClassLike   = ast.ReferenceClassLike
-	RepetitionClassLike  = ast.RepetitionClassLike
-	RuleClassLike        = ast.RuleClassLike
-	SyntaxClassLike      = ast.SyntaxClassLike
-	TermClassLike        = ast.TermClassLike
-	TextClassLike        = ast.TextClassLike
+	AlternativeClassLike      = ast.AlternativeClassLike
+	CardinalityClassLike      = ast.CardinalityClassLike
+	CharacterClassLike        = ast.CharacterClassLike
+	ConstrainedClassLike      = ast.ConstrainedClassLike
+	DefinitionClassLike       = ast.DefinitionClassLike
+	ElementClassLike          = ast.ElementClassLike
+	ExplicitClassLike         = ast.ExplicitClassLike
+	ExpressionClassLike       = ast.ExpressionClassLike
+	ExpressionOptionClassLike = ast.ExpressionOptionClassLike
+	ExtentClassLike           = ast.ExtentClassLike
+	FilterClassLike           = ast.FilterClassLike
+	GroupClassLike            = ast.GroupClassLike
+	IdentifierClassLike       = ast.IdentifierClassLike
+	ImplicitClassLike         = ast.ImplicitClassLike
+	InlineClassLike           = ast.InlineClassLike
+	LimitClassLike            = ast.LimitClassLike
+	LiteralClassLike          = ast.LiteralClassLike
+	MultiexpressionClassLike  = ast.MultiexpressionClassLike
+	MultiruleClassLike        = ast.MultiruleClassLike
+	NoticeClassLike           = ast.NoticeClassLike
+	OptionClassLike           = ast.OptionClassLike
+	PatternClassLike          = ast.PatternClassLike
+	QuantifiedClassLike       = ast.QuantifiedClassLike
+	ReferenceClassLike        = ast.ReferenceClassLike
+	RepetitionClassLike       = ast.RepetitionClassLike
+	RuleClassLike             = ast.RuleClassLike
+	RuleOptionClassLike       = ast.RuleOptionClassLike
+	SyntaxClassLike           = ast.SyntaxClassLike
+	TermClassLike             = ast.TermClassLike
+	TextClassLike             = ast.TextClassLike
 )
 
 type (
-	AlternativeLike = ast.AlternativeLike
-	CardinalityLike = ast.CardinalityLike
-	CharacterLike   = ast.CharacterLike
-	ConstrainedLike = ast.ConstrainedLike
-	DefinitionLike  = ast.DefinitionLike
-	ElementLike     = ast.ElementLike
-	ExplicitLike    = ast.ExplicitLike
-	ExpressionLike  = ast.ExpressionLike
-	ExtentLike      = ast.ExtentLike
-	FilterLike      = ast.FilterLike
-	GroupLike       = ast.GroupLike
-	IdentifierLike  = ast.IdentifierLike
-	InlineLike      = ast.InlineLike
-	LimitLike       = ast.LimitLike
-	LineLike        = ast.LineLike
-	MultilineLike   = ast.MultilineLike
-	NoticeLike      = ast.NoticeLike
-	OptionLike      = ast.OptionLike
-	PatternLike     = ast.PatternLike
-	QuantifiedLike  = ast.QuantifiedLike
-	ReferenceLike   = ast.ReferenceLike
-	RepetitionLike  = ast.RepetitionLike
-	RuleLike        = ast.RuleLike
-	SyntaxLike      = ast.SyntaxLike
-	TermLike        = ast.TermLike
-	TextLike        = ast.TextLike
+	AlternativeLike      = ast.AlternativeLike
+	CardinalityLike      = ast.CardinalityLike
+	CharacterLike        = ast.CharacterLike
+	ConstrainedLike      = ast.ConstrainedLike
+	DefinitionLike       = ast.DefinitionLike
+	ElementLike          = ast.ElementLike
+	ExplicitLike         = ast.ExplicitLike
+	ExpressionLike       = ast.ExpressionLike
+	ExpressionOptionLike = ast.ExpressionOptionLike
+	ExtentLike           = ast.ExtentLike
+	FilterLike           = ast.FilterLike
+	GroupLike            = ast.GroupLike
+	IdentifierLike       = ast.IdentifierLike
+	ImplicitLike         = ast.ImplicitLike
+	InlineLike           = ast.InlineLike
+	LimitLike            = ast.LimitLike
+	LiteralLike          = ast.LiteralLike
+	MultiexpressionLike  = ast.MultiexpressionLike
+	MultiruleLike        = ast.MultiruleLike
+	NoticeLike           = ast.NoticeLike
+	OptionLike           = ast.OptionLike
+	PatternLike          = ast.PatternLike
+	QuantifiedLike       = ast.QuantifiedLike
+	ReferenceLike        = ast.ReferenceLike
+	RepetitionLike       = ast.RepetitionLike
+	RuleLike             = ast.RuleLike
+	RuleOptionLike       = ast.RuleOptionLike
+	SyntaxLike           = ast.SyntaxLike
+	TermLike             = ast.TermLike
+	TextLike             = ast.TextLike
 )
 
 // Grammar
@@ -109,12 +117,12 @@ const (
 	ExcludedToken  = gra.ExcludedToken
 	GlyphToken     = gra.GlyphToken
 	IntrinsicToken = gra.IntrinsicToken
-	LiteralToken   = gra.LiteralToken
 	LowercaseToken = gra.LowercaseToken
 	NewlineToken   = gra.NewlineToken
 	NoteToken      = gra.NoteToken
 	NumberToken    = gra.NumberToken
 	OptionalToken  = gra.OptionalToken
+	QuoteToken     = gra.QuoteToken
 	RepeatedToken  = gra.RepeatedToken
 	SpaceToken     = gra.SpaceToken
 	UppercaseToken = gra.UppercaseToken
@@ -232,6 +240,20 @@ func Expression(
 	)
 }
 
+// Ast/ExpressionOption
+
+func ExpressionOption(
+	newline string,
+	lowercase string,
+	optionalNote string,
+) ast.ExpressionOptionLike {
+	return ast.ExpressionOptionClass().ExpressionOption(
+		newline,
+		lowercase,
+		optionalNote,
+	)
+}
+
 // Ast/Extent
 
 func Extent(
@@ -274,6 +296,16 @@ func Identifier(
 	)
 }
 
+// Ast/Implicit
+
+func Implicit(
+	intrinsic string,
+) ast.ImplicitLike {
+	return ast.ImplicitClass().Implicit(
+		intrinsic,
+	)
+}
+
 // Ast/Inline
 
 func Inline(
@@ -296,25 +328,33 @@ func Limit(
 	)
 }
 
-// Ast/Line
+// Ast/Literal
 
-func Line(
-	identifier ast.IdentifierLike,
-	optionalNote string,
-) ast.LineLike {
-	return ast.LineClass().Line(
-		identifier,
-		optionalNote,
+func Literal(
+	quote string,
+) ast.LiteralLike {
+	return ast.LiteralClass().Literal(
+		quote,
 	)
 }
 
-// Ast/Multiline
+// Ast/Multiexpression
 
-func Multiline(
-	lines col.Sequential[ast.LineLike],
-) ast.MultilineLike {
-	return ast.MultilineClass().Multiline(
-		lines,
+func Multiexpression(
+	expressionOptions col.Sequential[ast.ExpressionOptionLike],
+) ast.MultiexpressionLike {
+	return ast.MultiexpressionClass().Multiexpression(
+		expressionOptions,
+	)
+}
+
+// Ast/Multirule
+
+func Multirule(
+	ruleOptions col.Sequential[ast.RuleOptionLike],
+) ast.MultiruleLike {
+	return ast.MultiruleClass().Multirule(
+		ruleOptions,
 	)
 }
 
@@ -322,9 +362,11 @@ func Multiline(
 
 func Notice(
 	comment string,
+	newline string,
 ) ast.NoticeLike {
 	return ast.NoticeClass().Notice(
 		comment,
+		newline,
 	)
 }
 
@@ -395,6 +437,20 @@ func Rule(
 	return ast.RuleClass().Rule(
 		uppercase,
 		definition,
+	)
+}
+
+// Ast/RuleOption
+
+func RuleOption(
+	newline string,
+	uppercase string,
+	optionalNote string,
+) ast.RuleOptionLike {
+	return ast.RuleOptionClass().RuleOption(
+		newline,
+		uppercase,
+		optionalNote,
 	)
 }
 

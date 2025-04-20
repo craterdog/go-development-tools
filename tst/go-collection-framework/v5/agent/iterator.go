@@ -36,6 +36,8 @@ func (c *iteratorClass_[V]) Iterator(
 	}
 	var instance = &iterator_[V]{
 		// Initialize the instance attributes.
+		size_:   Size(len(array)),
+		values_: array,
 	}
 	return instance
 }
@@ -53,40 +55,43 @@ func (v *iterator_[V]) GetClass() IteratorClassLike[V] {
 }
 
 func (v *iterator_[V]) IsEmpty() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v.size_ == 0
 }
 
 func (v *iterator_[V]) ToStart() {
-	// TBD - Add the method implementation.
+	v.slot_ = 0
 }
 
 func (v *iterator_[V]) ToEnd() {
-	// TBD - Add the method implementation.
+	var size = Slot(v.size_)
+	v.slot_ = size
 }
 
 func (v *iterator_[V]) HasPrevious() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v.slot_ > 0
 }
 
 func (v *iterator_[V]) GetPrevious() V {
 	var result_ V
-	// TBD - Add the method implementation.
+	if v.slot_ > 0 {
+		result_ = v.values_[v.slot_-1] // convert to ZERO based indexing
+		v.slot_ = v.slot_ - 1
+	}
 	return result_
 }
 
 func (v *iterator_[V]) HasNext() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	var size = Slot(v.size_)
+	return v.slot_ < size
 }
 
 func (v *iterator_[V]) GetNext() V {
 	var result_ V
-	// TBD - Add the method implementation.
+	var size = Slot(v.size_)
+	if v.slot_ < size {
+		v.slot_ = v.slot_ + 1
+		result_ = v.values_[v.slot_-1] // convert to ZERO based indexing
+	}
 	return result_
 }
 
@@ -103,8 +108,9 @@ func (v *iterator_[V]) GetSlot() Slot {
 func (v *iterator_[V]) SetSlot(
 	slot Slot,
 ) {
-	if uti.IsUndefined(slot) {
-		panic("The \"slot\" attribute is required by this class.")
+	var size = Slot(v.size_)
+	if slot > size {
+		slot = size
 	}
 	v.slot_ = slot
 }
@@ -117,8 +123,9 @@ func (v *iterator_[V]) SetSlot(
 
 type iterator_[V any] struct {
 	// Declare the instance attributes.
-	size_ Size
-	slot_ Slot
+	slot_   Slot
+	size_   Size
+	values_ []V
 }
 
 // Class Structure

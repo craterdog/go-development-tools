@@ -20,7 +20,7 @@
 package grammar
 
 import (
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
 )
 
 // CLASS INTERFACE
@@ -70,11 +70,6 @@ func (v *processor_) ProcessIntrinsic(
 ) {
 }
 
-func (v *processor_) ProcessLiteral(
-	literal string,
-) {
-}
-
 func (v *processor_) ProcessLowercase(
 	lowercase string,
 ) {
@@ -97,6 +92,11 @@ func (v *processor_) ProcessNumber(
 
 func (v *processor_) ProcessOptional(
 	optional string,
+) {
+}
+
+func (v *processor_) ProcessQuote(
+	quote string,
 ) {
 }
 
@@ -247,6 +247,25 @@ func (v *processor_) PostprocessExpression(
 ) {
 }
 
+func (v *processor_) PreprocessExpressionOption(
+	expressionOption ast.ExpressionOptionLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessExpressionOptionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessExpressionOption(
+	expressionOption ast.ExpressionOptionLike,
+	index uint,
+	size uint,
+) {
+}
+
 func (v *processor_) PreprocessExtent(
 	extent ast.ExtentLike,
 ) {
@@ -307,6 +326,21 @@ func (v *processor_) PostprocessIdentifier(
 ) {
 }
 
+func (v *processor_) PreprocessImplicit(
+	implicit ast.ImplicitLike,
+) {
+}
+
+func (v *processor_) ProcessImplicitSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessImplicit(
+	implicit ast.ImplicitLike,
+) {
+}
+
 func (v *processor_) PreprocessInline(
 	inline ast.InlineLike,
 ) {
@@ -337,37 +371,48 @@ func (v *processor_) PostprocessLimit(
 ) {
 }
 
-func (v *processor_) PreprocessLine(
-	line ast.LineLike,
-	index uint,
-	size uint,
+func (v *processor_) PreprocessLiteral(
+	literal ast.LiteralLike,
 ) {
 }
 
-func (v *processor_) ProcessLineSlot(
+func (v *processor_) ProcessLiteralSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessLine(
-	line ast.LineLike,
-	index uint,
-	size uint,
+func (v *processor_) PostprocessLiteral(
+	literal ast.LiteralLike,
 ) {
 }
 
-func (v *processor_) PreprocessMultiline(
-	multiline ast.MultilineLike,
+func (v *processor_) PreprocessMultiexpression(
+	multiexpression ast.MultiexpressionLike,
 ) {
 }
 
-func (v *processor_) ProcessMultilineSlot(
+func (v *processor_) ProcessMultiexpressionSlot(
 	slot uint,
 ) {
 }
 
-func (v *processor_) PostprocessMultiline(
-	multiline ast.MultilineLike,
+func (v *processor_) PostprocessMultiexpression(
+	multiexpression ast.MultiexpressionLike,
+) {
+}
+
+func (v *processor_) PreprocessMultirule(
+	multirule ast.MultiruleLike,
+) {
+}
+
+func (v *processor_) ProcessMultiruleSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessMultirule(
+	multirule ast.MultiruleLike,
 ) {
 }
 
@@ -479,6 +524,25 @@ func (v *processor_) ProcessRuleSlot(
 
 func (v *processor_) PostprocessRule(
 	rule ast.RuleLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) PreprocessRuleOption(
+	ruleOption ast.RuleOptionLike,
+	index uint,
+	size uint,
+) {
+}
+
+func (v *processor_) ProcessRuleOptionSlot(
+	slot uint,
+) {
+}
+
+func (v *processor_) PostprocessRuleOption(
+	ruleOption ast.RuleOptionLike,
 	index uint,
 	size uint,
 ) {

@@ -19,15 +19,15 @@ echo "Done."
 echo
 
 directory=./tst/go-syntax-notation
-moduleName=github.com/craterdog/${directory:6}/v5
+moduleName=github.com/craterdog/${directory:6}/v6
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-syntax ${directory}/v5/Syntax.cdsn
+bin/format-syntax ${directory}/v6/Syntax.cdsn
 echo
-bin/generate-packages ${moduleName} ${wikiPath} ${directory}/v5/
+bin/generate-packages ${moduleName} ${wikiPath} ${directory}/v6/
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v5/ ast grammar
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v6/ ast grammar
 echo
-cd ${directory}/v5
+cd ${directory}/v6
 gofmt -w . >/dev/null
 cat <<EOF > go.mod
 module ${moduleName}

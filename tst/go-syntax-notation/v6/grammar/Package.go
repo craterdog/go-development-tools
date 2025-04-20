@@ -42,7 +42,7 @@ package grammar
 
 import (
 	col "github.com/craterdog/go-collection-framework/v5/collection"
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
 )
 
 // TYPE DECLARATIONS
@@ -60,12 +60,12 @@ const (
 	ExcludedToken
 	GlyphToken
 	IntrinsicToken
-	LiteralToken
 	LowercaseToken
 	NewlineToken
 	NoteToken
 	NumberToken
 	OptionalToken
+	QuoteToken
 	RepeatedToken
 	SpaceToken
 	UppercaseToken
@@ -291,9 +291,6 @@ type Methodical interface {
 	ProcessIntrinsic(
 		intrinsic string,
 	)
-	ProcessLiteral(
-		literal string,
-	)
 	ProcessLowercase(
 		lowercase string,
 	)
@@ -308,6 +305,9 @@ type Methodical interface {
 	)
 	ProcessOptional(
 		optional string,
+	)
+	ProcessQuote(
+		quote string,
 	)
 	ProcessRepeated(
 		repeated string,
@@ -402,6 +402,19 @@ type Methodical interface {
 		index uint,
 		size uint,
 	)
+	PreprocessExpressionOption(
+		expressionOption ast.ExpressionOptionLike,
+		index uint,
+		size uint,
+	)
+	ProcessExpressionOptionSlot(
+		slot uint,
+	)
+	PostprocessExpressionOption(
+		expressionOption ast.ExpressionOptionLike,
+		index uint,
+		size uint,
+	)
 	PreprocessExtent(
 		extent ast.ExtentLike,
 	)
@@ -438,6 +451,15 @@ type Methodical interface {
 	PostprocessIdentifier(
 		identifier ast.IdentifierLike,
 	)
+	PreprocessImplicit(
+		implicit ast.ImplicitLike,
+	)
+	ProcessImplicitSlot(
+		slot uint,
+	)
+	PostprocessImplicit(
+		implicit ast.ImplicitLike,
+	)
 	PreprocessInline(
 		inline ast.InlineLike,
 	)
@@ -456,27 +478,32 @@ type Methodical interface {
 	PostprocessLimit(
 		limit ast.LimitLike,
 	)
-	PreprocessLine(
-		line ast.LineLike,
-		index uint,
-		size uint,
+	PreprocessLiteral(
+		literal ast.LiteralLike,
 	)
-	ProcessLineSlot(
+	ProcessLiteralSlot(
 		slot uint,
 	)
-	PostprocessLine(
-		line ast.LineLike,
-		index uint,
-		size uint,
+	PostprocessLiteral(
+		literal ast.LiteralLike,
 	)
-	PreprocessMultiline(
-		multiline ast.MultilineLike,
+	PreprocessMultiexpression(
+		multiexpression ast.MultiexpressionLike,
 	)
-	ProcessMultilineSlot(
+	ProcessMultiexpressionSlot(
 		slot uint,
 	)
-	PostprocessMultiline(
-		multiline ast.MultilineLike,
+	PostprocessMultiexpression(
+		multiexpression ast.MultiexpressionLike,
+	)
+	PreprocessMultirule(
+		multirule ast.MultiruleLike,
+	)
+	ProcessMultiruleSlot(
+		slot uint,
+	)
+	PostprocessMultirule(
+		multirule ast.MultiruleLike,
 	)
 	PreprocessNotice(
 		notice ast.NoticeLike,
@@ -546,6 +573,19 @@ type Methodical interface {
 	)
 	PostprocessRule(
 		rule ast.RuleLike,
+		index uint,
+		size uint,
+	)
+	PreprocessRuleOption(
+		ruleOption ast.RuleOptionLike,
+		index uint,
+		size uint,
+	)
+	ProcessRuleOptionSlot(
+		slot uint,
+	)
+	PostprocessRuleOption(
+		ruleOption ast.RuleOptionLike,
 		index uint,
 		size uint,
 	)

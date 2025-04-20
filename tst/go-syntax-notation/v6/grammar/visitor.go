@@ -22,7 +22,7 @@ package grammar
 import (
 	fmt "fmt"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
 )
 
 // CLASS INTERFACE
@@ -106,14 +106,16 @@ func (v *visitor_) visitCharacter(
 ) {
 	// Visit the possible character types.
 	switch actual := character.GetAny().(type) {
+	case ast.ImplicitLike:
+		v.processor_.PreprocessImplicit(actual)
+		v.visitImplicit(actual)
+		v.processor_.PostprocessImplicit(actual)
 	case ast.ExplicitLike:
 		v.processor_.PreprocessExplicit(actual)
 		v.visitExplicit(actual)
 		v.processor_.PostprocessExplicit(actual)
 	case string:
 		switch {
-		case ScannerClass().MatchesType(actual, IntrinsicToken):
-			v.processor_.ProcessIntrinsic(actual)
 		default:
 			panic(fmt.Sprintf("Invalid token: %v", actual))
 		}
@@ -146,10 +148,14 @@ func (v *visitor_) visitDefinition(
 ) {
 	// Visit the possible definition types.
 	switch actual := definition.GetAny().(type) {
-	case ast.MultilineLike:
-		v.processor_.PreprocessMultiline(actual)
-		v.visitMultiline(actual)
-		v.processor_.PostprocessMultiline(actual)
+	case ast.MultiruleLike:
+		v.processor_.PreprocessMultirule(actual)
+		v.visitMultirule(actual)
+		v.processor_.PostprocessMultirule(actual)
+	case ast.MultiexpressionLike:
+		v.processor_.PreprocessMultiexpression(actual)
+		v.visitMultiexpression(actual)
+		v.processor_.PostprocessMultiexpression(actual)
 	case ast.InlineLike:
 		v.processor_.PreprocessInline(actual)
 		v.visitInline(actual)
@@ -236,6 +242,30 @@ func (v *visitor_) visitExpression(
 	}
 }
 
+func (v *visitor_) visitExpressionOption(
+	expressionOption ast.ExpressionOptionLike,
+) {
+	// Visit a single newline token.
+	var newline = expressionOption.GetNewline()
+	v.processor_.ProcessNewline(newline)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessExpressionOptionSlot(1)
+
+	// Visit a single lowercase token.
+	var lowercase = expressionOption.GetLowercase()
+	v.processor_.ProcessLowercase(lowercase)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessExpressionOptionSlot(2)
+
+	// Visit an optional note token.
+	var optionalNote = expressionOption.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
+}
+
 func (v *visitor_) visitExtent(
 	extent ast.ExtentLike,
 ) {
@@ -306,6 +336,14 @@ func (v *visitor_) visitIdentifier(
 	}
 }
 
+func (v *visitor_) visitImplicit(
+	implicit ast.ImplicitLike,
+) {
+	// Visit a single intrinsic token.
+	var intrinsic = implicit.GetIntrinsic()
+	v.processor_.ProcessIntrinsic(intrinsic)
+}
+
 func (v *visitor_) visitInline(
 	inline ast.InlineLike,
 ) {
@@ -349,45 +387,58 @@ func (v *visitor_) visitLimit(
 	}
 }
 
-func (v *visitor_) visitLine(
-	line ast.LineLike,
+func (v *visitor_) visitLiteral(
+	literal ast.LiteralLike,
 ) {
-	// Visit a single identifier rule.
-	var identifier = line.GetIdentifier()
-	v.processor_.PreprocessIdentifier(identifier)
-	v.visitIdentifier(identifier)
-	v.processor_.PostprocessIdentifier(identifier)
+	// Visit a single quote token.
+	var quote = literal.GetQuote()
+	v.processor_.ProcessQuote(quote)
+}
 
-	// Visit slot 1 between references.
-	v.processor_.ProcessLineSlot(1)
-
-	// Visit an optional note token.
-	var optionalNote = line.GetOptionalNote()
-	if uti.IsDefined(optionalNote) {
-		v.processor_.ProcessNote(optionalNote)
+func (v *visitor_) visitMultiexpression(
+	multiexpression ast.MultiexpressionLike,
+) {
+	// Visit each expressionOption rule.
+	var expressionOptionIndex uint
+	var expressionOptions = multiexpression.GetExpressionOptions().GetIterator()
+	var expressionOptionsSize = uint(expressionOptions.GetSize())
+	for expressionOptions.HasNext() {
+		expressionOptionIndex++
+		var expressionOption = expressionOptions.GetNext()
+		v.processor_.PreprocessExpressionOption(
+			expressionOption,
+			expressionOptionIndex,
+			expressionOptionsSize,
+		)
+		v.visitExpressionOption(expressionOption)
+		v.processor_.PostprocessExpressionOption(
+			expressionOption,
+			expressionOptionIndex,
+			expressionOptionsSize,
+		)
 	}
 }
 
-func (v *visitor_) visitMultiline(
-	multiline ast.MultilineLike,
+func (v *visitor_) visitMultirule(
+	multirule ast.MultiruleLike,
 ) {
-	// Visit each line rule.
-	var lineIndex uint
-	var lines = multiline.GetLines().GetIterator()
-	var linesSize = uint(lines.GetSize())
-	for lines.HasNext() {
-		lineIndex++
-		var line = lines.GetNext()
-		v.processor_.PreprocessLine(
-			line,
-			lineIndex,
-			linesSize,
+	// Visit each ruleOption rule.
+	var ruleOptionIndex uint
+	var ruleOptions = multirule.GetRuleOptions().GetIterator()
+	var ruleOptionsSize = uint(ruleOptions.GetSize())
+	for ruleOptions.HasNext() {
+		ruleOptionIndex++
+		var ruleOption = ruleOptions.GetNext()
+		v.processor_.PreprocessRuleOption(
+			ruleOption,
+			ruleOptionIndex,
+			ruleOptionsSize,
 		)
-		v.visitLine(line)
-		v.processor_.PostprocessLine(
-			line,
-			lineIndex,
-			linesSize,
+		v.visitRuleOption(ruleOption)
+		v.processor_.PostprocessRuleOption(
+			ruleOption,
+			ruleOptionIndex,
+			ruleOptionsSize,
 		)
 	}
 }
@@ -398,6 +449,13 @@ func (v *visitor_) visitNotice(
 	// Visit a single comment token.
 	var comment = notice.GetComment()
 	v.processor_.ProcessComment(comment)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessNoticeSlot(1)
+
+	// Visit a single newline token.
+	var newline = notice.GetNewline()
+	v.processor_.ProcessNewline(newline)
 }
 
 func (v *visitor_) visitOption(
@@ -535,6 +593,30 @@ func (v *visitor_) visitRule(
 	v.processor_.PostprocessDefinition(definition)
 }
 
+func (v *visitor_) visitRuleOption(
+	ruleOption ast.RuleOptionLike,
+) {
+	// Visit a single newline token.
+	var newline = ruleOption.GetNewline()
+	v.processor_.ProcessNewline(newline)
+
+	// Visit slot 1 between references.
+	v.processor_.ProcessRuleOptionSlot(1)
+
+	// Visit a single uppercase token.
+	var uppercase = ruleOption.GetUppercase()
+	v.processor_.ProcessUppercase(uppercase)
+
+	// Visit slot 2 between references.
+	v.processor_.ProcessRuleOptionSlot(2)
+
+	// Visit an optional note token.
+	var optionalNote = ruleOption.GetOptionalNote()
+	if uti.IsDefined(optionalNote) {
+		v.processor_.ProcessNote(optionalNote)
+	}
+}
+
 func (v *visitor_) visitSyntax(
 	syntax ast.SyntaxLike,
 ) {
@@ -610,14 +692,16 @@ func (v *visitor_) visitTerm(
 ) {
 	// Visit the possible term types.
 	switch actual := term.GetAny().(type) {
+	case ast.LiteralLike:
+		v.processor_.PreprocessLiteral(actual)
+		v.visitLiteral(actual)
+		v.processor_.PostprocessLiteral(actual)
 	case ast.ReferenceLike:
 		v.processor_.PreprocessReference(actual)
 		v.visitReference(actual)
 		v.processor_.PostprocessReference(actual)
 	case string:
 		switch {
-		case ScannerClass().MatchesType(actual, LiteralToken):
-			v.processor_.ProcessLiteral(actual)
 		default:
 			panic(fmt.Sprintf("Invalid token: %v", actual))
 		}
@@ -633,14 +717,14 @@ func (v *visitor_) visitText(
 	switch actual := text.GetAny().(type) {
 	case string:
 		switch {
-		case ScannerClass().MatchesType(actual, IntrinsicToken):
-			v.processor_.ProcessIntrinsic(actual)
 		case ScannerClass().MatchesType(actual, GlyphToken):
 			v.processor_.ProcessGlyph(actual)
-		case ScannerClass().MatchesType(actual, LiteralToken):
-			v.processor_.ProcessLiteral(actual)
+		case ScannerClass().MatchesType(actual, QuoteToken):
+			v.processor_.ProcessQuote(actual)
 		case ScannerClass().MatchesType(actual, LowercaseToken):
 			v.processor_.ProcessLowercase(actual)
+		case ScannerClass().MatchesType(actual, IntrinsicToken):
+			v.processor_.ProcessIntrinsic(actual)
 		default:
 			panic(fmt.Sprintf("Invalid token: %v", actual))
 		}

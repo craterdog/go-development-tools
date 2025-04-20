@@ -14,7 +14,7 @@ package module_test
 
 import (
 	fmt "fmt"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 	ass "github.com/stretchr/testify/assert"
 	osx "os"
 	tes "testing"
@@ -22,6 +22,7 @@ import (
 
 var syntaxFiles = []string{
 	"./Syntax.cdsn",
+	"./testdata/bali.cdsn",
 	"./testdata/gcmn.cdsn",
 	"./testdata/full.cdsn",
 }

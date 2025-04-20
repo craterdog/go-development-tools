@@ -20,7 +20,6 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v5/collection"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 )
 
@@ -28,21 +27,26 @@ import (
 
 // Access Function
 
-func MultilineClass() MultilineClassLike {
-	return multilineClass()
+func NoticeClass() NoticeClassLike {
+	return noticeClass()
 }
 
 // Constructor Methods
 
-func (c *multilineClass_) Multiline(
-	lines col.Sequential[LineLike],
-) MultilineLike {
-	if uti.IsUndefined(lines) {
-		panic("The \"lines\" attribute is required by this class.")
+func (c *noticeClass_) Notice(
+	comment string,
+	newline string,
+) NoticeLike {
+	if uti.IsUndefined(comment) {
+		panic("The \"comment\" attribute is required by this class.")
 	}
-	var instance = &multiline_{
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
+	}
+	var instance = &notice_{
 		// Initialize the instance attributes.
-		lines_: lines,
+		comment_: comment,
+		newline_: newline,
 	}
 	return instance
 }
@@ -51,37 +55,42 @@ func (c *multilineClass_) Multiline(
 
 // Principal Methods
 
-func (v *multiline_) GetClass() MultilineClassLike {
-	return multilineClass()
+func (v *notice_) GetClass() NoticeClassLike {
+	return noticeClass()
 }
 
 // Attribute Methods
 
-func (v *multiline_) GetLines() col.Sequential[LineLike] {
-	return v.lines_
+func (v *notice_) GetComment() string {
+	return v.comment_
+}
+
+func (v *notice_) GetNewline() string {
+	return v.newline_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multiline_ struct {
+type notice_ struct {
 	// Declare the instance attributes.
-	lines_ col.Sequential[LineLike]
+	comment_ string
+	newline_ string
 }
 
 // Class Structure
 
-type multilineClass_ struct {
+type noticeClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multilineClass() *multilineClass_ {
-	return multilineClassReference_
+func noticeClass() *noticeClass_ {
+	return noticeClassReference_
 }
 
-var multilineClassReference_ = &multilineClass_{
+var noticeClassReference_ = &noticeClass_{
 	// Initialize the class constants.
 }

@@ -13,7 +13,7 @@
 package grammar_test
 
 import (
-	gra "github.com/craterdog/go-syntax-notation/v5/grammar"
+	gra "github.com/craterdog/go-syntax-notation/v6/grammar"
 	ass "github.com/stretchr/testify/assert"
 	osx "os"
 	tes "testing"

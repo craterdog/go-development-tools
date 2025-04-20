@@ -27,21 +27,28 @@ import (
 
 // Access Function
 
-func NoticeClass() NoticeClassLike {
-	return noticeClass()
+func RuleOptionClass() RuleOptionClassLike {
+	return ruleOptionClass()
 }
 
 // Constructor Methods
 
-func (c *noticeClass_) Notice(
-	comment string,
-) NoticeLike {
-	if uti.IsUndefined(comment) {
-		panic("The \"comment\" attribute is required by this class.")
+func (c *ruleOptionClass_) RuleOption(
+	newline string,
+	uppercase string,
+	optionalNote string,
+) RuleOptionLike {
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
 	}
-	var instance = &notice_{
+	if uti.IsUndefined(uppercase) {
+		panic("The \"uppercase\" attribute is required by this class.")
+	}
+	var instance = &ruleOption_{
 		// Initialize the instance attributes.
-		comment_: comment,
+		newline_:      newline,
+		uppercase_:    uppercase,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -50,37 +57,47 @@ func (c *noticeClass_) Notice(
 
 // Principal Methods
 
-func (v *notice_) GetClass() NoticeClassLike {
-	return noticeClass()
+func (v *ruleOption_) GetClass() RuleOptionClassLike {
+	return ruleOptionClass()
 }
 
 // Attribute Methods
 
-func (v *notice_) GetComment() string {
-	return v.comment_
+func (v *ruleOption_) GetNewline() string {
+	return v.newline_
+}
+
+func (v *ruleOption_) GetUppercase() string {
+	return v.uppercase_
+}
+
+func (v *ruleOption_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type notice_ struct {
+type ruleOption_ struct {
 	// Declare the instance attributes.
-	comment_ string
+	newline_      string
+	uppercase_    string
+	optionalNote_ string
 }
 
 // Class Structure
 
-type noticeClass_ struct {
+type ruleOptionClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func noticeClass() *noticeClass_ {
-	return noticeClassReference_
+func ruleOptionClass() *ruleOptionClass_ {
+	return ruleOptionClassReference_
 }
 
-var noticeClassReference_ = &noticeClass_{
+var ruleOptionClassReference_ = &ruleOptionClass_{
 	// Initialize the class constants.
 }

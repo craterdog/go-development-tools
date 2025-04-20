@@ -30,21 +30,24 @@ func QueueClass[V any]() QueueClassLike[V] {
 // Constructor Methods
 
 func (c *queueClass_[V]) Queue() QueueLike[V] {
-	var instance = &queue_[V]{
-		// Initialize the instance attributes.
-	}
+	var instance = c.QueueWithCapacity(0) // Request the default capacity.
 	return instance
 }
 
 func (c *queueClass_[V]) QueueWithCapacity(
 	capacity age.Size,
 ) QueueLike[V] {
-	if uti.IsUndefined(capacity) {
-		panic("The \"capacity\" attribute is required by this class.")
+	if capacity < 1 {
+		capacity = 16 // This is the default capacity.
 	}
+	var available = make(chan bool, int(capacity))
+	var listClass = ListClass[V]()
+	var values = listClass.List()
 	var instance = &queue_[V]{
 		// Initialize the instance attributes.
-		capacity_: capacity,
+		available_: available,
+		capacity_:  capacity,
+		values_:    values,
 	}
 	return instance
 }
@@ -52,31 +55,82 @@ func (c *queueClass_[V]) QueueWithCapacity(
 func (c *queueClass_[V]) QueueFromArray(
 	values []V,
 ) QueueLike[V] {
-	var instance QueueLike[V]
-	// TBD - Add the constructor implementation.
-	return instance
+	var queue = c.Queue()
+	for _, value := range values {
+		queue.AddValue(value)
+	}
+	return queue
 }
 
 func (c *queueClass_[V]) QueueFromSequence(
 	values Sequential[V],
 ) QueueLike[V] {
-	var instance QueueLike[V]
-	// TBD - Add the constructor implementation.
-	return instance
+	var queue = c.Queue()
+	var iterator = values.GetIterator()
+	for iterator.HasNext() {
+		var value = iterator.GetNext()
+		queue.AddValue(value)
+	}
+	return queue
 }
 
 // Constant Methods
 
 // Function Methods
 
+// Functions
+
 func (c *queueClass_[V]) Fork(
 	group Synchronized,
 	input QueueLike[V],
 	size age.Size,
 ) Sequential[QueueLike[V]] {
-	var result_ Sequential[QueueLike[V]]
-	// TBD - Add the function implementation.
-	return result_
+	// Validate the arguments.
+	if size < 2 {
+		panic("The fan out size for a queue must be greater than one.")
+	}
+
+	// Create the new output queues.
+	var capacity = input.GetCapacity()
+	var listClass = ListClass[QueueLike[V]]()
+	var outputs = listClass.List()
+	var i age.Size
+	for ; i < size; i++ {
+		outputs.AppendValue(c.QueueWithCapacity(capacity))
+	}
+
+	// Connect up the input queue to the output queues in a separate go-routine.
+	group.Add(1)
+	go func() {
+		// Make sure the wait group is decremented on termination.
+		defer group.Done()
+
+		// Write each value read from the input queue to each output queue.
+		var iterator = outputs.GetIterator()
+		for {
+			// Read from the input queue.
+			var value, ok = input.RemoveFirst() // Will block when empty.
+			if !ok {
+				break // The input queue has been closed.
+			}
+
+			// Write to all output queues.
+			iterator.ToStart()
+			for iterator.HasNext() {
+				var output = iterator.GetNext()
+				output.AddValue(value) // Will block when full.
+			}
+		}
+
+		// Close all output queues.
+		iterator.ToStart()
+		for iterator.HasNext() {
+			var output = iterator.GetNext()
+			output.CloseChannel()
+		}
+	}()
+
+	return outputs
 }
 
 func (c *queueClass_[V]) Split(
@@ -84,18 +138,93 @@ func (c *queueClass_[V]) Split(
 	input QueueLike[V],
 	size age.Size,
 ) Sequential[QueueLike[V]] {
-	var result_ Sequential[QueueLike[V]]
-	// TBD - Add the function implementation.
-	return result_
+	// Validate the arguments.
+	if size < 2 {
+		panic("The size of the split must be greater than one.")
+	}
+
+	// Create the new output queues.
+	var capacity = input.GetCapacity()
+	var listClass = ListClass[QueueLike[V]]()
+	var outputs = listClass.List()
+	var i age.Size
+	for ; i < size; i++ {
+		outputs.AppendValue(c.QueueWithCapacity(capacity))
+	}
+
+	// Connect up the input queue to the output queues.
+	group.Add(1)
+	go func() {
+		// Make sure the wait group is decremented on termination.
+		defer group.Done()
+
+		// Take turns reading from the input queue and writing to each output queue.
+		var iterator = outputs.GetIterator()
+		for {
+			// Read from the input queue.
+			var value, ok = input.RemoveFirst() // Will block when empty.
+			if !ok {
+				break // The input queue has been closed.
+			}
+
+			// Write to the next output queue.
+			var output = iterator.GetNext()
+			output.AddValue(value) // Will block when full.
+			if !iterator.HasNext() {
+				iterator.ToStart()
+			}
+		}
+
+		// Close all output queues.
+		iterator.ToStart()
+		for iterator.HasNext() {
+			var output = iterator.GetNext()
+			output.CloseChannel()
+		}
+	}()
+
+	return outputs
 }
 
 func (c *queueClass_[V]) Join(
 	group Synchronized,
 	inputs Sequential[QueueLike[V]],
 ) QueueLike[V] {
-	var result_ QueueLike[V]
-	// TBD - Add the function implementation.
-	return result_
+	// Validate the arguments.
+	if !uti.IsDefined(inputs) || inputs.IsEmpty() {
+		panic("The number of input queues for a join must be at least one.")
+	}
+
+	// Create the new output queue.
+	var iterator = inputs.GetIterator()
+	var capacity = iterator.GetNext().GetCapacity()
+	var output = c.QueueWithCapacity(capacity)
+
+	// Connect up the input queues to the output queue.
+	group.Add(1)
+	go func() {
+		// Make sure the wait group is decremented on termination.
+		defer group.Done()
+
+		// Take turns reading from each input queue and writing to the output queue.
+		iterator.ToStart()
+		for {
+			var input = iterator.GetNext()
+			var value, ok = input.RemoveFirst() // Will block when empty.
+			if !ok {
+				break // The input queue has been closed.
+			}
+			output.AddValue(value) // Will block when full.
+			if !iterator.HasNext() {
+				iterator.ToStart()
+			}
+		}
+
+		// Close the output queue.
+		output.CloseChannel()
+	}()
+
+	return output
 }
 
 // INSTANCE INTERFACE
@@ -117,49 +246,75 @@ func (v *queue_[V]) GetCapacity() age.Size {
 func (v *queue_[V]) AddValue(
 	value V,
 ) {
-	// TBD - Add the method implementation.
+	v.mutex_.Lock()
+	v.values_.AppendValue(value)
+	v.mutex_.Unlock()
+	v.available_ <- true // The queue will block if at capacity.
 }
 
 func (v *queue_[V]) RemoveFirst() (
 	first V,
 	ok bool,
 ) {
-	// TBD - Add the method implementation.
+	// Remove the first value from the queue if one exists.
+	_, ok = <-v.available_ // Will block until a value is available.
+	if ok {
+		v.mutex_.Lock()
+		first = v.values_.RemoveValue(1)
+		v.mutex_.Unlock()
+	}
 	return
 }
 
 func (v *queue_[V]) RemoveAll() {
-	// TBD - Add the method implementation.
+	v.mutex_.Lock()
+	v.available_ = make(chan bool, v.capacity_)
+	var listClass = ListClass[V]()
+	v.values_ = listClass.List()
+	v.mutex_.Unlock()
 }
 
 func (v *queue_[V]) CloseChannel() {
-	// TBD - Add the method implementation.
+	v.mutex_.Lock()
+	close(v.available_)
+	// No more values can be placed on the queue.
+	v.mutex_.Unlock()
 }
 
 // Sequential[V] Methods
 
 func (v *queue_[V]) IsEmpty() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	v.mutex_.Lock()
+	var result = len(v.available_) == 0
+	v.mutex_.Unlock()
+	return result
 }
 
 func (v *queue_[V]) GetSize() age.Size {
-	var result_ age.Size
-	// TBD - Add the method implementation.
-	return result_
+	v.mutex_.Lock()
+	var size = age.Size(len(v.available_))
+	v.mutex_.Unlock()
+	return size
 }
 
 func (v *queue_[V]) AsArray() []V {
-	var result_ []V
-	// TBD - Add the method implementation.
-	return result_
+	v.mutex_.Lock()
+	var array = v.values_.AsArray()
+	v.mutex_.Unlock()
+	return array
 }
 
 func (v *queue_[V]) GetIterator() age.IteratorLike[V] {
-	var result_ age.IteratorLike[V]
-	// TBD - Add the method implementation.
-	return result_
+	v.mutex_.Lock()
+	var iterator = v.values_.GetIterator()
+	v.mutex_.Unlock()
+	return iterator
+}
+
+// Stringer Methods
+
+func (v *queue_[V]) String() string {
+	return uti.Format(v)
 }
 
 // PROTECTED INTERFACE
@@ -168,9 +323,17 @@ func (v *queue_[V]) GetIterator() age.IteratorLike[V] {
 
 // Instance Structure
 
+// NOTE:
+// If the Go "chan" type ever supports snapshots of its state, the underlying
+// list and mutex can be removed and the channel modified to pass the values
+// instead of the availability. Currently, the underlying list is only required
+// by the "AsArray()" instance method.
 type queue_[V any] struct {
 	// Declare the instance attributes.
-	capacity_ age.Size
+	available_ chan bool
+	capacity_  age.Size
+	mutex_     syn.Mutex
+	values_    ListLike[V]
 }
 
 // Class Structure

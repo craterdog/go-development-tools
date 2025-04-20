@@ -27,22 +27,27 @@ import (
 
 // Access Function
 
-func LineClass() LineClassLike {
-	return lineClass()
+func ExpressionOptionClass() ExpressionOptionClassLike {
+	return expressionOptionClass()
 }
 
 // Constructor Methods
 
-func (c *lineClass_) Line(
-	identifier IdentifierLike,
+func (c *expressionOptionClass_) ExpressionOption(
+	newline string,
+	lowercase string,
 	optionalNote string,
-) LineLike {
-	if uti.IsUndefined(identifier) {
-		panic("The \"identifier\" attribute is required by this class.")
+) ExpressionOptionLike {
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
 	}
-	var instance = &line_{
+	if uti.IsUndefined(lowercase) {
+		panic("The \"lowercase\" attribute is required by this class.")
+	}
+	var instance = &expressionOption_{
 		// Initialize the instance attributes.
-		identifier_:   identifier,
+		newline_:      newline,
+		lowercase_:    lowercase,
 		optionalNote_: optionalNote,
 	}
 	return instance
@@ -52,17 +57,21 @@ func (c *lineClass_) Line(
 
 // Principal Methods
 
-func (v *line_) GetClass() LineClassLike {
-	return lineClass()
+func (v *expressionOption_) GetClass() ExpressionOptionClassLike {
+	return expressionOptionClass()
 }
 
 // Attribute Methods
 
-func (v *line_) GetIdentifier() IdentifierLike {
-	return v.identifier_
+func (v *expressionOption_) GetNewline() string {
+	return v.newline_
 }
 
-func (v *line_) GetOptionalNote() string {
+func (v *expressionOption_) GetLowercase() string {
+	return v.lowercase_
+}
+
+func (v *expressionOption_) GetOptionalNote() string {
 	return v.optionalNote_
 }
 
@@ -70,24 +79,25 @@ func (v *line_) GetOptionalNote() string {
 
 // Instance Structure
 
-type line_ struct {
+type expressionOption_ struct {
 	// Declare the instance attributes.
-	identifier_   IdentifierLike
+	newline_      string
+	lowercase_    string
 	optionalNote_ string
 }
 
 // Class Structure
 
-type lineClass_ struct {
+type expressionOptionClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func lineClass() *lineClass_ {
-	return lineClassReference_
+func expressionOptionClass() *expressionOptionClass_ {
+	return expressionOptionClassReference_
 }
 
-var lineClassReference_ = &lineClass_{
+var expressionOptionClassReference_ = &expressionOptionClass_{
 	// Initialize the class constants.
 }

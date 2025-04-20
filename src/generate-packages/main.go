@@ -15,10 +15,10 @@ package main
 import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v5"
+	gen "github.com/craterdog/go-code-generation/v6"
 	fra "github.com/craterdog/go-collection-framework/v5"
 	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v5"
+	not "github.com/craterdog/go-syntax-notation/v6"
 	osx "os"
 	sts "strings"
 )

@@ -2,7 +2,7 @@ echo "Importing the following modules:"
 rm -rf ./tst
 mkdir -p ./tst/
 
-module=go-syntax-notation/v5
+module=go-syntax-notation/v6
 echo "  ${module}"
 mkdir -p ./tst/${module}/
 cp -r ../${module}/ ./tst/${module}/

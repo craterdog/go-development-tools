@@ -20,7 +20,7 @@
 package grammar
 
 import (
-	ast "github.com/craterdog/go-syntax-notation/v5/ast"
+	ast "github.com/craterdog/go-syntax-notation/v6/ast"
 	sts "strings"
 )
 
@@ -96,12 +96,6 @@ func (v *formatter_) ProcessLowercase(
 	v.appendString(lowercase)
 }
 
-func (v *formatter_) ProcessNewline(
-	newline string,
-) {
-	v.appendString(newline)
-}
-
 func (v *formatter_) ProcessNote(
 	note string,
 ) {
@@ -119,6 +113,12 @@ func (v *formatter_) ProcessOptional(
 	optional string,
 ) {
 	v.appendString(optional)
+}
+
+func (v *formatter_) ProcessQuote(
+	quote string,
+) {
+	v.appendString(quote)
 }
 
 func (v *formatter_) ProcessRepeated(
@@ -186,6 +186,14 @@ func (v *formatter_) PostprocessExpression(
 	v.appendNewline()
 }
 
+func (v *formatter_) PreprocessExpressionOption(
+	expressionOption ast.ExpressionOptionLike,
+	index uint,
+	size uint,
+) {
+	v.appendNewline()
+}
+
 func (v *formatter_) PreprocessExtent(
 	extent ast.ExtentLike,
 ) {
@@ -221,19 +229,42 @@ func (v *formatter_) PostprocessGroup(
 	v.appendString(")")
 }
 
+func (v *formatter_) PostprocessInline(
+	inline ast.InlineLike,
+) {
+	v.appendNewline()
+}
+
 func (v *formatter_) PreprocessLimit(
 	limit ast.LimitLike,
 ) {
 	v.appendString("..")
 }
 
-func (v *formatter_) PreprocessLine(
-	line ast.LineLike,
-	index uint,
-	size uint,
+func (v *formatter_) PreprocessMultiexpression(
+	multiexpression ast.MultiexpressionLike,
 ) {
+	v.depth_++
+}
+
+func (v *formatter_) PostprocessMultiexpression(
+	multiexpression ast.MultiexpressionLike,
+) {
+	v.depth_--
 	v.appendNewline()
-	v.appendString("  - ")
+}
+
+func (v *formatter_) PreprocessMultirule(
+	multirule ast.MultiruleLike,
+) {
+	v.depth_++
+}
+
+func (v *formatter_) PostprocessMultirule(
+	multirule ast.MultiruleLike,
+) {
+	v.depth_--
+	v.appendNewline()
 }
 
 func (v *formatter_) PostprocessNotice(
@@ -295,6 +326,13 @@ func (v *formatter_) PostprocessRule(
 	size uint,
 ) {
 	v.appendNewline()
+}
+
+func (v *formatter_) PreprocessRuleOption(
+	ruleOption ast.RuleOptionLike,
+	index uint,
+	size uint,
+) {
 	v.appendNewline()
 }
 
@@ -312,7 +350,7 @@ func (v *formatter_) PreprocessTerm(
 
 func (v *formatter_) appendNewline() {
 	var newline = "\n"
-	var indentation = "\t"
+	var indentation = "    "
 	var level uint
 	for ; level < v.depth_; level++ {
 		newline += indentation

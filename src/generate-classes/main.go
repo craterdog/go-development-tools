@@ -15,7 +15,7 @@ package main
 import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v5"
+	gen "github.com/craterdog/go-code-generation/v6"
 	uti "github.com/craterdog/go-missing-utilities/v2"
 	osx "os"
 	sts "strings"

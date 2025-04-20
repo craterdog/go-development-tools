@@ -1,4 +1,4 @@
-module github.com/craterdog/go-syntax-notation/v5
+module github.com/craterdog/go-syntax-notation/v6
 
 go 1.23
 

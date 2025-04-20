@@ -53,9 +53,9 @@ $AdditionalConstraint: "," Constraint
 $Abstraction: Prefix? name Suffix? Arguments?
 
 $Prefix:
-  - Array
-  - Map
-  - Channel
+    Array
+    Map
+    Channel
 
 $Array: "[" "]"
 
@@ -84,9 +84,9 @@ $FunctionalDeclaration: Declaration "func" "(" Parameter* ")" Result
 $Parameter: name Abstraction ","
 
 $Result:
-  - None
-  - Abstraction
-  - Multivalue
+    None
+    Abstraction
+    Multivalue
 
 $None: newline
 
@@ -125,8 +125,8 @@ $Method: name "(" Parameter* ")" Result?
 $AttributeSubsection: "// Attribute Methods" AttributeMethod+
 
 $AttributeMethod:
-  - GetterMethod
-  - SetterMethod
+    GetterMethod
+    SetterMethod
 
 $GetterMethod: name "(" ")" Abstraction
 
