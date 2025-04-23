@@ -13,8 +13,8 @@ echo "  generate-classes"
 go build -o ./bin/ ./src/generate-classes
 echo "  generate-module"
 go build -o ./bin/ ./src/generate-module
-echo "  generate-packages"
-go build -o ./bin/ ./src/generate-packages
+echo "  generate-project"
+go build -o ./bin/ ./src/generate-project
 echo "Done."
 echo
 
@@ -23,7 +23,7 @@ moduleName=github.com/craterdog/${directory:6}/v6
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
 bin/format-syntax ${directory}/v6/Syntax.cdsn
 echo
-bin/generate-packages ${moduleName} ${wikiPath} ${directory}/v6/
+bin/generate-project ${moduleName} ${wikiPath} ${directory}/v6/
 echo
 bin/generate-module ${moduleName} ${wikiPath} ${directory}/v6/ ast grammar
 echo
@@ -43,7 +43,7 @@ moduleName=github.com/craterdog/${directory:6}/v5
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
 bin/format-syntax ${directory}/v5/Syntax.cdsn
 echo
-bin/generate-packages ${moduleName} ${wikiPath} ${directory}/v5/
+bin/generate-project ${moduleName} ${wikiPath} ${directory}/v5/
 echo
 bin/generate-module ${moduleName} ${wikiPath} ${directory}/v5/ ast grammar
 echo
