@@ -77,15 +77,6 @@ func (v *association_[K, V]) SetValue(
 	v.value_ = value
 }
 
-// Stringer Methods
-
-func (v *association_[K, V]) String() string {
-	var result = uti.Format(v.GetKey())
-	result += ": "
-	result += uti.Format(v.GetValue())
-	return result
-}
-
 // PROTECTED INTERFACE
 
 // Private Methods

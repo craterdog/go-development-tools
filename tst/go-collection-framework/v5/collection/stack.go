@@ -30,12 +30,8 @@ func StackClass[V any]() StackClassLike[V] {
 // Constructor Methods
 
 func (c *stackClass_[V]) Stack() StackLike[V] {
-	var listClass = ListClass[V]()
-	var values = listClass.List()
 	var instance = &stack_[V]{
 		// Initialize the instance attributes.
-		capacity_: c.defaultCapacity_,
-		values_:   values,
 	}
 	return instance
 }
@@ -43,42 +39,29 @@ func (c *stackClass_[V]) Stack() StackLike[V] {
 func (c *stackClass_[V]) StackWithCapacity(
 	capacity age.Size,
 ) StackLike[V] {
-	if capacity < 1 {
-		capacity = c.defaultCapacity_
+	if uti.IsUndefined(capacity) {
+		panic("The \"capacity\" attribute is required by this class.")
 	}
-	var listClass = ListClass[V]()
-	var values = listClass.List()
 	var instance = &stack_[V]{
 		// Initialize the instance attributes.
 		capacity_: capacity,
-		values_:   values,
 	}
 	return instance
 }
 
 func (c *stackClass_[V]) StackFromArray(
-	array []V,
+	values []V,
 ) StackLike[V] {
-	var listClass = ListClass[V]()
-	var values = listClass.ListFromArray(array)
-	var instance = &stack_[V]{
-		// Initialize the instance attributes.
-		capacity_: c.defaultCapacity_,
-		values_:   values,
-	}
+	var instance StackLike[V]
+	// TBD - Add the constructor implementation.
 	return instance
 }
 
 func (c *stackClass_[V]) StackFromSequence(
-	sequence Sequential[V],
+	values Sequential[V],
 ) StackLike[V] {
-	var listClass = ListClass[V]()
-	var values = listClass.ListFromSequence(sequence)
-	var instance = &stack_[V]{
-		// Initialize the instance attributes.
-		capacity_: c.defaultCapacity_,
-		values_:   values,
-	}
+	var instance StackLike[V]
+	// TBD - Add the constructor implementation.
 	return instance
 }
 
@@ -105,49 +88,43 @@ func (v *stack_[V]) GetCapacity() age.Size {
 func (v *stack_[V]) AddValue(
 	value V,
 ) {
-	if v.values_.GetSize() == v.capacity_ {
-		panic("Attempted to add a value onto a stack that has reached its capacity.")
-	}
-	v.values_.InsertValue(0, value)
+	// TBD - Add the method implementation.
 }
 
 func (v *stack_[V]) RemoveLast() V {
-	if v.values_.IsEmpty() {
-		panic("Attempted to remove a value from an empty stack!")
-	}
-	var last = v.values_.RemoveValue(1)
-	return last
+	var result_ V
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *stack_[V]) RemoveAll() {
-	v.values_.RemoveAll()
+	// TBD - Add the method implementation.
 }
 
 // Sequential[V] Methods
 
 func (v *stack_[V]) IsEmpty() bool {
-	return v.values_.IsEmpty()
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *stack_[V]) GetSize() age.Size {
-	var size = v.values_.GetSize()
-	return size
+	var result_ age.Size
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *stack_[V]) AsArray() []V {
-	var array = v.values_.AsArray()
-	return array
+	var result_ []V
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v *stack_[V]) GetIterator() age.IteratorLike[V] {
-	var iterator = v.values_.GetIterator()
-	return iterator
-}
-
-// Stringer Methods
-
-func (v *stack_[V]) String() string {
-	return uti.Format(v)
+	var result_ age.IteratorLike[V]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // PROTECTED INTERFACE
@@ -159,14 +136,12 @@ func (v *stack_[V]) String() string {
 type stack_[V any] struct {
 	// Declare the instance attributes.
 	capacity_ age.Size
-	values_   ListLike[V]
 }
 
 // Class Structure
 
 type stackClass_[V any] struct {
 	// Declare the class constants.
-	defaultCapacity_ age.Size
 }
 
 // Class Reference
@@ -190,7 +165,6 @@ func stackClass[V any]() *stackClass_[V] {
 		// Add a new bound class type.
 		class = &stackClass_[V]{
 			// Initialize the class constants.
-			defaultCapacity_: 16,
 		}
 		stackMap_[name] = class
 	}
