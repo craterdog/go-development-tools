@@ -44,21 +44,16 @@ func generateModule(
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
-	var generator = gen.ModuleGenerator()
 	var existing string
 	var filename = directory + "Module.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	var moduleSynthesizer = gen.ModuleSynthesizer(
-		moduleName,
-		models,
-	)
-	var generated = generator.GenerateModule(
+	var generated = gen.GenerateModule(
 		moduleName,
 		wikiPath,
 		existing,
-		moduleSynthesizer,
+		models,
 	)
 	uti.WriteFile(filename, generated)
 }

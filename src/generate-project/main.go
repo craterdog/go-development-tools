@@ -33,7 +33,7 @@ func main() {
 	validateSyntax(syntax)
 	generateAstPackage(moduleName, wikiPath, directory, syntax)
 	generateGrammarPackage(moduleName, wikiPath, directory, syntax)
-	generateModuleFile(moduleName, wikiPath, directory)
+	generateModule(moduleName, wikiPath, directory)
 	fmt.Println("Done.")
 }
 
@@ -44,31 +44,26 @@ func generateAstPackage(
 	syntax not.SyntaxLike,
 ) {
 	var packageName = "ast"
+	uti.RemakeDirectory(directory + packageName)
 	var filename = directory + packageName + "/Package.go"
 	fmt.Printf("  Generating %v...\n", filename)
-	uti.RemakeDirectory(directory + packageName)
-	var generator = gen.PackageGenerator()
-	var astSynthesizer = gen.AstSynthesizer(syntax)
-	var source = generator.GeneratePackage(
+	var model = gen.GenerateAstPackage(
 		moduleName,
 		wikiPath,
-		packageName,
-		"", // The AST package does not yet exist.
-		astSynthesizer,
+		syntax,
 	)
+	var source = gen.FormatModel(model)
 	uti.WriteFile(filename, source)
-	var astModel = parseModel(source)
-	generateClasses(moduleName, directory, packageName, astModel)
+	generateAstClasses(moduleName, packageName, directory, model)
 }
 
-func generateClasses(
+func generateAstClasses(
 	moduleName string,
-	directory string,
 	packageName string,
-	astModel mod.ModelLike,
+	directory string,
+	model mod.ModelLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var interfaceDeclarations = astModel.GetInterfaceDeclarations()
+	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
 	for classDeclarations.HasNext() {
@@ -76,13 +71,10 @@ func generateClasses(
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
-		var nodeSynthesizer = gen.NodeSynthesizer(astModel, className)
-		var source = generator.GenerateClass(
+		var source = gen.GenerateAstClass(
 			moduleName,
-			packageName,
 			className,
-			"", // The class will be completely overwritten.
-			nodeSynthesizer,
+			model,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
 		uti.WriteFile(filename, source)
@@ -94,23 +86,17 @@ func generateFormatter(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "formatter"
 	var existing string
-	var filename = directory + packageName + "/" + className + ".go"
+	var filename = directory + "grammar/formatter.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	var formatterSynthesizer = gen.FormatterSynthesizer(syntax)
-	var generated = generator.GenerateClass(
+	var source = gen.GenerateFormatterClass(
 		moduleName,
-		packageName,
-		className,
 		existing,
-		formatterSynthesizer,
+		syntax,
 	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func generateGrammarPackage(
@@ -119,18 +105,14 @@ func generateGrammarPackage(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var packageName = "grammar"
-	var filename = directory + packageName + "/Package.go"
+	var filename = directory + "grammar/Package.go"
 	fmt.Printf("  Generating %v...\n", filename)
-	var generator = gen.PackageGenerator()
-	var grammarSynthesizer = gen.GrammarSynthesizer(syntax)
-	var source = generator.GeneratePackage(
+	var model = gen.GenerateGrammarPackage(
 		moduleName,
 		wikiPath,
-		packageName,
-		"", // The grammar package does not yet exist.
-		grammarSynthesizer,
+		syntax,
 	)
+	var source = gen.FormatModel(model)
 	uti.WriteFile(filename, source)
 	generateFormatter(moduleName, directory, syntax)
 	generateParser(moduleName, directory, syntax)
@@ -141,7 +123,7 @@ func generateGrammarPackage(
 	generateVisitor(moduleName, directory, syntax)
 }
 
-func generateModuleFile(
+func generateModule(
 	moduleName string,
 	wikiPath string,
 	directory string,
@@ -163,18 +145,13 @@ func generateModuleFile(
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	var moduleSynthesizer = gen.ModuleSynthesizer(
-		moduleName,
-		models,
-	)
-	var generator = gen.ModuleGenerator()
-	var generated = generator.GenerateModule(
+	var source = gen.GenerateModule(
 		moduleName,
 		wikiPath,
 		existing,
-		moduleSynthesizer,
+		models,
 	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func generateParser(
@@ -182,18 +159,11 @@ func generateParser(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "parser"
-	var parserSynthesizer = gen.ParserSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var source = gen.GenerateParserClass(
 		moduleName,
-		packageName,
-		className,
-		"", // The parser class will be completely overwritten.
-		parserSynthesizer,
+		syntax,
 	)
-	var filename = directory + packageName + "/" + className + ".go"
+	var filename = directory + "grammar/parser.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -202,18 +172,11 @@ func generateProcessor(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "processor"
-	var processorSynthesizer = gen.ProcessorSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var source = gen.GenerateProcessorClass(
 		moduleName,
-		packageName,
-		className,
-		"", // The processor class will be completely overwritten.
-		processorSynthesizer,
+		syntax,
 	)
-	var filename = directory + packageName + "/" + className + ".go"
+	var filename = directory + "grammar/processor.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -222,18 +185,11 @@ func generateScanner(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "scanner"
-	var scannerSynthesizer = gen.ScannerSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var source = gen.GenerateScannerClass(
 		moduleName,
-		packageName,
-		className,
-		"", // The scanner class will be completely overwritten.
-		scannerSynthesizer,
+		syntax,
 	)
-	var filename = directory + packageName + "/" + className + ".go"
+	var filename = directory + "grammar/scanner.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -242,18 +198,11 @@ func generateToken(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "token"
-	var tokenSynthesizer = gen.TokenSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var source = gen.GenerateTokenClass(
 		moduleName,
-		packageName,
-		className,
-		"", // The token class will be completely overwritten.
-		tokenSynthesizer,
+		syntax,
 	)
-	var filename = directory + packageName + "/" + className + ".go"
+	var filename = directory + "grammar/token.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -262,23 +211,17 @@ func generateValidator(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "validator"
-	var filename = directory + packageName + "/" + className + ".go"
 	var existing string
+	var filename = directory + "grammar/validator.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	var validatorSynthesizer = gen.ValidatorSynthesizer(syntax)
-	var generated = generator.GenerateClass(
+	var source = gen.GenerateValidatorClass(
 		moduleName,
-		packageName,
-		className,
 		existing,
-		validatorSynthesizer,
+		syntax,
 	)
-	uti.WriteFile(filename, generated)
+	uti.WriteFile(filename, source)
 }
 
 func generateVisitor(
@@ -286,18 +229,11 @@ func generateVisitor(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var generator = gen.ClassGenerator()
-	var packageName = "grammar"
-	var className = "visitor"
-	var visitorSynthesizer = gen.VisitorSynthesizer(syntax)
-	var source = generator.GenerateClass(
+	var source = gen.GenerateVisitorClass(
 		moduleName,
-		packageName,
-		className,
-		"", // The visitor class will be completely overwritten.
-		visitorSynthesizer,
+		syntax,
 	)
-	var filename = directory + packageName + "/" + className + ".go"
+	var filename = directory + "grammar/visitor.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -313,14 +249,6 @@ func getVersion() string {
 	var lines = sts.Split(source, "\n")
 	var version = sts.Split(lines[6], " ")[1]
 	return version
-}
-
-func parseModel(
-	source string,
-) mod.ModelLike {
-	var model = mod.ParseSource(source)
-	mod.ValidateModel(model)
-	return model
 }
 
 func parseSyntax(syntaxFile string) not.SyntaxLike {

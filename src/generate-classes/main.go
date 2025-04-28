@@ -42,7 +42,7 @@ func generatePackage(
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 	fmt.Println("  Generating the following classes...")
-	var generator = gen.ClassGenerator()
+	var existing string
 	var interfaceDeclarations = model.GetInterfaceDeclarations()
 	var classSection = interfaceDeclarations.GetClassSection()
 	var classDeclarations = classSection.GetClassDeclarations().GetIterator()
@@ -52,13 +52,12 @@ func generatePackage(
 		className = sts.TrimSuffix(className, "ClassLike")
 		className = uti.MakeLowerCase(className)
 		fmt.Printf("    %s/%s.go\n", packageName, className)
-		var classSynthesizer = gen.ClassSynthesizer(model, className)
-		var source = generator.GenerateClass(
+		var source = gen.GenerateClass(
 			moduleName,
 			packageName,
 			className,
-			"", // The class does not yet exist.
-			classSynthesizer,
+			existing,
+			model,
 		)
 		var filename = directory + packageName + "/" + className + ".go"
 		uti.WriteFile(filename, source)
