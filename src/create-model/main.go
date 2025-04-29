@@ -68,7 +68,7 @@ func retrieveArguments() (
 	packageName string,
 	directory string,
 ) {
-	if len(osx.Args) < 4 {
+	if len(osx.Args) < 5 {
 		var tool = getTool()
 		fmt.Printf("  Usage: %v <moduleName> <wikiPath> <packageName> <directory>\n", tool)
 		osx.Exit(1)

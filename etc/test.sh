@@ -5,12 +5,14 @@ echo "Done."
 echo
 
 echo "Compiling the following tools:"
-echo "  format-model"
-go build -o ./bin/ ./src/format-model
+echo "  create-syntax"
+go build -o ./bin/ ./src/create-syntax
 echo "  format-syntax"
 go build -o ./bin/ ./src/format-syntax
-echo "  create-project"
-go build -o ./bin/ ./src/create-project
+echo "  create-model"
+go build -o ./bin/ ./src/create-model
+echo "  format-model"
+go build -o ./bin/ ./src/format-model
 echo "  generate-classes"
 go build -o ./bin/ ./src/generate-classes
 echo "  generate-module"
@@ -83,3 +85,16 @@ EOF
 go mod tidy >/dev/null 2>&1
 golangci-lint run
 cd - >/dev/null
+
+directory=./tst/go-example-project
+moduleName=github.com/craterdog/${directory:6}/v2
+wikiPath=https://github.com/craterdog/${directory:6}/wiki
+packageName=example
+bin/create-syntax ${directory}/v2
+echo
+bin/format-syntax ${directory}/v2/Syntax.cdsn
+echo
+bin/create-model ${moduleName} ${wikiPath} ${packageName} ${directory}/v2
+echo
+bin/format-model ${directory}/v2/example/Package.go
+echo
