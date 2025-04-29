@@ -9,6 +9,8 @@ echo "  format-model"
 go build -o ./bin/ ./src/format-model
 echo "  format-syntax"
 go build -o ./bin/ ./src/format-syntax
+echo "  create-project"
+go build -o ./bin/ ./src/create-project
 echo "  generate-classes"
 go build -o ./bin/ ./src/generate-classes
 echo "  generate-module"
