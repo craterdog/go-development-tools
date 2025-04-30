@@ -38,8 +38,10 @@ func generateModule(
 	packages []string,
 ) {
 	var models = fra.Catalog[string, mod.ModelLike]()
+	fmt.Println("  Analyzing the following packages...")
 	for _, packageName := range packages {
 		var filename = directory + packageName + "/Package.go"
+		fmt.Printf("    %s/Package.go\n", packageName)
 		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
@@ -49,6 +51,7 @@ func generateModule(
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
+	fmt.Println("  Generating the Module.go file...")
 	var generated = gen.GenerateModule(
 		moduleName,
 		wikiPath,
