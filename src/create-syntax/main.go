@@ -32,7 +32,7 @@ func createSyntax(
 	directory string,
 ) {
 	uti.RemakeDirectory(directory)
-	var filename = directory + "/Syntax.cdsn"
+	var filename = directory + "Syntax.cdsn"
 	fmt.Printf("  Generating %v...\n", filename)
 	var source = exampleSyntax()
 	uti.WriteFile(filename, source)
