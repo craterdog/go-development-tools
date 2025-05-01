@@ -14,9 +14,9 @@ package main
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v6"
-	uti "github.com/craterdog/go-missing-utilities/v2"
+	mod "github.com/craterdog/go-class-model/v7"
+	gen "github.com/craterdog/go-code-generation/v7"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	osx "os"
 	sts "strings"
 )
@@ -37,7 +37,7 @@ func createPackage(
 	directory string,
 ) {
 	uti.RemakeDirectory(directory + packageName)
-	var filename = directory + packageName + "/Package.go"
+	var filename = directory + packageName + "/package_spec.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var model = gen.CreatePackage(
 		moduleName,

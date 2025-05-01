@@ -23,15 +23,15 @@ echo "Done."
 echo
 
 directory=./tst/go-syntax-notation
-moduleName=github.com/craterdog/${directory:6}/v6
+moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-syntax ${directory}/v6/Syntax.cdsn
+bin/format-syntax ${directory}/v7/syntax.cdsn
 echo
-bin/generate-project ${moduleName} ${wikiPath} ${directory}/v6/
+bin/generate-project ${moduleName} ${wikiPath} ${directory}/v7/
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v6/ ast grammar
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ ast grammar
 echo
-cd ${directory}/v6
+cd ${directory}/v7
 gofmt -w . >/dev/null
 cat <<EOF > go.mod
 module ${moduleName}
@@ -43,15 +43,15 @@ golangci-lint run
 cd - >/dev/null
 
 directory=./tst/go-class-model
-moduleName=github.com/craterdog/${directory:6}/v5
+moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-syntax ${directory}/v5/Syntax.cdsn
+bin/format-syntax ${directory}/v7/syntax.cdsn
 echo
-bin/generate-project ${moduleName} ${wikiPath} ${directory}/v5/
+bin/generate-project ${moduleName} ${wikiPath} ${directory}/v7/
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v5/ ast grammar
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ ast grammar
 echo
-cd ${directory}/v5
+cd ${directory}/v7
 gofmt -w . >/dev/null
 cat <<EOF > go.mod
 module ${moduleName}
@@ -63,19 +63,19 @@ golangci-lint run
 cd - >/dev/null
 
 directory=./tst/go-collection-framework
-moduleName=github.com/craterdog/${directory:6}/v5
+moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-model ${directory}/v5/agent/Package.go
+bin/format-model ${directory}/v7/agent/package_spec.go
 echo
-bin/format-model ${directory}/v5/collection/Package.go
+bin/format-model ${directory}/v7/collection/package_spec.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v5/ agent
+bin/generate-classes ${moduleName} ${directory}/v7/ agent
 echo
-bin/generate-classes ${moduleName} ${directory}/v5/ collection
+bin/generate-classes ${moduleName} ${directory}/v7/ collection
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v5/ agent collection
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ agent collection
 echo
-cd ${directory}/v5
+cd ${directory}/v7
 gofmt -w . >/dev/null
 cat <<EOF > go.mod
 module ${moduleName}
@@ -92,9 +92,11 @@ wikiPath=https://github.com/craterdog/${directory:6}/wiki
 packageName=example
 bin/create-syntax ${directory}/v2
 echo
-bin/format-syntax ${directory}/v2/Syntax.cdsn
+bin/format-syntax ${directory}/v2/syntax.cdsn
 echo
 bin/create-model ${moduleName} ${wikiPath} ${packageName} ${directory}/v2
 echo
-bin/format-model ${directory}/v2/example/Package.go
+bin/format-model ${directory}/v2/example/package_spec.go
+echo
+bin/generate-classes ${moduleName} ${directory}/v2/ example
 echo

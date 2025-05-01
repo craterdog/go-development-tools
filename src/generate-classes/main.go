@@ -14,9 +14,9 @@ package main
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v6"
-	uti "github.com/craterdog/go-missing-utilities/v2"
+	mod "github.com/craterdog/go-class-model/v7"
+	gen "github.com/craterdog/go-code-generation/v7"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	osx "os"
 	sts "strings"
 )
@@ -38,7 +38,7 @@ func generatePackage(
 	model mod.ModelLike,
 ) {
 	uti.RemakeDirectory(directory + packageName)
-	var filename = directory + packageName + "/Package.go"
+	var filename = directory + packageName + "/package_spec.go"
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 	fmt.Println("  Generating the following classes...")
@@ -59,6 +59,7 @@ func generatePackage(
 			existing,
 			model,
 		)
+		className = uti.MakeUpperCase(className)
 		var filename = directory + packageName + "/" + className + ".go"
 		uti.WriteFile(filename, source)
 	}
@@ -111,8 +112,8 @@ func retrieveArguments() (
 }
 
 func validateModelFile(directory string) mod.ModelLike {
-	fmt.Println("  Validating the Package.go file...")
-	var modelFile = directory + "/Package.go"
+	fmt.Println("  Validating the package_spec.go file...")
+	var modelFile = directory + "/package_spec.go"
 	var model = parseModel(modelFile)
 	mod.ValidateModel(model)
 	return model

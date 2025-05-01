@@ -14,8 +14,8 @@ package main
 
 import (
 	fmt "fmt"
-	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v6"
+	uti "github.com/craterdog/go-missing-utilities/v7"
+	not "github.com/craterdog/go-syntax-notation/v7"
 	osx "os"
 	sts "strings"
 )

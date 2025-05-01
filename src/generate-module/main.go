@@ -14,10 +14,10 @@ package main
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v6"
-	fra "github.com/craterdog/go-collection-framework/v5"
-	uti "github.com/craterdog/go-missing-utilities/v2"
+	mod "github.com/craterdog/go-class-model/v7"
+	gen "github.com/craterdog/go-code-generation/v7"
+	fra "github.com/craterdog/go-collection-framework/v7"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	osx "os"
 	sts "strings"
 )
@@ -40,18 +40,18 @@ func generateModule(
 	var models = fra.Catalog[string, mod.ModelLike]()
 	fmt.Println("  Analyzing the following packages...")
 	for _, packageName := range packages {
-		var filename = directory + packageName + "/Package.go"
-		fmt.Printf("    %s/Package.go\n", packageName)
+		var filename = directory + packageName + "/package_spec.go"
+		fmt.Printf("    %s/package_spec.go\n", packageName)
 		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
 	var existing string
-	var filename = directory + "Module.go"
+	var filename = directory + "module_spec.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	fmt.Println("  Generating the Module.go file...")
+	fmt.Println("  Generating the module_spec.go file...")
 	var generated = gen.GenerateModule(
 		moduleName,
 		wikiPath,

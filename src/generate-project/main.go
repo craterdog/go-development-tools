@@ -14,11 +14,11 @@ package main
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5"
-	gen "github.com/craterdog/go-code-generation/v6"
-	fra "github.com/craterdog/go-collection-framework/v5"
-	uti "github.com/craterdog/go-missing-utilities/v2"
-	not "github.com/craterdog/go-syntax-notation/v6"
+	mod "github.com/craterdog/go-class-model/v7"
+	gen "github.com/craterdog/go-code-generation/v7"
+	fra "github.com/craterdog/go-collection-framework/v7"
+	uti "github.com/craterdog/go-missing-utilities/v7"
+	not "github.com/craterdog/go-syntax-notation/v7"
 	osx "os"
 	sts "strings"
 )
@@ -28,7 +28,7 @@ func main() {
 	var version = getVersion()
 	fmt.Printf("Tool: %v %v\n", tool, version)
 	var moduleName, wikiPath, directory = retrieveArguments()
-	var syntaxFile = directory + "Syntax.cdsn"
+	var syntaxFile = directory + "syntax.cdsn"
 	var syntax = parseSyntax(syntaxFile)
 	validateSyntax(syntax)
 	generateAstPackage(moduleName, wikiPath, directory, syntax)
@@ -45,7 +45,7 @@ func generateAstPackage(
 ) {
 	var packageName = "ast"
 	uti.RemakeDirectory(directory + packageName)
-	var filename = directory + packageName + "/Package.go"
+	var filename = directory + packageName + "/package_spec.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var model = gen.GenerateAstPackage(
 		moduleName,
@@ -76,6 +76,7 @@ func generateAstClasses(
 			className,
 			model,
 		)
+		className = uti.MakeUpperCase(className)
 		var filename = directory + packageName + "/" + className + ".go"
 		uti.WriteFile(filename, source)
 	}
@@ -105,7 +106,7 @@ func generateGrammarPackage(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var filename = directory + "grammar/Package.go"
+	var filename = directory + "grammar/package_spec.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var model = gen.GenerateGrammarPackage(
 		moduleName,
@@ -134,12 +135,12 @@ func generateModule(
 	}
 	var models = fra.Catalog[string, mod.ModelLike]()
 	for _, packageName := range packages {
-		var filename = directory + packageName + "/Package.go"
+		var filename = directory + packageName + "/package_spec.go"
 		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
-	var filename = directory + "Module.go"
+	var filename = directory + "module_spec.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var existing string
 	if uti.PathExists(filename) {

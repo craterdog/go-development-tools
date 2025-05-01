@@ -14,7 +14,7 @@ package main
 
 import (
 	fmt "fmt"
-	uti "github.com/craterdog/go-missing-utilities/v2"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	osx "os"
 	sts "strings"
 )
@@ -32,7 +32,7 @@ func createSyntax(
 	directory string,
 ) {
 	uti.RemakeDirectory(directory)
-	var filename = directory + "Syntax.cdsn"
+	var filename = directory + "syntax.cdsn"
 	fmt.Printf("  Generating %v...\n", filename)
 	var source = exampleSyntax()
 	uti.WriteFile(filename, source)

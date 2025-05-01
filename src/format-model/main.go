@@ -14,8 +14,8 @@ package main
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v5"
-	uti "github.com/craterdog/go-missing-utilities/v2"
+	mod "github.com/craterdog/go-class-model/v7"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	osx "os"
 	sts "strings"
 )
