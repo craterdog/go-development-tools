@@ -1,5 +1,2 @@
-# Ignore the test directory
-tst/
-
 # Ignore any binary files
 bin/
