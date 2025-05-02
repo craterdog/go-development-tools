@@ -40,18 +40,18 @@ func generateModule(
 	var models = fra.Catalog[string, mod.ModelLike]()
 	fmt.Println("  Analyzing the following packages...")
 	for _, packageName := range packages {
-		var filename = directory + packageName + "/package_spec.go"
-		fmt.Printf("    %s/package_spec.go\n", packageName)
+		var filename = directory + packageName + "/package_api.go"
+		fmt.Printf("    %s/package_api.go\n", packageName)
 		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
 	var existing string
-	var filename = directory + "module_spec.go"
+	var filename = directory + "module_api.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
-	fmt.Println("  Generating the module_spec.go file...")
+	fmt.Println("  Generating the module_api.go file...")
 	var generated = gen.GenerateModule(
 		moduleName,
 		wikiPath,

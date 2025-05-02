@@ -5,11 +5,11 @@
 ### Overview
 This project provides a set of Go based command-line tools that can be used to
 do the following:
- * Validate and reformat a Go class model declared in a `package_spec.go` file;
+ * Validate and reformat a Go class model declared in a `package_api.go` file;
  * Validate and reformat a language grammar defined in a `syntax.cdsn`file;
- * Generate `ast/package_spec.go` and `grammar/package_spec.go` files based on a `syntax.cdsn`
+ * Generate `ast/package_api.go` and `grammar/package_api.go` files based on a `syntax.cdsn`
    file;
- * And generate a `module_spec.go` file based on a set of `package_spec.go` files.
+ * And generate a `module_api.go` file based on a set of `package_api.go` files.
 
 ### Quick Links
 For more information on this project and the projects on which it depends, click

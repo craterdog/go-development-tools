@@ -37,7 +37,7 @@ func createPackage(
 	directory string,
 ) {
 	uti.RemakeDirectory(directory + packageName)
-	var filename = directory + packageName + "/package_spec.go"
+	var filename = directory + packageName + "/package_api.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var model = gen.CreatePackage(
 		moduleName,

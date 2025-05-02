@@ -45,7 +45,7 @@ func generateAstPackage(
 ) {
 	var packageName = "ast"
 	uti.RemakeDirectory(directory + packageName)
-	var filename = directory + packageName + "/package_spec.go"
+	var filename = directory + packageName + "/package_api.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var model = gen.GenerateAstPackage(
 		moduleName,
@@ -106,7 +106,7 @@ func generateGrammarPackage(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var filename = directory + "grammar/package_spec.go"
+	var filename = directory + "grammar/package_api.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var model = gen.GenerateGrammarPackage(
 		moduleName,
@@ -135,12 +135,12 @@ func generateModule(
 	}
 	var models = fra.Catalog[string, mod.ModelLike]()
 	for _, packageName := range packages {
-		var filename = directory + packageName + "/package_spec.go"
+		var filename = directory + packageName + "/package_api.go"
 		var source = uti.ReadFile(filename)
 		var model = mod.ParseSource(source)
 		models.SetValue(packageName, model)
 	}
-	var filename = directory + "module_spec.go"
+	var filename = directory + "module_api.go"
 	fmt.Printf("  Generating %v...\n", filename)
 	var existing string
 	if uti.PathExists(filename) {

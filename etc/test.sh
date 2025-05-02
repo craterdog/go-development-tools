@@ -65,9 +65,9 @@ cd - >/dev/null
 directory=./tst/go-collection-framework
 moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-model ${directory}/v7/agent/package_spec.go
+bin/format-model ${directory}/v7/agent/package_api.go
 echo
-bin/format-model ${directory}/v7/collection/package_spec.go
+bin/format-model ${directory}/v7/collection/package_api.go
 echo
 bin/generate-classes ${moduleName} ${directory}/v7/ agent
 echo
@@ -96,7 +96,7 @@ bin/format-syntax ${directory}/v2/syntax.cdsn
 echo
 bin/create-model ${moduleName} ${wikiPath} ${packageName} ${directory}/v2
 echo
-bin/format-model ${directory}/v2/example/package_spec.go
+bin/format-model ${directory}/v2/example/package_api.go
 echo
 bin/generate-classes ${moduleName} ${directory}/v2/ example
 echo

@@ -38,7 +38,7 @@ func generatePackage(
 	model mod.ModelLike,
 ) {
 	uti.RemakeDirectory(directory + packageName)
-	var filename = directory + packageName + "/package_spec.go"
+	var filename = directory + packageName + "/package_api.go"
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 	fmt.Println("  Generating the following classes...")
@@ -112,8 +112,8 @@ func retrieveArguments() (
 }
 
 func validateModelFile(directory string) mod.ModelLike {
-	fmt.Println("  Validating the package_spec.go file...")
-	var modelFile = directory + "/package_spec.go"
+	fmt.Println("  Validating the package_api.go file...")
+	var modelFile = directory + "/package_api.go"
 	var model = parseModel(modelFile)
 	mod.ValidateModel(model)
 	return model
