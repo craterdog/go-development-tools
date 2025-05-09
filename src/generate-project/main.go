@@ -88,7 +88,7 @@ func generateFormatter(
 	syntax not.SyntaxLike,
 ) {
 	var existing string
-	var filename = directory + "grammar/formatter.go"
+	var filename = directory + "grammar/Formatter.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
@@ -106,8 +106,10 @@ func generateGrammarPackage(
 	directory string,
 	syntax not.SyntaxLike,
 ) {
-	var filename = directory + "grammar/package_api.go"
+	var packageName = "grammar"
+	var filename = directory + packageName + "/package_api.go"
 	fmt.Printf("  Generating %v...\n", filename)
+	uti.MakeDirectory(directory + packageName)
 	var model = gen.GenerateGrammarPackage(
 		moduleName,
 		wikiPath,
@@ -164,7 +166,7 @@ func generateParser(
 		moduleName,
 		syntax,
 	)
-	var filename = directory + "grammar/parser.go"
+	var filename = directory + "grammar/Parser.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -177,7 +179,7 @@ func generateProcessor(
 		moduleName,
 		syntax,
 	)
-	var filename = directory + "grammar/processor.go"
+	var filename = directory + "grammar/Processor.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -190,7 +192,7 @@ func generateScanner(
 		moduleName,
 		syntax,
 	)
-	var filename = directory + "grammar/scanner.go"
+	var filename = directory + "grammar/Scanner.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -203,7 +205,7 @@ func generateToken(
 		moduleName,
 		syntax,
 	)
-	var filename = directory + "grammar/token.go"
+	var filename = directory + "grammar/Token.go"
 	uti.WriteFile(filename, source)
 }
 
@@ -213,7 +215,7 @@ func generateValidator(
 	syntax not.SyntaxLike,
 ) {
 	var existing string
-	var filename = directory + "grammar/validator.go"
+	var filename = directory + "grammar/Validator.go"
 	if uti.PathExists(filename) {
 		existing = uti.ReadFile(filename)
 	}
@@ -234,7 +236,7 @@ func generateVisitor(
 		moduleName,
 		syntax,
 	)
-	var filename = directory + "grammar/visitor.go"
+	var filename = directory + "grammar/Visitor.go"
 	uti.WriteFile(filename, source)
 }
 
