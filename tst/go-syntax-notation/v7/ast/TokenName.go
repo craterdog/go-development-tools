@@ -27,21 +27,28 @@ import (
 
 // Access Function
 
-func LiteralClass() LiteralClassLike {
-	return literalClass()
+func TokenNameClass() TokenNameClassLike {
+	return tokenNameClass()
 }
 
 // Constructor Methods
 
-func (c *literalClass_) Literal(
-	quote string,
-) LiteralLike {
-	if uti.IsUndefined(quote) {
-		panic("The \"quote\" attribute is required by this class.")
+func (c *tokenNameClass_) TokenName(
+	newline string,
+	lowercase string,
+	optionalNote string,
+) TokenNameLike {
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
 	}
-	var instance = &literal_{
+	if uti.IsUndefined(lowercase) {
+		panic("The \"lowercase\" attribute is required by this class.")
+	}
+	var instance = &tokenName_{
 		// Initialize the instance attributes.
-		quote_: quote,
+		newline_:      newline,
+		lowercase_:    lowercase,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -50,37 +57,47 @@ func (c *literalClass_) Literal(
 
 // Principal Methods
 
-func (v *literal_) GetClass() LiteralClassLike {
-	return literalClass()
+func (v *tokenName_) GetClass() TokenNameClassLike {
+	return tokenNameClass()
 }
 
 // Attribute Methods
 
-func (v *literal_) GetQuote() string {
-	return v.quote_
+func (v *tokenName_) GetNewline() string {
+	return v.newline_
+}
+
+func (v *tokenName_) GetLowercase() string {
+	return v.lowercase_
+}
+
+func (v *tokenName_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type literal_ struct {
+type tokenName_ struct {
 	// Declare the instance attributes.
-	quote_ string
+	newline_      string
+	lowercase_    string
+	optionalNote_ string
 }
 
 // Class Structure
 
-type literalClass_ struct {
+type tokenNameClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func literalClass() *literalClass_ {
-	return literalClassReference_
+func tokenNameClass() *tokenNameClass_ {
+	return tokenNameClassReference_
 }
 
-var literalClassReference_ = &literalClass_{
+var tokenNameClassReference_ = &tokenNameClass_{
 	// Initialize the class constants.
 }

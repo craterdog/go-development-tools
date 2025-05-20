@@ -28,21 +28,23 @@ import (
 
 // Access Function
 
-func MultiliteralClass() MultiliteralClassLike {
-	return multiliteralClass()
+func TermSequenceClass() TermSequenceClassLike {
+	return termSequenceClass()
 }
 
 // Constructor Methods
 
-func (c *multiliteralClass_) Multiliteral(
-	literalOptions col.Sequential[LiteralOptionLike],
-) MultiliteralLike {
-	if uti.IsUndefined(literalOptions) {
-		panic("The \"literalOptions\" attribute is required by this class.")
+func (c *termSequenceClass_) TermSequence(
+	ruleTerms col.Sequential[RuleTermLike],
+	optionalNote string,
+) TermSequenceLike {
+	if uti.IsUndefined(ruleTerms) {
+		panic("The \"ruleTerms\" attribute is required by this class.")
 	}
-	var instance = &multiliteral_{
+	var instance = &termSequence_{
 		// Initialize the instance attributes.
-		literalOptions_: literalOptions,
+		ruleTerms_:    ruleTerms,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -51,37 +53,42 @@ func (c *multiliteralClass_) Multiliteral(
 
 // Principal Methods
 
-func (v *multiliteral_) GetClass() MultiliteralClassLike {
-	return multiliteralClass()
+func (v *termSequence_) GetClass() TermSequenceClassLike {
+	return termSequenceClass()
 }
 
 // Attribute Methods
 
-func (v *multiliteral_) GetLiteralOptions() col.Sequential[LiteralOptionLike] {
-	return v.literalOptions_
+func (v *termSequence_) GetRuleTerms() col.Sequential[RuleTermLike] {
+	return v.ruleTerms_
+}
+
+func (v *termSequence_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multiliteral_ struct {
+type termSequence_ struct {
 	// Declare the instance attributes.
-	literalOptions_ col.Sequential[LiteralOptionLike]
+	ruleTerms_    col.Sequential[RuleTermLike]
+	optionalNote_ string
 }
 
 // Class Structure
 
-type multiliteralClass_ struct {
+type termSequenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multiliteralClass() *multiliteralClass_ {
-	return multiliteralClassReference_
+func termSequenceClass() *termSequenceClass_ {
+	return termSequenceClassReference_
 }
 
-var multiliteralClassReference_ = &multiliteralClass_{
+var termSequenceClassReference_ = &termSequenceClass_{
 	// Initialize the class constants.
 }

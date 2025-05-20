@@ -20,7 +20,6 @@
 package ast
 
 import (
-	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -35,19 +34,16 @@ func PatternClass() PatternClassLike {
 // Constructor Methods
 
 func (c *patternClass_) Pattern(
-	option OptionLike,
-	alternatives col.Sequential[AlternativeLike],
+	alternatives AlternativesLike,
+	optionalNote string,
 ) PatternLike {
-	if uti.IsUndefined(option) {
-		panic("The \"option\" attribute is required by this class.")
-	}
 	if uti.IsUndefined(alternatives) {
 		panic("The \"alternatives\" attribute is required by this class.")
 	}
 	var instance = &pattern_{
 		// Initialize the instance attributes.
-		option_:       option,
 		alternatives_: alternatives,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -62,12 +58,12 @@ func (v *pattern_) GetClass() PatternClassLike {
 
 // Attribute Methods
 
-func (v *pattern_) GetOption() OptionLike {
-	return v.option_
+func (v *pattern_) GetAlternatives() AlternativesLike {
+	return v.alternatives_
 }
 
-func (v *pattern_) GetAlternatives() col.Sequential[AlternativeLike] {
-	return v.alternatives_
+func (v *pattern_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
@@ -76,8 +72,8 @@ func (v *pattern_) GetAlternatives() col.Sequential[AlternativeLike] {
 
 type pattern_ struct {
 	// Declare the instance attributes.
-	option_       OptionLike
-	alternatives_ col.Sequential[AlternativeLike]
+	alternatives_ AlternativesLike
+	optionalNote_ string
 }
 
 // Class Structure

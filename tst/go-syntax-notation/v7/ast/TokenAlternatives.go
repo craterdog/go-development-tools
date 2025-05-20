@@ -28,21 +28,21 @@ import (
 
 // Access Function
 
-func MultiruleClass() MultiruleClassLike {
-	return multiruleClass()
+func TokenAlternativesClass() TokenAlternativesClassLike {
+	return tokenAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *multiruleClass_) Multirule(
-	ruleOptions col.Sequential[RuleOptionLike],
-) MultiruleLike {
-	if uti.IsUndefined(ruleOptions) {
-		panic("The \"ruleOptions\" attribute is required by this class.")
+func (c *tokenAlternativesClass_) TokenAlternatives(
+	tokenNames col.Sequential[TokenNameLike],
+) TokenAlternativesLike {
+	if uti.IsUndefined(tokenNames) {
+		panic("The \"tokenNames\" attribute is required by this class.")
 	}
-	var instance = &multirule_{
+	var instance = &tokenAlternatives_{
 		// Initialize the instance attributes.
-		ruleOptions_: ruleOptions,
+		tokenNames_: tokenNames,
 	}
 	return instance
 }
@@ -51,37 +51,37 @@ func (c *multiruleClass_) Multirule(
 
 // Principal Methods
 
-func (v *multirule_) GetClass() MultiruleClassLike {
-	return multiruleClass()
+func (v *tokenAlternatives_) GetClass() TokenAlternativesClassLike {
+	return tokenAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *multirule_) GetRuleOptions() col.Sequential[RuleOptionLike] {
-	return v.ruleOptions_
+func (v *tokenAlternatives_) GetTokenNames() col.Sequential[TokenNameLike] {
+	return v.tokenNames_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multirule_ struct {
+type tokenAlternatives_ struct {
 	// Declare the instance attributes.
-	ruleOptions_ col.Sequential[RuleOptionLike]
+	tokenNames_ col.Sequential[TokenNameLike]
 }
 
 // Class Structure
 
-type multiruleClass_ struct {
+type tokenAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multiruleClass() *multiruleClass_ {
-	return multiruleClassReference_
+func tokenAlternativesClass() *tokenAlternativesClass_ {
+	return tokenAlternativesClassReference_
 }
 
-var multiruleClassReference_ = &multiruleClass_{
+var tokenAlternativesClassReference_ = &tokenAlternativesClass_{
 	// Initialize the class constants.
 }

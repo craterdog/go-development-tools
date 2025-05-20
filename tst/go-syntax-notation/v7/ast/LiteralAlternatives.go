@@ -28,21 +28,21 @@ import (
 
 // Access Function
 
-func OptionClass() OptionClassLike {
-	return optionClass()
+func LiteralAlternativesClass() LiteralAlternativesClassLike {
+	return literalAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *optionClass_) Option(
-	repetitions col.Sequential[RepetitionLike],
-) OptionLike {
-	if uti.IsUndefined(repetitions) {
-		panic("The \"repetitions\" attribute is required by this class.")
+func (c *literalAlternativesClass_) LiteralAlternatives(
+	literalValues col.Sequential[LiteralValueLike],
+) LiteralAlternativesLike {
+	if uti.IsUndefined(literalValues) {
+		panic("The \"literalValues\" attribute is required by this class.")
 	}
-	var instance = &option_{
+	var instance = &literalAlternatives_{
 		// Initialize the instance attributes.
-		repetitions_: repetitions,
+		literalValues_: literalValues,
 	}
 	return instance
 }
@@ -51,37 +51,37 @@ func (c *optionClass_) Option(
 
 // Principal Methods
 
-func (v *option_) GetClass() OptionClassLike {
-	return optionClass()
+func (v *literalAlternatives_) GetClass() LiteralAlternativesClassLike {
+	return literalAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *option_) GetRepetitions() col.Sequential[RepetitionLike] {
-	return v.repetitions_
+func (v *literalAlternatives_) GetLiteralValues() col.Sequential[LiteralValueLike] {
+	return v.literalValues_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type option_ struct {
+type literalAlternatives_ struct {
 	// Declare the instance attributes.
-	repetitions_ col.Sequential[RepetitionLike]
+	literalValues_ col.Sequential[LiteralValueLike]
 }
 
 // Class Structure
 
-type optionClass_ struct {
+type literalAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func optionClass() *optionClass_ {
-	return optionClassReference_
+func literalAlternativesClass() *literalAlternativesClass_ {
+	return literalAlternativesClassReference_
 }
 
-var optionClassReference_ = &optionClass_{
+var literalAlternativesClassReference_ = &literalAlternativesClass_{
 	// Initialize the class constants.
 }

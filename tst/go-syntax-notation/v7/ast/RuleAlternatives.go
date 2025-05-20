@@ -28,21 +28,21 @@ import (
 
 // Access Function
 
-func MultiexpressionClass() MultiexpressionClassLike {
-	return multiexpressionClass()
+func RuleAlternativesClass() RuleAlternativesClassLike {
+	return ruleAlternativesClass()
 }
 
 // Constructor Methods
 
-func (c *multiexpressionClass_) Multiexpression(
-	expressionOptions col.Sequential[ExpressionOptionLike],
-) MultiexpressionLike {
-	if uti.IsUndefined(expressionOptions) {
-		panic("The \"expressionOptions\" attribute is required by this class.")
+func (c *ruleAlternativesClass_) RuleAlternatives(
+	ruleNames col.Sequential[RuleNameLike],
+) RuleAlternativesLike {
+	if uti.IsUndefined(ruleNames) {
+		panic("The \"ruleNames\" attribute is required by this class.")
 	}
-	var instance = &multiexpression_{
+	var instance = &ruleAlternatives_{
 		// Initialize the instance attributes.
-		expressionOptions_: expressionOptions,
+		ruleNames_: ruleNames,
 	}
 	return instance
 }
@@ -51,37 +51,37 @@ func (c *multiexpressionClass_) Multiexpression(
 
 // Principal Methods
 
-func (v *multiexpression_) GetClass() MultiexpressionClassLike {
-	return multiexpressionClass()
+func (v *ruleAlternatives_) GetClass() RuleAlternativesClassLike {
+	return ruleAlternativesClass()
 }
 
 // Attribute Methods
 
-func (v *multiexpression_) GetExpressionOptions() col.Sequential[ExpressionOptionLike] {
-	return v.expressionOptions_
+func (v *ruleAlternatives_) GetRuleNames() col.Sequential[RuleNameLike] {
+	return v.ruleNames_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type multiexpression_ struct {
+type ruleAlternatives_ struct {
 	// Declare the instance attributes.
-	expressionOptions_ col.Sequential[ExpressionOptionLike]
+	ruleNames_ col.Sequential[RuleNameLike]
 }
 
 // Class Structure
 
-type multiexpressionClass_ struct {
+type ruleAlternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func multiexpressionClass() *multiexpressionClass_ {
-	return multiexpressionClassReference_
+func ruleAlternativesClass() *ruleAlternativesClass_ {
+	return ruleAlternativesClassReference_
 }
 
-var multiexpressionClassReference_ = &multiexpressionClass_{
+var ruleAlternativesClassReference_ = &ruleAlternativesClass_{
 	// Initialize the class constants.
 }

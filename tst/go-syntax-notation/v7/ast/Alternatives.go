@@ -28,23 +28,26 @@ import (
 
 // Access Function
 
-func InlineClass() InlineClassLike {
-	return inlineClass()
+func AlternativesClass() AlternativesClassLike {
+	return alternativesClass()
 }
 
 // Constructor Methods
 
-func (c *inlineClass_) Inline(
-	terms col.Sequential[TermLike],
-	optionalNote string,
-) InlineLike {
-	if uti.IsUndefined(terms) {
-		panic("The \"terms\" attribute is required by this class.")
+func (c *alternativesClass_) Alternatives(
+	sequence SequenceLike,
+	alternativeSequences col.Sequential[AlternativeSequenceLike],
+) AlternativesLike {
+	if uti.IsUndefined(sequence) {
+		panic("The \"sequence\" attribute is required by this class.")
 	}
-	var instance = &inline_{
+	if uti.IsUndefined(alternativeSequences) {
+		panic("The \"alternativeSequences\" attribute is required by this class.")
+	}
+	var instance = &alternatives_{
 		// Initialize the instance attributes.
-		terms_:        terms,
-		optionalNote_: optionalNote,
+		sequence_:             sequence,
+		alternativeSequences_: alternativeSequences,
 	}
 	return instance
 }
@@ -53,42 +56,42 @@ func (c *inlineClass_) Inline(
 
 // Principal Methods
 
-func (v *inline_) GetClass() InlineClassLike {
-	return inlineClass()
+func (v *alternatives_) GetClass() AlternativesClassLike {
+	return alternativesClass()
 }
 
 // Attribute Methods
 
-func (v *inline_) GetTerms() col.Sequential[TermLike] {
-	return v.terms_
+func (v *alternatives_) GetSequence() SequenceLike {
+	return v.sequence_
 }
 
-func (v *inline_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *alternatives_) GetAlternativeSequences() col.Sequential[AlternativeSequenceLike] {
+	return v.alternativeSequences_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type inline_ struct {
+type alternatives_ struct {
 	// Declare the instance attributes.
-	terms_        col.Sequential[TermLike]
-	optionalNote_ string
+	sequence_             SequenceLike
+	alternativeSequences_ col.Sequential[AlternativeSequenceLike]
 }
 
 // Class Structure
 
-type inlineClass_ struct {
+type alternativesClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func inlineClass() *inlineClass_ {
-	return inlineClassReference_
+func alternativesClass() *alternativesClass_ {
+	return alternativesClassReference_
 }
 
-var inlineClassReference_ = &inlineClass_{
+var alternativesClassReference_ = &alternativesClass_{
 	// Initialize the class constants.
 }

@@ -27,28 +27,21 @@ import (
 
 // Access Function
 
-func RuleOptionClass() RuleOptionClassLike {
-	return ruleOptionClass()
+func ComponentClass() ComponentClassLike {
+	return componentClass()
 }
 
 // Constructor Methods
 
-func (c *ruleOptionClass_) RuleOption(
-	newline string,
-	uppercase string,
-	optionalNote string,
-) RuleOptionLike {
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
+func (c *componentClass_) Component(
+	any_ any,
+) ComponentLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(uppercase) {
-		panic("The \"uppercase\" attribute is required by this class.")
-	}
-	var instance = &ruleOption_{
+	var instance = &component_{
 		// Initialize the instance attributes.
-		newline_:      newline,
-		uppercase_:    uppercase,
-		optionalNote_: optionalNote,
+		any_: any_,
 	}
 	return instance
 }
@@ -57,47 +50,37 @@ func (c *ruleOptionClass_) RuleOption(
 
 // Principal Methods
 
-func (v *ruleOption_) GetClass() RuleOptionClassLike {
-	return ruleOptionClass()
+func (v *component_) GetClass() ComponentClassLike {
+	return componentClass()
 }
 
 // Attribute Methods
 
-func (v *ruleOption_) GetNewline() string {
-	return v.newline_
-}
-
-func (v *ruleOption_) GetUppercase() string {
-	return v.uppercase_
-}
-
-func (v *ruleOption_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *component_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type ruleOption_ struct {
+type component_ struct {
 	// Declare the instance attributes.
-	newline_      string
-	uppercase_    string
-	optionalNote_ string
+	any_ any
 }
 
 // Class Structure
 
-type ruleOptionClass_ struct {
+type componentClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func ruleOptionClass() *ruleOptionClass_ {
-	return ruleOptionClassReference_
+func componentClass() *componentClass_ {
+	return componentClassReference_
 }
 
-var ruleOptionClassReference_ = &ruleOptionClass_{
+var componentClassReference_ = &componentClass_{
 	// Initialize the class constants.
 }

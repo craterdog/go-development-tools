@@ -39,73 +39,71 @@ import (
 // Ast
 
 type (
-	AlternativeClassLike      = ast.AlternativeClassLike
-	CardinalityClassLike      = ast.CardinalityClassLike
-	CharacterClassLike        = ast.CharacterClassLike
-	ConstrainedClassLike      = ast.ConstrainedClassLike
-	DefinitionClassLike       = ast.DefinitionClassLike
-	ElementClassLike          = ast.ElementClassLike
-	ExplicitClassLike         = ast.ExplicitClassLike
-	ExpressionClassLike       = ast.ExpressionClassLike
-	ExpressionOptionClassLike = ast.ExpressionOptionClassLike
-	ExtentClassLike           = ast.ExtentClassLike
-	FilterClassLike           = ast.FilterClassLike
-	GroupClassLike            = ast.GroupClassLike
-	IdentifierClassLike       = ast.IdentifierClassLike
-	ImplicitClassLike         = ast.ImplicitClassLike
-	InlineClassLike           = ast.InlineClassLike
-	LimitClassLike            = ast.LimitClassLike
-	LiteralClassLike          = ast.LiteralClassLike
-	LiteralOptionClassLike    = ast.LiteralOptionClassLike
-	MultiexpressionClassLike  = ast.MultiexpressionClassLike
-	MultiliteralClassLike     = ast.MultiliteralClassLike
-	MultiruleClassLike        = ast.MultiruleClassLike
-	NoticeClassLike           = ast.NoticeClassLike
-	OptionClassLike           = ast.OptionClassLike
-	PatternClassLike          = ast.PatternClassLike
-	QuantifiedClassLike       = ast.QuantifiedClassLike
-	ReferenceClassLike        = ast.ReferenceClassLike
-	RepetitionClassLike       = ast.RepetitionClassLike
-	RuleClassLike             = ast.RuleClassLike
-	RuleOptionClassLike       = ast.RuleOptionClassLike
-	SyntaxClassLike           = ast.SyntaxClassLike
-	TermClassLike             = ast.TermClassLike
-	TextClassLike             = ast.TextClassLike
+	AlternativeSequenceClassLike = ast.AlternativeSequenceClassLike
+	AlternativesClassLike        = ast.AlternativesClassLike
+	CardinalityClassLike         = ast.CardinalityClassLike
+	CharacterClassLike           = ast.CharacterClassLike
+	ComponentClassLike           = ast.ComponentClassLike
+	ConstrainedClassLike         = ast.ConstrainedClassLike
+	DefinitionClassLike          = ast.DefinitionClassLike
+	ElementClassLike             = ast.ElementClassLike
+	ExplicitClassLike            = ast.ExplicitClassLike
+	ExpressionClassLike          = ast.ExpressionClassLike
+	ExtentClassLike              = ast.ExtentClassLike
+	FilterClassLike              = ast.FilterClassLike
+	GroupClassLike               = ast.GroupClassLike
+	ImplicitClassLike            = ast.ImplicitClassLike
+	LimitClassLike               = ast.LimitClassLike
+	LiteralAlternativesClassLike = ast.LiteralAlternativesClassLike
+	LiteralValueClassLike        = ast.LiteralValueClassLike
+	NoticeClassLike              = ast.NoticeClassLike
+	PatternClassLike             = ast.PatternClassLike
+	QuantifiedClassLike          = ast.QuantifiedClassLike
+	RepetitionClassLike          = ast.RepetitionClassLike
+	RuleClassLike                = ast.RuleClassLike
+	RuleAlternativesClassLike    = ast.RuleAlternativesClassLike
+	RuleNameClassLike            = ast.RuleNameClassLike
+	RuleTermClassLike            = ast.RuleTermClassLike
+	SequenceClassLike            = ast.SequenceClassLike
+	SyntaxClassLike              = ast.SyntaxClassLike
+	TermSequenceClassLike        = ast.TermSequenceClassLike
+	TextClassLike                = ast.TextClassLike
+	TokenAlternativesClassLike   = ast.TokenAlternativesClassLike
+	TokenNameClassLike           = ast.TokenNameClassLike
 )
 
 type (
-	AlternativeLike      = ast.AlternativeLike
-	CardinalityLike      = ast.CardinalityLike
-	CharacterLike        = ast.CharacterLike
-	ConstrainedLike      = ast.ConstrainedLike
-	DefinitionLike       = ast.DefinitionLike
-	ElementLike          = ast.ElementLike
-	ExplicitLike         = ast.ExplicitLike
-	ExpressionLike       = ast.ExpressionLike
-	ExpressionOptionLike = ast.ExpressionOptionLike
-	ExtentLike           = ast.ExtentLike
-	FilterLike           = ast.FilterLike
-	GroupLike            = ast.GroupLike
-	IdentifierLike       = ast.IdentifierLike
-	ImplicitLike         = ast.ImplicitLike
-	InlineLike           = ast.InlineLike
-	LimitLike            = ast.LimitLike
-	LiteralLike          = ast.LiteralLike
-	LiteralOptionLike    = ast.LiteralOptionLike
-	MultiexpressionLike  = ast.MultiexpressionLike
-	MultiliteralLike     = ast.MultiliteralLike
-	MultiruleLike        = ast.MultiruleLike
-	NoticeLike           = ast.NoticeLike
-	OptionLike           = ast.OptionLike
-	PatternLike          = ast.PatternLike
-	QuantifiedLike       = ast.QuantifiedLike
-	ReferenceLike        = ast.ReferenceLike
-	RepetitionLike       = ast.RepetitionLike
-	RuleLike             = ast.RuleLike
-	RuleOptionLike       = ast.RuleOptionLike
-	SyntaxLike           = ast.SyntaxLike
-	TermLike             = ast.TermLike
-	TextLike             = ast.TextLike
+	AlternativeSequenceLike = ast.AlternativeSequenceLike
+	AlternativesLike        = ast.AlternativesLike
+	CardinalityLike         = ast.CardinalityLike
+	CharacterLike           = ast.CharacterLike
+	ComponentLike           = ast.ComponentLike
+	ConstrainedLike         = ast.ConstrainedLike
+	DefinitionLike          = ast.DefinitionLike
+	ElementLike             = ast.ElementLike
+	ExplicitLike            = ast.ExplicitLike
+	ExpressionLike          = ast.ExpressionLike
+	ExtentLike              = ast.ExtentLike
+	FilterLike              = ast.FilterLike
+	GroupLike               = ast.GroupLike
+	ImplicitLike            = ast.ImplicitLike
+	LimitLike               = ast.LimitLike
+	LiteralAlternativesLike = ast.LiteralAlternativesLike
+	LiteralValueLike        = ast.LiteralValueLike
+	NoticeLike              = ast.NoticeLike
+	PatternLike             = ast.PatternLike
+	QuantifiedLike          = ast.QuantifiedLike
+	RepetitionLike          = ast.RepetitionLike
+	RuleLike                = ast.RuleLike
+	RuleAlternativesLike    = ast.RuleAlternativesLike
+	RuleNameLike            = ast.RuleNameLike
+	RuleTermLike            = ast.RuleTermLike
+	SequenceLike            = ast.SequenceLike
+	SyntaxLike              = ast.SyntaxLike
+	TermSequenceLike        = ast.TermSequenceLike
+	TextLike                = ast.TextLike
+	TokenAlternativesLike   = ast.TokenAlternativesLike
+	TokenNameLike           = ast.TokenNameLike
 )
 
 // Grammar
@@ -118,16 +116,13 @@ const (
 	ErrorToken     = gra.ErrorToken
 	CommentToken   = gra.CommentToken
 	DelimiterToken = gra.DelimiterToken
-	ExcludedToken  = gra.ExcludedToken
 	GlyphToken     = gra.GlyphToken
 	IntrinsicToken = gra.IntrinsicToken
+	LiteralToken   = gra.LiteralToken
 	LowercaseToken = gra.LowercaseToken
 	NewlineToken   = gra.NewlineToken
 	NoteToken      = gra.NoteToken
 	NumberToken    = gra.NumberToken
-	OptionalToken  = gra.OptionalToken
-	QuoteToken     = gra.QuoteToken
-	RepeatedToken  = gra.RepeatedToken
 	SpaceToken     = gra.SpaceToken
 	UppercaseToken = gra.UppercaseToken
 )
@@ -160,15 +155,31 @@ type (
 
 // Ast
 
-func AlternativeClass() AlternativeClassLike {
-	return ast.AlternativeClass()
+func AlternativeSequenceClass() AlternativeSequenceClassLike {
+	return ast.AlternativeSequenceClass()
 }
 
-func Alternative(
-	option ast.OptionLike,
-) AlternativeLike {
-	return AlternativeClass().Alternative(
-		option,
+func AlternativeSequence(
+	delimiter string,
+	sequence ast.SequenceLike,
+) AlternativeSequenceLike {
+	return AlternativeSequenceClass().AlternativeSequence(
+		delimiter,
+		sequence,
+	)
+}
+
+func AlternativesClass() AlternativesClassLike {
+	return ast.AlternativesClass()
+}
+
+func Alternatives(
+	sequence ast.SequenceLike,
+	alternativeSequences col.Sequential[ast.AlternativeSequenceLike],
+) AlternativesLike {
+	return AlternativesClass().Alternatives(
+		sequence,
+		alternativeSequences,
 	)
 }
 
@@ -192,6 +203,18 @@ func Character(
 	any_ any,
 ) CharacterLike {
 	return CharacterClass().Character(
+		any_,
+	)
+}
+
+func ComponentClass() ComponentClassLike {
+	return ast.ComponentClass()
+}
+
+func Component(
+	any_ any,
+) ComponentLike {
+	return ComponentClass().Component(
 		any_,
 	)
 }
@@ -251,30 +274,16 @@ func ExpressionClass() ExpressionClassLike {
 }
 
 func Expression(
+	delimiter1 string,
 	lowercase string,
+	delimiter2 string,
 	pattern ast.PatternLike,
-	optionalNote string,
 ) ExpressionLike {
 	return ExpressionClass().Expression(
+		delimiter1,
 		lowercase,
+		delimiter2,
 		pattern,
-		optionalNote,
-	)
-}
-
-func ExpressionOptionClass() ExpressionOptionClassLike {
-	return ast.ExpressionOptionClass()
-}
-
-func ExpressionOption(
-	newline string,
-	lowercase string,
-	optionalNote string,
-) ExpressionOptionLike {
-	return ExpressionOptionClass().ExpressionOption(
-		newline,
-		lowercase,
-		optionalNote,
 	)
 }
 
@@ -283,9 +292,11 @@ func ExtentClass() ExtentClassLike {
 }
 
 func Extent(
+	delimiter string,
 	glyph string,
 ) ExtentLike {
 	return ExtentClass().Extent(
+		delimiter,
 		glyph,
 	)
 }
@@ -295,12 +306,16 @@ func FilterClass() FilterClassLike {
 }
 
 func Filter(
-	optionalExcluded string,
+	optionalDelimiter string,
+	delimiter1 string,
 	characters col.Sequential[ast.CharacterLike],
+	delimiter2 string,
 ) FilterLike {
 	return FilterClass().Filter(
-		optionalExcluded,
+		optionalDelimiter,
+		delimiter1,
 		characters,
+		delimiter2,
 	)
 }
 
@@ -309,22 +324,14 @@ func GroupClass() GroupClassLike {
 }
 
 func Group(
-	pattern ast.PatternLike,
+	delimiter1 string,
+	alternatives ast.AlternativesLike,
+	delimiter2 string,
 ) GroupLike {
 	return GroupClass().Group(
-		pattern,
-	)
-}
-
-func IdentifierClass() IdentifierClassLike {
-	return ast.IdentifierClass()
-}
-
-func Identifier(
-	any_ any,
-) IdentifierLike {
-	return IdentifierClass().Identifier(
-		any_,
+		delimiter1,
+		alternatives,
+		delimiter2,
 	)
 }
 
@@ -340,93 +347,45 @@ func Implicit(
 	)
 }
 
-func InlineClass() InlineClassLike {
-	return ast.InlineClass()
-}
-
-func Inline(
-	terms col.Sequential[ast.TermLike],
-	optionalNote string,
-) InlineLike {
-	return InlineClass().Inline(
-		terms,
-		optionalNote,
-	)
-}
-
 func LimitClass() LimitClassLike {
 	return ast.LimitClass()
 }
 
 func Limit(
+	delimiter string,
 	optionalNumber string,
 ) LimitLike {
 	return LimitClass().Limit(
+		delimiter,
 		optionalNumber,
 	)
 }
 
-func LiteralClass() LiteralClassLike {
-	return ast.LiteralClass()
+func LiteralAlternativesClass() LiteralAlternativesClassLike {
+	return ast.LiteralAlternativesClass()
 }
 
-func Literal(
-	quote string,
-) LiteralLike {
-	return LiteralClass().Literal(
-		quote,
+func LiteralAlternatives(
+	literalValues col.Sequential[ast.LiteralValueLike],
+) LiteralAlternativesLike {
+	return LiteralAlternativesClass().LiteralAlternatives(
+		literalValues,
 	)
 }
 
-func LiteralOptionClass() LiteralOptionClassLike {
-	return ast.LiteralOptionClass()
+func LiteralValueClass() LiteralValueClassLike {
+	return ast.LiteralValueClass()
 }
 
-func LiteralOption(
+func LiteralValue(
 	newline string,
-	quote string,
+	literal string,
 	optionalNote string,
-) LiteralOptionLike {
-	return LiteralOptionClass().LiteralOption(
+) LiteralValueLike {
+	return LiteralValueClass().LiteralValue(
 		newline,
-		quote,
+		literal,
 		optionalNote,
-	)
-}
-
-func MultiexpressionClass() MultiexpressionClassLike {
-	return ast.MultiexpressionClass()
-}
-
-func Multiexpression(
-	expressionOptions col.Sequential[ast.ExpressionOptionLike],
-) MultiexpressionLike {
-	return MultiexpressionClass().Multiexpression(
-		expressionOptions,
-	)
-}
-
-func MultiliteralClass() MultiliteralClassLike {
-	return ast.MultiliteralClass()
-}
-
-func Multiliteral(
-	literalOptions col.Sequential[ast.LiteralOptionLike],
-) MultiliteralLike {
-	return MultiliteralClass().Multiliteral(
-		literalOptions,
-	)
-}
-
-func MultiruleClass() MultiruleClassLike {
-	return ast.MultiruleClass()
-}
-
-func Multirule(
-	ruleOptions col.Sequential[ast.RuleOptionLike],
-) MultiruleLike {
-	return MultiruleClass().Multirule(
-		ruleOptions,
 	)
 }
 
@@ -444,29 +403,17 @@ func Notice(
 	)
 }
 
-func OptionClass() OptionClassLike {
-	return ast.OptionClass()
-}
-
-func Option(
-	repetitions col.Sequential[ast.RepetitionLike],
-) OptionLike {
-	return OptionClass().Option(
-		repetitions,
-	)
-}
-
 func PatternClass() PatternClassLike {
 	return ast.PatternClass()
 }
 
 func Pattern(
-	option ast.OptionLike,
-	alternatives col.Sequential[ast.AlternativeLike],
+	alternatives ast.AlternativesLike,
+	optionalNote string,
 ) PatternLike {
 	return PatternClass().Pattern(
-		option,
 		alternatives,
+		optionalNote,
 	)
 }
 
@@ -475,26 +422,16 @@ func QuantifiedClass() QuantifiedClassLike {
 }
 
 func Quantified(
+	delimiter1 string,
 	number string,
 	optionalLimit ast.LimitLike,
+	delimiter2 string,
 ) QuantifiedLike {
 	return QuantifiedClass().Quantified(
+		delimiter1,
 		number,
 		optionalLimit,
-	)
-}
-
-func ReferenceClass() ReferenceClassLike {
-	return ast.ReferenceClass()
-}
-
-func Reference(
-	identifier ast.IdentifierLike,
-	optionalCardinality ast.CardinalityLike,
-) ReferenceLike {
-	return ReferenceClass().Reference(
-		identifier,
-		optionalCardinality,
+		delimiter2,
 	)
 }
 
@@ -517,28 +454,70 @@ func RuleClass() RuleClassLike {
 }
 
 func Rule(
+	delimiter1 string,
 	uppercase string,
+	delimiter2 string,
 	definition ast.DefinitionLike,
 ) RuleLike {
 	return RuleClass().Rule(
+		delimiter1,
 		uppercase,
+		delimiter2,
 		definition,
 	)
 }
 
-func RuleOptionClass() RuleOptionClassLike {
-	return ast.RuleOptionClass()
+func RuleAlternativesClass() RuleAlternativesClassLike {
+	return ast.RuleAlternativesClass()
 }
 
-func RuleOption(
+func RuleAlternatives(
+	ruleNames col.Sequential[ast.RuleNameLike],
+) RuleAlternativesLike {
+	return RuleAlternativesClass().RuleAlternatives(
+		ruleNames,
+	)
+}
+
+func RuleNameClass() RuleNameClassLike {
+	return ast.RuleNameClass()
+}
+
+func RuleName(
 	newline string,
 	uppercase string,
 	optionalNote string,
-) RuleOptionLike {
-	return RuleOptionClass().RuleOption(
+) RuleNameLike {
+	return RuleNameClass().RuleName(
 		newline,
 		uppercase,
 		optionalNote,
+	)
+}
+
+func RuleTermClass() RuleTermClassLike {
+	return ast.RuleTermClass()
+}
+
+func RuleTerm(
+	component ast.ComponentLike,
+	optionalCardinality ast.CardinalityLike,
+) RuleTermLike {
+	return RuleTermClass().RuleTerm(
+		component,
+		optionalCardinality,
+	)
+}
+
+func SequenceClass() SequenceClassLike {
+	return ast.SequenceClass()
+}
+
+func Sequence(
+	repetitions col.Sequential[ast.RepetitionLike],
+) SequenceLike {
+	return SequenceClass().Sequence(
+		repetitions,
 	)
 }
 
@@ -562,15 +541,17 @@ func Syntax(
 	)
 }
 
-func TermClass() TermClassLike {
-	return ast.TermClass()
+func TermSequenceClass() TermSequenceClassLike {
+	return ast.TermSequenceClass()
 }
 
-func Term(
-	any_ any,
-) TermLike {
-	return TermClass().Term(
-		any_,
+func TermSequence(
+	ruleTerms col.Sequential[ast.RuleTermLike],
+	optionalNote string,
+) TermSequenceLike {
+	return TermSequenceClass().TermSequence(
+		ruleTerms,
+		optionalNote,
 	)
 }
 
@@ -583,6 +564,34 @@ func Text(
 ) TextLike {
 	return TextClass().Text(
 		any_,
+	)
+}
+
+func TokenAlternativesClass() TokenAlternativesClassLike {
+	return ast.TokenAlternativesClass()
+}
+
+func TokenAlternatives(
+	tokenNames col.Sequential[ast.TokenNameLike],
+) TokenAlternativesLike {
+	return TokenAlternativesClass().TokenAlternatives(
+		tokenNames,
+	)
+}
+
+func TokenNameClass() TokenNameClassLike {
+	return ast.TokenNameClass()
+}
+
+func TokenName(
+	newline string,
+	lowercase string,
+	optionalNote string,
+) TokenNameLike {
+	return TokenNameClass().TokenName(
+		newline,
+		lowercase,
+		optionalNote,
 	)
 }
 

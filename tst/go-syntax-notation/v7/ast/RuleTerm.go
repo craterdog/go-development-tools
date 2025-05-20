@@ -27,28 +27,23 @@ import (
 
 // Access Function
 
-func LiteralOptionClass() LiteralOptionClassLike {
-	return literalOptionClass()
+func RuleTermClass() RuleTermClassLike {
+	return ruleTermClass()
 }
 
 // Constructor Methods
 
-func (c *literalOptionClass_) LiteralOption(
-	newline string,
-	quote string,
-	optionalNote string,
-) LiteralOptionLike {
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
+func (c *ruleTermClass_) RuleTerm(
+	component ComponentLike,
+	optionalCardinality CardinalityLike,
+) RuleTermLike {
+	if uti.IsUndefined(component) {
+		panic("The \"component\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(quote) {
-		panic("The \"quote\" attribute is required by this class.")
-	}
-	var instance = &literalOption_{
+	var instance = &ruleTerm_{
 		// Initialize the instance attributes.
-		newline_:      newline,
-		quote_:        quote,
-		optionalNote_: optionalNote,
+		component_:           component,
+		optionalCardinality_: optionalCardinality,
 	}
 	return instance
 }
@@ -57,47 +52,42 @@ func (c *literalOptionClass_) LiteralOption(
 
 // Principal Methods
 
-func (v *literalOption_) GetClass() LiteralOptionClassLike {
-	return literalOptionClass()
+func (v *ruleTerm_) GetClass() RuleTermClassLike {
+	return ruleTermClass()
 }
 
 // Attribute Methods
 
-func (v *literalOption_) GetNewline() string {
-	return v.newline_
+func (v *ruleTerm_) GetComponent() ComponentLike {
+	return v.component_
 }
 
-func (v *literalOption_) GetQuote() string {
-	return v.quote_
-}
-
-func (v *literalOption_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *ruleTerm_) GetOptionalCardinality() CardinalityLike {
+	return v.optionalCardinality_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type literalOption_ struct {
+type ruleTerm_ struct {
 	// Declare the instance attributes.
-	newline_      string
-	quote_        string
-	optionalNote_ string
+	component_           ComponentLike
+	optionalCardinality_ CardinalityLike
 }
 
 // Class Structure
 
-type literalOptionClass_ struct {
+type ruleTermClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func literalOptionClass() *literalOptionClass_ {
-	return literalOptionClassReference_
+func ruleTermClass() *ruleTermClass_ {
+	return ruleTermClassReference_
 }
 
-var literalOptionClassReference_ = &literalOptionClass_{
+var ruleTermClassReference_ = &ruleTermClass_{
 	// Initialize the class constants.
 }

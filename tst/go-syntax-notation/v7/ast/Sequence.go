@@ -20,6 +20,7 @@
 package ast
 
 import (
+	col "github.com/craterdog/go-collection-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
@@ -27,28 +28,21 @@ import (
 
 // Access Function
 
-func ExpressionOptionClass() ExpressionOptionClassLike {
-	return expressionOptionClass()
+func SequenceClass() SequenceClassLike {
+	return sequenceClass()
 }
 
 // Constructor Methods
 
-func (c *expressionOptionClass_) ExpressionOption(
-	newline string,
-	lowercase string,
-	optionalNote string,
-) ExpressionOptionLike {
-	if uti.IsUndefined(newline) {
-		panic("The \"newline\" attribute is required by this class.")
+func (c *sequenceClass_) Sequence(
+	repetitions col.Sequential[RepetitionLike],
+) SequenceLike {
+	if uti.IsUndefined(repetitions) {
+		panic("The \"repetitions\" attribute is required by this class.")
 	}
-	if uti.IsUndefined(lowercase) {
-		panic("The \"lowercase\" attribute is required by this class.")
-	}
-	var instance = &expressionOption_{
+	var instance = &sequence_{
 		// Initialize the instance attributes.
-		newline_:      newline,
-		lowercase_:    lowercase,
-		optionalNote_: optionalNote,
+		repetitions_: repetitions,
 	}
 	return instance
 }
@@ -57,47 +51,37 @@ func (c *expressionOptionClass_) ExpressionOption(
 
 // Principal Methods
 
-func (v *expressionOption_) GetClass() ExpressionOptionClassLike {
-	return expressionOptionClass()
+func (v *sequence_) GetClass() SequenceClassLike {
+	return sequenceClass()
 }
 
 // Attribute Methods
 
-func (v *expressionOption_) GetNewline() string {
-	return v.newline_
-}
-
-func (v *expressionOption_) GetLowercase() string {
-	return v.lowercase_
-}
-
-func (v *expressionOption_) GetOptionalNote() string {
-	return v.optionalNote_
+func (v *sequence_) GetRepetitions() col.Sequential[RepetitionLike] {
+	return v.repetitions_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type expressionOption_ struct {
+type sequence_ struct {
 	// Declare the instance attributes.
-	newline_      string
-	lowercase_    string
-	optionalNote_ string
+	repetitions_ col.Sequential[RepetitionLike]
 }
 
 // Class Structure
 
-type expressionOptionClass_ struct {
+type sequenceClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func expressionOptionClass() *expressionOptionClass_ {
-	return expressionOptionClassReference_
+func sequenceClass() *sequenceClass_ {
+	return sequenceClassReference_
 }
 
-var expressionOptionClassReference_ = &expressionOptionClass_{
+var sequenceClassReference_ = &sequenceClass_{
 	// Initialize the class constants.
 }

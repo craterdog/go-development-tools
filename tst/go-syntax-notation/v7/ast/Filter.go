@@ -35,16 +35,26 @@ func FilterClass() FilterClassLike {
 // Constructor Methods
 
 func (c *filterClass_) Filter(
-	optionalExcluded string,
+	optionalDelimiter string,
+	delimiter1 string,
 	characters col.Sequential[CharacterLike],
+	delimiter2 string,
 ) FilterLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
+	}
 	if uti.IsUndefined(characters) {
 		panic("The \"characters\" attribute is required by this class.")
 	}
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
 	var instance = &filter_{
 		// Initialize the instance attributes.
-		optionalExcluded_: optionalExcluded,
-		characters_:       characters,
+		optionalDelimiter_: optionalDelimiter,
+		delimiter1_:        delimiter1,
+		characters_:        characters,
+		delimiter2_:        delimiter2,
 	}
 	return instance
 }
@@ -59,12 +69,20 @@ func (v *filter_) GetClass() FilterClassLike {
 
 // Attribute Methods
 
-func (v *filter_) GetOptionalExcluded() string {
-	return v.optionalExcluded_
+func (v *filter_) GetOptionalDelimiter() string {
+	return v.optionalDelimiter_
+}
+
+func (v *filter_) GetDelimiter1() string {
+	return v.delimiter1_
 }
 
 func (v *filter_) GetCharacters() col.Sequential[CharacterLike] {
 	return v.characters_
+}
+
+func (v *filter_) GetDelimiter2() string {
+	return v.delimiter2_
 }
 
 // PROTECTED INTERFACE
@@ -73,8 +91,10 @@ func (v *filter_) GetCharacters() col.Sequential[CharacterLike] {
 
 type filter_ struct {
 	// Declare the instance attributes.
-	optionalExcluded_ string
-	characters_       col.Sequential[CharacterLike]
+	optionalDelimiter_ string
+	delimiter1_        string
+	characters_        col.Sequential[CharacterLike]
+	delimiter2_        string
 }
 
 // Class Structure

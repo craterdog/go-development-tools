@@ -27,21 +27,28 @@ import (
 
 // Access Function
 
-func IdentifierClass() IdentifierClassLike {
-	return identifierClass()
+func RuleNameClass() RuleNameClassLike {
+	return ruleNameClass()
 }
 
 // Constructor Methods
 
-func (c *identifierClass_) Identifier(
-	any_ any,
-) IdentifierLike {
-	if uti.IsUndefined(any_) {
-		panic("The \"any\" attribute is required by this class.")
+func (c *ruleNameClass_) RuleName(
+	newline string,
+	uppercase string,
+	optionalNote string,
+) RuleNameLike {
+	if uti.IsUndefined(newline) {
+		panic("The \"newline\" attribute is required by this class.")
 	}
-	var instance = &identifier_{
+	if uti.IsUndefined(uppercase) {
+		panic("The \"uppercase\" attribute is required by this class.")
+	}
+	var instance = &ruleName_{
 		// Initialize the instance attributes.
-		any_: any_,
+		newline_:      newline,
+		uppercase_:    uppercase,
+		optionalNote_: optionalNote,
 	}
 	return instance
 }
@@ -50,37 +57,47 @@ func (c *identifierClass_) Identifier(
 
 // Principal Methods
 
-func (v *identifier_) GetClass() IdentifierClassLike {
-	return identifierClass()
+func (v *ruleName_) GetClass() RuleNameClassLike {
+	return ruleNameClass()
 }
 
 // Attribute Methods
 
-func (v *identifier_) GetAny() any {
-	return v.any_
+func (v *ruleName_) GetNewline() string {
+	return v.newline_
+}
+
+func (v *ruleName_) GetUppercase() string {
+	return v.uppercase_
+}
+
+func (v *ruleName_) GetOptionalNote() string {
+	return v.optionalNote_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type identifier_ struct {
+type ruleName_ struct {
 	// Declare the instance attributes.
-	any_ any
+	newline_      string
+	uppercase_    string
+	optionalNote_ string
 }
 
 // Class Structure
 
-type identifierClass_ struct {
+type ruleNameClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func identifierClass() *identifierClass_ {
-	return identifierClassReference_
+func ruleNameClass() *ruleNameClass_ {
+	return ruleNameClassReference_
 }
 
-var identifierClassReference_ = &identifierClass_{
+var ruleNameClassReference_ = &ruleNameClass_{
 	// Initialize the class constants.
 }
