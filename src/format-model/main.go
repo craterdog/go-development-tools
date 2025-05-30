@@ -61,6 +61,7 @@ func formatModelFile(
 	model mod.ModelLike,
 ) {
 	fmt.Println("  Formatting the model file...")
+	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
 	uti.WriteFile(modelFile, source)
 }

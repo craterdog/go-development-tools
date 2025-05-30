@@ -44,6 +44,7 @@ func createPackage(
 		wikiPath,
 		packageName,
 	)
+	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 }

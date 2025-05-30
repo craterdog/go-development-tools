@@ -39,6 +39,7 @@ func generatePackage(
 ) {
 	uti.RemakeDirectory(directory + packageName)
 	var filename = directory + packageName + "/package_api.go"
+	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 	fmt.Println("  Generating the following classes...")

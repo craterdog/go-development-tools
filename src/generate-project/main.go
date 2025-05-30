@@ -52,6 +52,7 @@ func generateAstPackage(
 		wikiPath,
 		syntax,
 	)
+	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 	generateAstClasses(moduleName, packageName, directory, model)
@@ -115,6 +116,7 @@ func generateGrammarPackage(
 		wikiPath,
 		syntax,
 	)
+	mod.ValidateModel(model)
 	var source = mod.FormatModel(model)
 	uti.WriteFile(filename, source)
 	generateFormatter(moduleName, directory, syntax)
