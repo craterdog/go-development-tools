@@ -112,11 +112,18 @@ $Additional: "," Component
 │                            EXPRESSION DEFINITIONS                            │
 └──────────────────────────────────────────────────────────────────────────────┘
 <!
-$number: '0' | '-'? ['1'..'9'] DIGIT*
+$number: '0' | '-'? ORDINAL
 
-$rune: "'" ~[CONTROL] "'"  ! Any single printable unicode character.
+$rune: ''' ~[CONTROL] "'"  ! Any single printable unicode character.
 
 $text: '"' ~['"' CONTROL]+ '"'
+
+!>
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                             FRAGMENT DEFINITIONS                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+<!
+$ORDINAL: ['1'..'9'] DIGIT*
 
 `
 }
