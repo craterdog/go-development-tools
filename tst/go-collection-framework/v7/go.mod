@@ -4,4 +4,4 @@ go 1.24
 
 toolchain go1.24.2
 
-require github.com/craterdog/go-missing-utilities/v7 v7.3.0
+require github.com/craterdog/go-missing-utilities/v7 v7.5.0

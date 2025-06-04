@@ -37,7 +37,7 @@ func (c *stackClass_[V]) Stack() StackLike[V] {
 }
 
 func (c *stackClass_[V]) StackWithCapacity(
-	capacity age.Size,
+	capacity uti.Cardinal,
 ) StackLike[V] {
 	if uti.IsUndefined(capacity) {
 		panic("The \"capacity\" attribute is required by this class.")
@@ -79,7 +79,7 @@ func (v *stack_[V]) GetClass() StackClassLike[V] {
 
 // Attribute Methods
 
-func (v *stack_[V]) GetCapacity() age.Size {
+func (v *stack_[V]) GetCapacity() uti.Cardinal {
 	return v.capacity_
 }
 
@@ -109,8 +109,8 @@ func (v *stack_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *stack_[V]) GetSize() age.Size {
-	var result_ age.Size
+func (v *stack_[V]) GetSize() uti.Cardinal {
+	var result_ uti.Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -135,7 +135,7 @@ func (v *stack_[V]) GetIterator() age.IteratorLike[V] {
 
 type stack_[V any] struct {
 	// Declare the instance attributes.
-	capacity_ age.Size
+	capacity_ uti.Cardinal
 }
 
 // Class Structure

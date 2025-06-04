@@ -31,6 +31,7 @@ package module
 import (
 	age "github.com/craterdog/go-collection-framework/v7/agent"
 	col "github.com/craterdog/go-collection-framework/v7/collection"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 )
 
 // TYPE ALIASES
@@ -39,7 +40,6 @@ import (
 
 type (
 	Rank = age.Rank
-	Size = age.Size
 	Slot = age.Slot
 )
 
@@ -116,7 +116,7 @@ func Collator[V any]() CollatorLike[V] {
 }
 
 func CollatorWithMaximumDepth[V any](
-	maximumDepth age.Size,
+	maximumDepth uti.Cardinal,
 ) CollatorLike[V] {
 	return CollatorClass[V]().CollatorWithMaximumDepth(
 		maximumDepth,
@@ -232,7 +232,7 @@ func Queue[V any]() QueueLike[V] {
 }
 
 func QueueWithCapacity[V any](
-	capacity age.Size,
+	capacity uti.Cardinal,
 ) QueueLike[V] {
 	return QueueClass[V]().QueueWithCapacity(
 		capacity,
@@ -296,7 +296,7 @@ func Stack[V any]() StackLike[V] {
 }
 
 func StackWithCapacity[V any](
-	capacity age.Size,
+	capacity uti.Cardinal,
 ) StackLike[V] {
 	return StackClass[V]().StackWithCapacity(
 		capacity,

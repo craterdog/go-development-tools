@@ -210,8 +210,8 @@ func (v *set_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *set_[V]) GetSize() age.Size {
-	var result_ age.Size
+func (v *set_[V]) GetSize() uti.Cardinal {
+	var result_ uti.Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }
