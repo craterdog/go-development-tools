@@ -14,7 +14,7 @@ package collection
 
 import (
 	fmt "fmt"
-	age "github.com/craterdog/go-collection-framework/v7/agent"
+	age "github.com/craterdog/go-component-framework/v7/agent"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	syn "sync"
 )
@@ -37,7 +37,7 @@ func (c *queueClass_[V]) Queue() QueueLike[V] {
 }
 
 func (c *queueClass_[V]) QueueWithCapacity(
-	capacity uti.Cardinal,
+	capacity age.Cardinal,
 ) QueueLike[V] {
 	if uti.IsUndefined(capacity) {
 		panic("The \"capacity\" attribute is required by this class.")
@@ -72,7 +72,7 @@ func (c *queueClass_[V]) QueueFromSequence(
 func (c *queueClass_[V]) Fork(
 	group Synchronized,
 	input QueueLike[V],
-	size uti.Cardinal,
+	size age.Cardinal,
 ) Sequential[QueueLike[V]] {
 	var result_ Sequential[QueueLike[V]]
 	// TBD - Add the function implementation.
@@ -82,7 +82,7 @@ func (c *queueClass_[V]) Fork(
 func (c *queueClass_[V]) Split(
 	group Synchronized,
 	input QueueLike[V],
-	size uti.Cardinal,
+	size age.Cardinal,
 ) Sequential[QueueLike[V]] {
 	var result_ Sequential[QueueLike[V]]
 	// TBD - Add the function implementation.
@@ -108,7 +108,7 @@ func (v *queue_[V]) GetClass() QueueClassLike[V] {
 
 // Attribute Methods
 
-func (v *queue_[V]) GetCapacity() uti.Cardinal {
+func (v *queue_[V]) GetCapacity() age.Cardinal {
 	return v.capacity_
 }
 
@@ -144,8 +144,8 @@ func (v *queue_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *queue_[V]) GetSize() uti.Cardinal {
-	var result_ uti.Cardinal
+func (v *queue_[V]) GetSize() age.Cardinal {
+	var result_ age.Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -170,7 +170,7 @@ func (v *queue_[V]) GetIterator() age.IteratorLike[V] {
 
 type queue_[V any] struct {
 	// Declare the instance attributes.
-	capacity_ uti.Cardinal
+	capacity_ age.Cardinal
 }
 
 // Class Structure

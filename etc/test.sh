@@ -62,25 +62,27 @@ go mod tidy >/dev/null 2>&1
 golangci-lint run
 cd - >/dev/null
 
-directory=./tst/go-collection-framework
+directory=./tst/go-component-framework
 moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
 bin/format-model ${directory}/v7/agent/package_api.go
 echo
 bin/format-model ${directory}/v7/collection/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ agent
+bin/generate-classes ${moduleName} ${directory}/v7/ element
 echo
 bin/generate-classes ${moduleName} ${directory}/v7/ collection
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ agent collection
+bin/generate-classes ${moduleName} ${directory}/v7/ agent
+echo
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ element collection agent
 echo
 cd ${directory}/v7
 gofmt -w . >/dev/null
 cat <<EOF > go.mod
 module ${moduleName}
 
-go 1.23
+go 1.24
 EOF
 go mod tidy >/dev/null 2>&1
 golangci-lint run

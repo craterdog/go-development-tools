@@ -16,7 +16,7 @@ generic type.  They are used by the collection classes declared in this Go
 module.
 
 For detailed documentation on this package refer to the wiki:
-  - https://github.com/craterdog/go-collection-framework/wiki
+  - https://github.com/craterdog/go-component-framework/wiki
 
 This package follows the Crater Dog Technologies™ Go Coding Conventions located
 here:
@@ -29,11 +29,28 @@ on interfaces, not on each other.
 */
 package agent
 
-import (
-	uti "github.com/craterdog/go-missing-utilities/v7"
-)
+import ()
 
 // TYPE DECLARATIONS
+
+/*
+Cardinal represents a cardinal number in the range [0..MaxUint].  A cardinal
+number tells how many of something there are.
+*/
+type Cardinal uint
+
+/*
+Event is a constrained type representing an event type in a state machine.
+*/
+type Event uint8
+
+/*
+Ordinal represents an ordinal number in the range [1..MaxUint].  An ordinal
+number refers to an item in a sequence, first, second, third, etc.  Only early
+computer programmers would make the mistake of calling something the "zeroth"
+item in an array!
+*/
+type Ordinal uint
 
 /*
 Rank is a constrained type representing the possible rankings for two values.
@@ -50,6 +67,16 @@ const (
 Slot is a constrained type representing a slot between values in a sequence.
 */
 type Slot uint
+
+/*
+State is a constrained type representing a state in a state machine.
+*/
+type State uint8
+
+/*
+Transitions is a constrained type representing a row of states in a state machine.
+*/
+type Transitions []State
 
 // FUNCTIONAL DECLARATIONS
 
@@ -79,8 +106,73 @@ type CollatorClassLike[V any] interface {
 	// Constructor Methods
 	Collator() CollatorLike[V]
 	CollatorWithMaximumDepth(
-		maximumDepth uti.Cardinal,
+		maximumDepth Cardinal,
 	) CollatorLike[V]
+}
+
+/*
+ControllerClassLike is a class interface that declares the complete set of class
+constructors, constants and functions that must be supported by each concrete
+controller-like class.
+
+A controller-like class implements a state machine based on a finite state
+machine and possible event types. It enforces the possible states of the state
+machine and allowed transitions between states given a finite set of possible
+event types. It implements a finite state machine with the following table
+structure:
+
+	                    events:
+	        -------------------------------
+	        [event1,  event2,  ... eventM ]
+
+	                 transitions:
+	        -------------------------------
+	state1: [invalid, state2,  ... invalid]
+	state2: [state3,  stateN,  ... invalid]
+	                    ...
+	stateN: [state1,  invalid, ... state3 ]
+
+The first row of the state machine defines the possible events that can occur.
+Each subsequent row defines a state and the possible transitions from that
+state to the next state for each possible event. Transitions marked as "invalid"
+cannot occur. The state machine always starts in the first state of the finite
+state machine (e.g. state1).
+*/
+type ControllerClassLike interface {
+	// Constructor Methods
+	Controller(
+		events []Event,
+		transitions map[State]Transitions,
+	) ControllerLike
+}
+
+/*
+EncoderClassLike is a class interface that declares the complete set of class
+constructors, constants and functions that must be supported by each concrete
+encoder-like class.
+
+A encoder-like class implements encoding and decoding algorithms for the
+following:
+  - Base 16 [0-9][a-f]
+  - Base 32 [0-9][A-D][F-H][J-N][P-T][V-Z]  {excludes "EIOU"}
+  - Base 64 [0-9][A-Z][a-z][+/]
+*/
+type EncoderClassLike interface {
+	// Constructor Methods
+	Encoder() EncoderLike
+}
+
+/*
+GeneratorClassLike is a class interface that declares the complete set of class
+constructors, constants and functions that must be supported by each concrete
+generator-like class.
+
+A generator-like class generates various types of cryptographically secure
+random values.
+*/
+type GeneratorClassLike interface {
+	// Constructor Methods
+	Generator() GeneratorLike
 }
 
 /*
@@ -150,7 +242,74 @@ type CollatorLike[V any] interface {
 	) Rank
 
 	// Attribute Methods
-	GetMaximumDepth() uti.Cardinal
+	GetMaximumDepth() Cardinal
+}
+
+/*
+ControllerLike is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each
+instance of a concrete controller-like class.
+*/
+type ControllerLike interface {
+	// Principal Methods
+	GetClass() ControllerClassLike
+	ProcessEvent(
+		event Event,
+	) State
+
+	// Attribute Methods
+	GetState() State
+	SetState(
+		state State,
+	)
+	GetEvents() []Event
+	GetTransitions() map[State]Transitions
+}
+
+/*
+EncoderLike is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each
+instance of a concrete encoder-like class.
+*/
+type EncoderLike interface {
+	// Principal Methods
+	GetClass() EncoderClassLike
+	Base16Encode(
+		bytes []byte,
+	) string
+	Base16Decode(
+		encoded string,
+	) []byte
+	Base32Encode(
+		bytes []byte,
+	) string
+	Base32Decode(
+		encoded string,
+	) []byte
+	Base64Encode(
+		bytes []byte,
+	) string
+	Base64Decode(
+		encoded string,
+	) []byte
+}
+
+/*
+GeneratorLike is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each
+instance of a concrete generator-like class.
+*/
+type GeneratorLike interface {
+	// Principal Methods
+	GetClass() GeneratorClassLike
+	RandomBoolean() bool
+	RandomOrdinal(
+		maximum Ordinal,
+	) Ordinal
+	RandomProbability() float64
+	RandomBytes(
+		size Cardinal,
+	) []byte
 }
 
 /*
@@ -170,7 +329,7 @@ type IteratorLike[V any] interface {
 	GetNext() V
 
 	// Attribute Methods
-	GetSize() uti.Cardinal
+	GetSize() Cardinal
 	GetSlot() Slot
 	SetSlot(
 		slot Slot,

@@ -14,7 +14,7 @@ package collection
 
 import (
 	fmt "fmt"
-	age "github.com/craterdog/go-collection-framework/v7/agent"
+	age "github.com/craterdog/go-component-framework/v7/agent"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	syn "sync"
 )
@@ -210,8 +210,8 @@ func (v *set_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *set_[V]) GetSize() uti.Cardinal {
-	var result_ uti.Cardinal
+func (v *set_[V]) GetSize() age.Cardinal {
+	var result_ age.Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }

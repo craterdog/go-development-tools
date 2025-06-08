@@ -16,7 +16,7 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v7"
 	gen "github.com/craterdog/go-code-generation/v7"
-	fra "github.com/craterdog/go-collection-framework/v7"
+	com "github.com/craterdog/go-component-framework/v7"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	osx "os"
 	sts "strings"
@@ -37,7 +37,7 @@ func generateModule(
 	directory string,
 	packages []string,
 ) {
-	var models = fra.Catalog[string, mod.ModelLike]()
+	var models = com.Catalog[string, mod.ModelLike]()
 	fmt.Println("  Analyzing the following packages...")
 	for _, packageName := range packages {
 		var filename = directory + packageName + "/package_api.go"

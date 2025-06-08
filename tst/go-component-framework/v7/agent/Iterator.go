@@ -92,7 +92,7 @@ func (v *iterator_[V]) GetNext() V {
 
 // Attribute Methods
 
-func (v *iterator_[V]) GetSize() uti.Cardinal {
+func (v *iterator_[V]) GetSize() Cardinal {
 	return v.size_
 }
 
@@ -117,7 +117,7 @@ func (v *iterator_[V]) SetSlot(
 
 type iterator_[V any] struct {
 	// Declare the instance attributes.
-	size_ uti.Cardinal
+	size_ Cardinal
 	slot_ Slot
 }
 

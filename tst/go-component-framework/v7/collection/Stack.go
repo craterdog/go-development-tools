@@ -14,7 +14,7 @@ package collection
 
 import (
 	fmt "fmt"
-	age "github.com/craterdog/go-collection-framework/v7/agent"
+	age "github.com/craterdog/go-component-framework/v7/agent"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	syn "sync"
 )
@@ -37,7 +37,7 @@ func (c *stackClass_[V]) Stack() StackLike[V] {
 }
 
 func (c *stackClass_[V]) StackWithCapacity(
-	capacity uti.Cardinal,
+	capacity age.Cardinal,
 ) StackLike[V] {
 	if uti.IsUndefined(capacity) {
 		panic("The \"capacity\" attribute is required by this class.")
@@ -79,7 +79,7 @@ func (v *stack_[V]) GetClass() StackClassLike[V] {
 
 // Attribute Methods
 
-func (v *stack_[V]) GetCapacity() uti.Cardinal {
+func (v *stack_[V]) GetCapacity() age.Cardinal {
 	return v.capacity_
 }
 
@@ -109,8 +109,8 @@ func (v *stack_[V]) IsEmpty() bool {
 	return result_
 }
 
-func (v *stack_[V]) GetSize() uti.Cardinal {
-	var result_ uti.Cardinal
+func (v *stack_[V]) GetSize() age.Cardinal {
+	var result_ age.Cardinal
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -135,7 +135,7 @@ func (v *stack_[V]) GetIterator() age.IteratorLike[V] {
 
 type stack_[V any] struct {
 	// Declare the instance attributes.
-	capacity_ uti.Cardinal
+	capacity_ age.Cardinal
 }
 
 // Class Structure
