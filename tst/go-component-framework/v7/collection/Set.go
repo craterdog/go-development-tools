@@ -78,7 +78,7 @@ func (c *setClass_[V]) And(
 	return result_
 }
 
-func (c *setClass_[V]) Or(
+func (c *setClass_[V]) Ior(
 	first SetLike[V],
 	second SetLike[V],
 ) SetLike[V] {
@@ -87,7 +87,7 @@ func (c *setClass_[V]) Or(
 	return result_
 }
 
-func (c *setClass_[V]) Sans(
+func (c *setClass_[V]) San(
 	first SetLike[V],
 	second SetLike[V],
 ) SetLike[V] {
