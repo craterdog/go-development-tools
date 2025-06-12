@@ -178,16 +178,8 @@ func (v angle_) GetClass() AngleClassLike {
 	return angleClass()
 }
 
-func (v angle_) GetIntrinsic() float64 {
+func (v angle_) AsIntrinsic() float64 {
 	return float64(v)
-}
-
-func (v angle_) GetParts() (
-	x float64,
-	y float64,
-) {
-	// TBD - Add the method implementation.
-	return
 }
 
 func (v angle_) AsString() string {
@@ -196,12 +188,20 @@ func (v angle_) AsString() string {
 	return result_
 }
 
-func (v angle_) InUnits(
+func (v angle_) AsUnits(
 	units Units,
 ) float64 {
 	var result_ float64
 	// TBD - Add the method implementation.
 	return result_
+}
+
+func (v angle_) AsParts() (
+	x float64,
+	y float64,
+) {
+	// TBD - Add the method implementation.
+	return
 }
 
 // Attribute Methods

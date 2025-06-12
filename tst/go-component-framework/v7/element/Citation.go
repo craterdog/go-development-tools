@@ -42,8 +42,14 @@ func (v citation_) GetClass() CitationClassLike {
 	return citationClass()
 }
 
-func (v citation_) GetIntrinsic() string {
+func (v citation_) AsIntrinsic() string {
 	return string(v)
+}
+
+func (v citation_) AsString() string {
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v citation_) GetName() string {
@@ -53,12 +59,6 @@ func (v citation_) GetName() string {
 }
 
 func (v citation_) GetVersion() string {
-	var result_ string
-	// TBD - Add the method implementation.
-	return result_
-}
-
-func (v citation_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_

@@ -52,8 +52,20 @@ func (v resource_) GetClass() ResourceClassLike {
 	return resourceClass()
 }
 
-func (v resource_) GetIntrinsic() string {
+func (v resource_) AsIntrinsic() string {
 	return string(v)
+}
+
+func (v resource_) AsString() string {
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v resource_) AsUri() *uri.URL {
+	var result_ *uri.URL
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v resource_) GetScheme() string {
@@ -82,18 +94,6 @@ func (v resource_) GetQuery() string {
 
 func (v resource_) GetFragment() string {
 	var result_ string
-	// TBD - Add the method implementation.
-	return result_
-}
-
-func (v resource_) AsString() string {
-	var result_ string
-	// TBD - Add the method implementation.
-	return result_
-}
-
-func (v resource_) AsUri() *uri.URL {
-	var result_ *uri.URL
 	// TBD - Add the method implementation.
 	return result_
 }

@@ -208,8 +208,14 @@ func (v number_) GetClass() NumberClassLike {
 	return numberClass()
 }
 
-func (v number_) GetIntrinsic() complex128 {
+func (v number_) AsIntrinsic() complex128 {
 	return complex128(v)
+}
+
+func (v number_) AsString() string {
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v number_) GetReal() float64 {
@@ -232,12 +238,6 @@ func (v number_) GetMagnitude() float64 {
 
 func (v number_) GetPhase() float64 {
 	var result_ float64
-	// TBD - Add the method implementation.
-	return result_
-}
-
-func (v number_) AsString() string {
-	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }

@@ -82,7 +82,7 @@ func (v glyph_) GetClass() GlyphClassLike {
 	return glyphClass()
 }
 
-func (v glyph_) GetIntrinsic() rune {
+func (v glyph_) AsIntrinsic() rune {
 	return rune(v)
 }
 
