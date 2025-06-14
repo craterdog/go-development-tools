@@ -1,27 +1,4 @@
-echo "Removing the old binaries..."
-rm -rf ./bin
-mkdir -p ./bin/
-echo "Done."
-echo
-
-echo "Compiling the following tools:"
-echo "  create-syntax"
-go build -o ./bin/ ./src/create-syntax
-echo "  format-syntax"
-go build -o ./bin/ ./src/format-syntax
-echo "  create-model"
-go build -o ./bin/ ./src/create-model
-echo "  format-model"
-go build -o ./bin/ ./src/format-model
-echo "  generate-classes"
-go build -o ./bin/ ./src/generate-classes
-echo "  generate-module"
-go build -o ./bin/ ./src/generate-module
-echo "  generate-project"
-go build -o ./bin/ ./src/generate-project
-echo "Done."
-echo
-
+etc/build.sh
 directory=./tst/go-syntax-notation
 moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
@@ -33,14 +10,17 @@ bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ ast grammar
 echo
 cd ${directory}/v7
 gofmt -w . >/dev/null
+echo "Updating the dependencies..."
 cat <<EOF > go.mod
 module ${moduleName}
 
-go 1.23
+go 1.24
 EOF
 go mod tidy >/dev/null 2>&1
 golangci-lint run
 cd - >/dev/null
+echo "Done."
+echo
 
 directory=./tst/go-class-model
 moduleName=github.com/craterdog/${directory:6}/v7
@@ -53,14 +33,17 @@ bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ ast grammar
 echo
 cd ${directory}/v7
 gofmt -w . >/dev/null
+echo "Updating the dependencies..."
 cat <<EOF > go.mod
 module ${moduleName}
 
-go 1.23
+go 1.24
 EOF
 go mod tidy >/dev/null 2>&1
 golangci-lint run
 cd - >/dev/null
+echo "Done."
+echo
 
 directory=./tst/go-component-framework
 moduleName=github.com/craterdog/${directory:6}/v7
@@ -79,6 +62,7 @@ bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ element collectio
 echo
 cd ${directory}/v7
 gofmt -w . >/dev/null
+echo "Updating the dependencies..."
 cat <<EOF > go.mod
 module ${moduleName}
 
@@ -87,6 +71,8 @@ EOF
 go mod tidy >/dev/null 2>&1
 golangci-lint run
 cd - >/dev/null
+echo "Done."
+echo
 
 directory=./tst/go-example-project
 moduleName=github.com/craterdog/${directory:6}/v2
@@ -101,4 +87,3 @@ echo
 bin/format-model ${directory}/v2/example/package_api.go
 echo
 bin/generate-classes ${moduleName} ${directory}/v2/ example
-echo

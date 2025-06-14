@@ -18,6 +18,7 @@ import (
 	col "github.com/craterdog/go-component-framework/v7/collection"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
+	stc "strconv"
 )
 
 // CLASS INTERFACE
@@ -31,9 +32,9 @@ func QuoteClass() QuoteClassLike {
 // Constructor Methods
 
 func (c *quoteClass_) Quote(
-	string_ string,
+	runes []rune,
 ) QuoteLike {
-	return quote_(string_)
+	return quote_(runes)
 }
 
 func (c *quoteClass_) QuoteFromSequence(
@@ -55,7 +56,8 @@ func (c *quoteClass_) QuoteFromString(
 		)
 		panic(message)
 	}
-	return quote_(matches[1]) // Strip off the double quotes.
+	var unquoted, _ = stc.Unquote(matches[0]) // Strip off the double quotes.
+	return quote_(unquoted)
 }
 
 // Constant Methods
@@ -66,7 +68,7 @@ func (c *quoteClass_) Concatenate(
 	first QuoteLike,
 	second QuoteLike,
 ) QuoteLike {
-	return c.Quote(first.AsIntrinsic() + second.AsIntrinsic())
+	return c.Quote(uti.CombineArrays(first.AsIntrinsic(), second.AsIntrinsic()))
 }
 
 // INSTANCE INTERFACE
@@ -77,12 +79,12 @@ func (v quote_) GetClass() QuoteClassLike {
 	return quoteClass()
 }
 
-func (v quote_) AsIntrinsic() string {
-	return string(v)
+func (v quote_) AsIntrinsic() []rune {
+	return []rune(v)
 }
 
 func (v quote_) AsString() string {
-	return `"` + v.AsIntrinsic() + `"`
+	return stc.Quote(string(v))
 }
 
 // Attribute Methods

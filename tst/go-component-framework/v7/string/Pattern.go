@@ -18,6 +18,7 @@ import (
 	col "github.com/craterdog/go-component-framework/v7/collection"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
+	stc "strconv"
 )
 
 // CLASS INTERFACE
@@ -31,10 +32,10 @@ func PatternClass() PatternClassLike {
 // Constructor Methods
 
 func (c *patternClass_) Pattern(
-	string_ string,
+	runes []rune,
 ) PatternLike {
-	reg.MustCompile(string_)
-	return pattern_(string_)
+	reg.MustCompile(string(runes))
+	return pattern_(runes)
 }
 
 func (c *patternClass_) PatternFromSequence(
@@ -62,8 +63,9 @@ func (c *patternClass_) PatternFromString(
 	case "any":
 		return c.any_
 	default:
-		reg.MustCompile(matches[1]) // Make sure it is a valid regular expression.
-		return pattern_(matches[1]) // Strip off the double quotes and '?'.
+		var unquoted, _ = stc.Unquote(matches[0]) // Strip off the double quotes.
+		reg.MustCompile(unquoted)
+		return pattern_(unquoted)
 	}
 }
 
@@ -83,7 +85,7 @@ func (c *patternClass_) Concatenate(
 	first PatternLike,
 	second PatternLike,
 ) PatternLike {
-	return c.Pattern(first.AsIntrinsic() + second.AsIntrinsic())
+	return c.Pattern(uti.CombineArrays(first.AsIntrinsic(), second.AsIntrinsic()))
 }
 
 // INSTANCE INTERFACE
@@ -94,8 +96,8 @@ func (v pattern_) GetClass() PatternClassLike {
 	return patternClass()
 }
 
-func (v pattern_) AsIntrinsic() string {
-	return string(v)
+func (v pattern_) AsIntrinsic() []rune {
+	return []rune(v)
 }
 
 func (v pattern_) AsString() string {
@@ -106,26 +108,26 @@ func (v pattern_) AsString() string {
 	case `.*`:
 		string_ = `any`
 	default:
-		string_ = `"` + v.AsIntrinsic() + `"?`
+		string_ = stc.Quote(string(v)) + "?"
 	}
 	return string_
 }
 
 func (v pattern_) AsRegexp() *reg.Regexp {
-	return reg.MustCompile(v.AsIntrinsic())
+	return reg.MustCompile(string(v))
 }
 
 func (v pattern_) MatchesText(
 	text string,
 ) bool {
-	var matcher = reg.MustCompile(v.AsIntrinsic())
+	var matcher = reg.MustCompile(string(v))
 	return matcher.MatchString(text)
 }
 
 func (v pattern_) GetMatches(
 	text string,
 ) []string {
-	var matcher = reg.MustCompile(v.AsIntrinsic())
+	var matcher = reg.MustCompile(string(v))
 	return matcher.FindStringSubmatch(text)
 }
 
