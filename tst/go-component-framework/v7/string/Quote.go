@@ -13,12 +13,8 @@
 package string
 
 import (
-	fmt "fmt"
 	age "github.com/craterdog/go-component-framework/v7/agent"
-	col "github.com/craterdog/go-component-framework/v7/collection"
 	uti "github.com/craterdog/go-missing-utilities/v7"
-	reg "regexp"
-	stc "strconv"
 )
 
 // CLASS INTERFACE
@@ -32,32 +28,25 @@ func QuoteClass() QuoteClassLike {
 // Constructor Methods
 
 func (c *quoteClass_) Quote(
-	runes []rune,
+	characters []Character,
 ) QuoteLike {
-	return quote_(runes)
+	return quote_(characters)
 }
 
 func (c *quoteClass_) QuoteFromSequence(
-	sequence col.Sequential[rune],
+	sequence Sequential[Character],
 ) QuoteLike {
-	var class = col.ListClass[rune]()
-	var list = class.ListFromSequence(sequence)
-	return quote_(list.AsArray())
+	var instance QuoteLike
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 func (c *quoteClass_) QuoteFromString(
 	string_ string,
 ) QuoteLike {
-	var matches = c.matcher_.FindStringSubmatch(string_)
-	if uti.IsUndefined(matches) {
-		var message = fmt.Sprintf(
-			"An illegal string was passed to the quote constructor method: %s",
-			string_,
-		)
-		panic(message)
-	}
-	var unquoted, _ = stc.Unquote(matches[0]) // Strip off the double quotes.
-	return quote_(unquoted)
+	var instance QuoteLike
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 // Constant Methods
@@ -68,7 +57,9 @@ func (c *quoteClass_) Concatenate(
 	first QuoteLike,
 	second QuoteLike,
 ) QuoteLike {
-	return c.Quote(uti.CombineArrays(first.AsIntrinsic(), second.AsIntrinsic()))
+	var result_ QuoteLike
+	// TBD - Add the function implementation.
+	return result_
 }
 
 // INSTANCE INTERFACE
@@ -79,86 +70,75 @@ func (v quote_) GetClass() QuoteClassLike {
 	return quoteClass()
 }
 
-func (v quote_) AsIntrinsic() []rune {
-	return []rune(v)
+func (v quote_) AsIntrinsic() []Character {
+	return []Character(v)
 }
 
 func (v quote_) AsString() string {
-	return stc.Quote(string(v))
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // Attribute Methods
 
-// col.Sequential[rune] Methods
-
-func (v quote_) IsEmpty() bool {
-	return len(v) == 0
-}
-
-func (v quote_) GetSize() age.Cardinal {
-	return age.Cardinal(len(v.AsArray()))
-}
-
-func (v quote_) AsArray() []rune {
-	return []rune(v)
-}
-
-func (v quote_) GetIterator() age.IteratorLike[rune] {
-	var class = age.IteratorClass[rune]()
-	var iterator = class.Iterator(v.AsArray())
-	return iterator
-}
-
-// col.Accessible[rune] Methods
+// Accessible[Character] Methods
 
 func (v quote_) GetValue(
-	index col.Index,
-) rune {
-	var class = col.ListClass[rune]()
-	var list = class.ListFromArray(v.AsArray())
-	return list.GetValue(index)
+	index uti.Index,
+) Character {
+	var result_ Character
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v quote_) GetValues(
-	first col.Index,
-	last col.Index,
-) col.Sequential[rune] {
-	var class = col.ListClass[rune]()
-	var list = class.ListFromArray(v.AsArray())
-	return list.GetValues(first, last)
+	first uti.Index,
+	last uti.Index,
+) Sequential[Character] {
+	var result_ Sequential[Character]
+	// TBD - Add the method implementation.
+	return result_
+}
+
+// Sequential[Character] Methods
+
+func (v quote_) IsEmpty() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v quote_) GetSize() uti.Cardinal {
+	var result_ uti.Cardinal
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v quote_) AsArray() []Character {
+	var result_ []Character
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v quote_) GetIterator() age.IteratorLike[Character] {
+	var result_ age.IteratorLike[Character]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // PROTECTED INTERFACE
 
-func (v quote_) String() string {
-	return v.AsString()
-}
-
 // Private Methods
-
-// NOTE:
-// These private constants are used to define the private regular expression
-// matcher that is used to match legal string quotes for this intrinsic type.
-// Unfortunately there is no way to make them private to this class since they
-// must be TRUE Go constants to be used in this way.  We append an underscore to
-// each name to lessen the chance of a name collision with other private Go
-// class constants in this package.
-const (
-	character_ = escape_ + "|\\\\\"|[^\"" + control_ + "]"
-	control_   = "\\p{Cc}"
-	escape_    = "\\\\(?:" + unicode_ + "|[abfnrtv\\\\])"
-	unicode_   = "u(?:" + base16_ + "){4}|U(?:" + base16_ + "){8}"
-)
 
 // Instance Structure
 
-type quote_ string
+type quote_ []Character
 
 // Class Structure
 
 type quoteClass_ struct {
 	// Declare the class constants.
-	matcher_ *reg.Regexp
 }
 
 // Class Reference
@@ -169,5 +149,4 @@ func quoteClass() *quoteClass_ {
 
 var quoteClassReference_ = &quoteClass_{
 	// Initialize the class constants.
-	matcher_: reg.MustCompile("^\"((?:" + character_ + ")*)\""),
 }

@@ -30,8 +30,9 @@ package module
 
 import (
 	age "github.com/craterdog/go-component-framework/v7/agent"
-	col "github.com/craterdog/go-component-framework/v7/collection"
 	ele "github.com/craterdog/go-component-framework/v7/element"
+	str "github.com/craterdog/go-component-framework/v7/string"
+	uti "github.com/craterdog/go-missing-utilities/v7"
 	uri "net/url"
 )
 
@@ -60,6 +61,7 @@ type (
 	PercentageClassLike  = ele.PercentageClassLike
 	ProbabilityClassLike = ele.ProbabilityClassLike
 	ResourceClassLike    = ele.ResourceClassLike
+	SymbolClassLike      = ele.SymbolClassLike
 )
 
 type (
@@ -73,6 +75,7 @@ type (
 	PercentageLike  = ele.PercentageLike
 	ProbabilityLike = ele.ProbabilityLike
 	ResourceLike    = ele.ResourceLike
+	SymbolLike      = ele.SymbolLike
 )
 
 type (
@@ -83,50 +86,46 @@ type (
 	Temporal   = ele.Temporal
 )
 
-// Collection
+// String
 
 type (
-	Index = col.Index
+	Identifier  = str.Identifier
+	Instruction = str.Instruction
+	Line        = str.Line
+	Character   = str.Character
 )
 
 type (
-	AssociationClassLike[K comparable, V any] = col.AssociationClassLike[K, V]
-	CatalogClassLike[K comparable, V any]     = col.CatalogClassLike[K, V]
-	ListClassLike[V any]                      = col.ListClassLike[V]
-	QueueClassLike[V any]                     = col.QueueClassLike[V]
-	SetClassLike[V any]                       = col.SetClassLike[V]
-	StackClassLike[V any]                     = col.StackClassLike[V]
+	BinaryClassLike    = str.BinaryClassLike
+	BytecodeClassLike  = str.BytecodeClassLike
+	NameClassLike      = str.NameClassLike
+	NarrativeClassLike = str.NarrativeClassLike
+	PatternClassLike   = str.PatternClassLike
+	QuoteClassLike     = str.QuoteClassLike
+	TagClassLike       = str.TagClassLike
+	VersionClassLike   = str.VersionClassLike
 )
 
 type (
-	AssociationLike[K comparable, V any] = col.AssociationLike[K, V]
-	CatalogLike[K comparable, V any]     = col.CatalogLike[K, V]
-	ListLike[V any]                      = col.ListLike[V]
-	QueueLike[V any]                     = col.QueueLike[V]
-	SetLike[V any]                       = col.SetLike[V]
-	StackLike[V any]                     = col.StackLike[V]
+	BinaryLike    = str.BinaryLike
+	BytecodeLike  = str.BytecodeLike
+	NameLike      = str.NameLike
+	NarrativeLike = str.NarrativeLike
+	PatternLike   = str.PatternLike
+	QuoteLike     = str.QuoteLike
+	TagLike       = str.TagLike
+	VersionLike   = str.VersionLike
 )
 
 type (
-	Accessible[V any]                = col.Accessible[V]
-	Associative[K comparable, V any] = col.Associative[K, V]
-	Elastic[V any]                   = col.Elastic[V]
-	Fifo[V any]                      = col.Fifo[V]
-	Lifo[V any]                      = col.Lifo[V]
-	Malleable[V any]                 = col.Malleable[V]
-	Searchable[V any]                = col.Searchable[V]
-	Sequential[V any]                = col.Sequential[V]
-	Sortable[V any]                  = col.Sortable[V]
-	Synchronized                     = col.Synchronized
-	Updatable[V any]                 = col.Updatable[V]
+	Accessible[V any] = str.Accessible[V]
+	Sequential[V any] = str.Sequential[V]
 )
 
 // Agent
 
 type (
-	Cardinal    = age.Cardinal
 	Event       = age.Event
-	Ordinal     = age.Ordinal
 	Rank        = age.Rank
 	Slot        = age.Slot
 	State       = age.State
@@ -401,171 +400,249 @@ func ResourceFromUri(
 	)
 }
 
-// Collection
-
-func AssociationClass[K comparable, V any]() AssociationClassLike[K, V] {
-	return col.AssociationClass[K, V]()
+func SymbolClass() SymbolClassLike {
+	return ele.SymbolClass()
 }
 
-func Association[K comparable, V any](
-	key K,
-	value V,
-) AssociationLike[K, V] {
-	return AssociationClass[K, V]().Association(
-		key,
-		value,
+func Symbol(
+	string_ string,
+) SymbolLike {
+	return SymbolClass().Symbol(
+		string_,
 	)
 }
 
-func CatalogClass[K comparable, V any]() CatalogClassLike[K, V] {
-	return col.CatalogClass[K, V]()
+// String
+
+func BinaryClass() BinaryClassLike {
+	return str.BinaryClass()
 }
 
-func Catalog[K comparable, V any]() CatalogLike[K, V] {
-	return CatalogClass[K, V]().Catalog()
-}
-
-func CatalogFromArray[K comparable, V any](
-	associations []col.AssociationLike[K, V],
-) CatalogLike[K, V] {
-	return CatalogClass[K, V]().CatalogFromArray(
-		associations,
+func Binary(
+	bytes []byte,
+) BinaryLike {
+	return BinaryClass().Binary(
+		bytes,
 	)
 }
 
-func CatalogFromMap[K comparable, V any](
-	associations map[K]V,
-) CatalogLike[K, V] {
-	return CatalogClass[K, V]().CatalogFromMap(
-		associations,
+func BinaryFromSequence(
+	sequence str.Sequential[byte],
+) BinaryLike {
+	return BinaryClass().BinaryFromSequence(
+		sequence,
 	)
 }
 
-func CatalogFromSequence[K comparable, V any](
-	associations col.Sequential[col.AssociationLike[K, V]],
-) CatalogLike[K, V] {
-	return CatalogClass[K, V]().CatalogFromSequence(
-		associations,
+func BinaryFromString(
+	string_ string,
+) BinaryLike {
+	return BinaryClass().BinaryFromString(
+		string_,
 	)
 }
 
-func ListClass[V any]() ListClassLike[V] {
-	return col.ListClass[V]()
+func BytecodeClass() BytecodeClassLike {
+	return str.BytecodeClass()
 }
 
-func List[V any]() ListLike[V] {
-	return ListClass[V]().List()
-}
-
-func ListFromArray[V any](
-	values []V,
-) ListLike[V] {
-	return ListClass[V]().ListFromArray(
-		values,
+func Bytecode(
+	instructions []str.Instruction,
+) BytecodeLike {
+	return BytecodeClass().Bytecode(
+		instructions,
 	)
 }
 
-func ListFromSequence[V any](
-	values col.Sequential[V],
-) ListLike[V] {
-	return ListClass[V]().ListFromSequence(
-		values,
+func BytecodeFromSequence(
+	sequence str.Sequential[str.Instruction],
+) BytecodeLike {
+	return BytecodeClass().BytecodeFromSequence(
+		sequence,
 	)
 }
 
-func QueueClass[V any]() QueueClassLike[V] {
-	return col.QueueClass[V]()
-}
-
-func Queue[V any]() QueueLike[V] {
-	return QueueClass[V]().Queue()
-}
-
-func QueueWithCapacity[V any](
-	capacity age.Cardinal,
-) QueueLike[V] {
-	return QueueClass[V]().QueueWithCapacity(
-		capacity,
+func BytecodeFromString(
+	string_ string,
+) BytecodeLike {
+	return BytecodeClass().BytecodeFromString(
+		string_,
 	)
 }
 
-func QueueFromArray[V any](
-	values []V,
-) QueueLike[V] {
-	return QueueClass[V]().QueueFromArray(
-		values,
+func NameClass() NameClassLike {
+	return str.NameClass()
+}
+
+func Name(
+	identifiers []str.Identifier,
+) NameLike {
+	return NameClass().Name(
+		identifiers,
 	)
 }
 
-func QueueFromSequence[V any](
-	values col.Sequential[V],
-) QueueLike[V] {
-	return QueueClass[V]().QueueFromSequence(
-		values,
+func NameFromSequence(
+	sequence str.Sequential[str.Identifier],
+) NameLike {
+	return NameClass().NameFromSequence(
+		sequence,
 	)
 }
 
-func SetClass[V any]() SetClassLike[V] {
-	return col.SetClass[V]()
-}
-
-func Set[V any]() SetLike[V] {
-	return SetClass[V]().Set()
-}
-
-func SetWithCollator[V any](
-	collator age.CollatorLike[V],
-) SetLike[V] {
-	return SetClass[V]().SetWithCollator(
-		collator,
+func NameFromString(
+	string_ string,
+) NameLike {
+	return NameClass().NameFromString(
+		string_,
 	)
 }
 
-func SetFromArray[V any](
-	values []V,
-) SetLike[V] {
-	return SetClass[V]().SetFromArray(
-		values,
+func NarrativeClass() NarrativeClassLike {
+	return str.NarrativeClass()
+}
+
+func Narrative(
+	lines []str.Line,
+) NarrativeLike {
+	return NarrativeClass().Narrative(
+		lines,
 	)
 }
 
-func SetFromSequence[V any](
-	values col.Sequential[V],
-) SetLike[V] {
-	return SetClass[V]().SetFromSequence(
-		values,
+func NarrativeFromSequence(
+	sequence str.Sequential[str.Line],
+) NarrativeLike {
+	return NarrativeClass().NarrativeFromSequence(
+		sequence,
 	)
 }
 
-func StackClass[V any]() StackClassLike[V] {
-	return col.StackClass[V]()
-}
-
-func Stack[V any]() StackLike[V] {
-	return StackClass[V]().Stack()
-}
-
-func StackWithCapacity[V any](
-	capacity age.Cardinal,
-) StackLike[V] {
-	return StackClass[V]().StackWithCapacity(
-		capacity,
+func NarrativeFromString(
+	string_ string,
+) NarrativeLike {
+	return NarrativeClass().NarrativeFromString(
+		string_,
 	)
 }
 
-func StackFromArray[V any](
-	values []V,
-) StackLike[V] {
-	return StackClass[V]().StackFromArray(
-		values,
+func PatternClass() PatternClassLike {
+	return str.PatternClass()
+}
+
+func Pattern(
+	characters []str.Character,
+) PatternLike {
+	return PatternClass().Pattern(
+		characters,
 	)
 }
 
-func StackFromSequence[V any](
-	values col.Sequential[V],
-) StackLike[V] {
-	return StackClass[V]().StackFromSequence(
-		values,
+func PatternFromSequence(
+	sequence str.Sequential[str.Character],
+) PatternLike {
+	return PatternClass().PatternFromSequence(
+		sequence,
+	)
+}
+
+func PatternFromString(
+	string_ string,
+) PatternLike {
+	return PatternClass().PatternFromString(
+		string_,
+	)
+}
+
+func QuoteClass() QuoteClassLike {
+	return str.QuoteClass()
+}
+
+func Quote(
+	characters []str.Character,
+) QuoteLike {
+	return QuoteClass().Quote(
+		characters,
+	)
+}
+
+func QuoteFromSequence(
+	sequence str.Sequential[str.Character],
+) QuoteLike {
+	return QuoteClass().QuoteFromSequence(
+		sequence,
+	)
+}
+
+func QuoteFromString(
+	string_ string,
+) QuoteLike {
+	return QuoteClass().QuoteFromString(
+		string_,
+	)
+}
+
+func TagClass() TagClassLike {
+	return str.TagClass()
+}
+
+func Tag(
+	bytes []byte,
+) TagLike {
+	return TagClass().Tag(
+		bytes,
+	)
+}
+
+func TagWithSize(
+	size uti.Cardinal,
+) TagLike {
+	return TagClass().TagWithSize(
+		size,
+	)
+}
+
+func TagFromSequence(
+	sequence str.Sequential[byte],
+) TagLike {
+	return TagClass().TagFromSequence(
+		sequence,
+	)
+}
+
+func TagFromString(
+	string_ string,
+) TagLike {
+	return TagClass().TagFromString(
+		string_,
+	)
+}
+
+func VersionClass() VersionClassLike {
+	return str.VersionClass()
+}
+
+func Version(
+	ordinals []uti.Ordinal,
+) VersionLike {
+	return VersionClass().Version(
+		ordinals,
+	)
+}
+
+func VersionFromSequence(
+	sequence str.Sequential[uti.Ordinal],
+) VersionLike {
+	return VersionClass().VersionFromSequence(
+		sequence,
+	)
+}
+
+func VersionFromString(
+	string_ string,
+) VersionLike {
+	return VersionClass().VersionFromString(
+		string_,
 	)
 }
 
@@ -580,7 +657,7 @@ func Collator[V any]() CollatorLike[V] {
 }
 
 func CollatorWithMaximumDepth[V any](
-	maximumDepth age.Cardinal,
+	maximumDepth uti.Cardinal,
 ) CollatorLike[V] {
 	return CollatorClass[V]().CollatorWithMaximumDepth(
 		maximumDepth,

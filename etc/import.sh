@@ -18,7 +18,7 @@ mkdir -p ./tst/${module}/
 cp -r ../${module}/ ./tst/${module}/
 rm ./tst/${module}/module_test.go
 rm ./tst/${module}/element/package_test.go
-rm ./tst/${module}/collection/package_test.go
+rm -r ./tst/${module}/collection
 rm ./tst/${module}/agent/package_test.go
 rm -f ./tst/${module}/.goignore
 

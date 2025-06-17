@@ -13,12 +13,9 @@
 package string
 
 import (
-	fmt "fmt"
 	age "github.com/craterdog/go-component-framework/v7/agent"
-	col "github.com/craterdog/go-component-framework/v7/collection"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
-	stc "strconv"
 )
 
 // CLASS INTERFACE
@@ -32,41 +29,25 @@ func PatternClass() PatternClassLike {
 // Constructor Methods
 
 func (c *patternClass_) Pattern(
-	runes []rune,
+	characters []Character,
 ) PatternLike {
-	reg.MustCompile(string(runes))
-	return pattern_(runes)
+	return pattern_(characters)
 }
 
 func (c *patternClass_) PatternFromSequence(
-	sequence col.Sequential[rune],
+	sequence Sequential[Character],
 ) PatternLike {
-	var class = col.ListClass[rune]()
-	var list = class.ListFromSequence(sequence)
-	return pattern_(list.AsArray())
+	var instance PatternLike
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 func (c *patternClass_) PatternFromString(
 	string_ string,
 ) PatternLike {
-	var matches = c.matcher_.FindStringSubmatch(string_)
-	if uti.IsUndefined(matches) {
-		var message = fmt.Sprintf(
-			"An illegal string was passed to the pattern constructor method: %s",
-			string_,
-		)
-		panic(message)
-	}
-	switch matches[0] {
-	case "none":
-		return c.none_
-	case "any":
-		return c.any_
-	default:
-		var unquoted, _ = stc.Unquote(matches[0]) // Strip off the double quotes.
-		reg.MustCompile(unquoted)
-		return pattern_(unquoted)
-	}
+	var instance PatternLike
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 // Constant Methods
@@ -85,7 +66,9 @@ func (c *patternClass_) Concatenate(
 	first PatternLike,
 	second PatternLike,
 ) PatternLike {
-	return c.Pattern(uti.CombineArrays(first.AsIntrinsic(), second.AsIntrinsic()))
+	var result_ PatternLike
+	// TBD - Add the function implementation.
+	return result_
 }
 
 // INSTANCE INTERFACE
@@ -96,112 +79,99 @@ func (v pattern_) GetClass() PatternClassLike {
 	return patternClass()
 }
 
-func (v pattern_) AsIntrinsic() []rune {
-	return []rune(v)
+func (v pattern_) AsIntrinsic() []Character {
+	return []Character(v)
 }
 
 func (v pattern_) AsString() string {
-	var string_ string
-	switch v {
-	case `^none$`:
-		string_ = `none`
-	case `.*`:
-		string_ = `any`
-	default:
-		string_ = stc.Quote(string(v)) + "?"
-	}
-	return string_
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v pattern_) AsRegexp() *reg.Regexp {
-	return reg.MustCompile(string(v))
+	var result_ *reg.Regexp
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v pattern_) MatchesText(
 	text string,
 ) bool {
-	var matcher = reg.MustCompile(string(v))
-	return matcher.MatchString(text)
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v pattern_) GetMatches(
 	text string,
 ) []string {
-	var matcher = reg.MustCompile(string(v))
-	return matcher.FindStringSubmatch(text)
+	var result_ []string
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // Attribute Methods
 
-// col.Sequential[rune] Methods
-
-func (v pattern_) IsEmpty() bool {
-	return len(v) == 0
-}
-
-func (v pattern_) GetSize() age.Cardinal {
-	return age.Cardinal(len(v.AsArray()))
-}
-
-func (v pattern_) AsArray() []rune {
-	return []rune(v)
-}
-
-func (v pattern_) GetIterator() age.IteratorLike[rune] {
-	var class = age.IteratorClass[rune]()
-	var iterator = class.Iterator(v.AsArray())
-	return iterator
-}
-
-// col.Accessible[rune] Methods
+// Accessible[Character] Methods
 
 func (v pattern_) GetValue(
-	index col.Index,
-) rune {
-	var class = col.ListClass[rune]()
-	var list = class.ListFromArray(v.AsArray())
-	return list.GetValue(index)
+	index uti.Index,
+) Character {
+	var result_ Character
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v pattern_) GetValues(
-	first col.Index,
-	last col.Index,
-) col.Sequential[rune] {
-	var class = col.ListClass[rune]()
-	var list = class.ListFromArray(v.AsArray())
-	return list.GetValues(first, last)
+	first uti.Index,
+	last uti.Index,
+) Sequential[Character] {
+	var result_ Sequential[Character]
+	// TBD - Add the method implementation.
+	return result_
+}
+
+// Sequential[Character] Methods
+
+func (v pattern_) IsEmpty() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v pattern_) GetSize() uti.Cardinal {
+	var result_ uti.Cardinal
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v pattern_) AsArray() []Character {
+	var result_ []Character
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v pattern_) GetIterator() age.IteratorLike[Character] {
+	var result_ age.IteratorLike[Character]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // PROTECTED INTERFACE
 
-func (v pattern_) String() string {
-	return v.AsString()
-}
-
 // Private Methods
-
-// NOTE:
-// These private constants are used to define the private regular expression
-// matcher that is used to match legal string patterns for this intrinsic type.
-// Unfortunately there is no way to make them private to this class since they
-// must be TRUE Go constants to be used in this way.  We append an underscore to
-// each name to lessen the chance of a name collision with other private Go
-// class constants in this package.
-const (
-	regex_ = "\"((?:" + character_ + ")+)\"\\\\?"
-)
 
 // Instance Structure
 
-type pattern_ string
+type pattern_ []Character
 
 // Class Structure
 
 type patternClass_ struct {
 	// Declare the class constants.
-	matcher_ *reg.Regexp
-	none_    PatternLike
-	any_     PatternLike
+	none_ PatternLike
+	any_  PatternLike
 }
 
 // Class Reference
@@ -212,7 +182,6 @@ func patternClass() *patternClass_ {
 
 var patternClassReference_ = &patternClass_{
 	// Initialize the class constants.
-	matcher_: reg.MustCompile("^" + regex_ + "|any|none"),
-	none_:    pattern_(`^none$`),
-	any_:     pattern_(`.*`),
+	// none_: constantValue,
+	// any_: constantValue,
 }

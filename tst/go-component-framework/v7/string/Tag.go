@@ -13,12 +13,8 @@
 package string
 
 import (
-	bin "encoding/binary"
-	fmt "fmt"
 	age "github.com/craterdog/go-component-framework/v7/agent"
-	col "github.com/craterdog/go-component-framework/v7/collection"
 	uti "github.com/craterdog/go-missing-utilities/v7"
-	reg "regexp"
 )
 
 // CLASS INTERFACE
@@ -38,43 +34,31 @@ func (c *tagClass_) Tag(
 }
 
 func (c *tagClass_) TagWithSize(
-	size age.Cardinal,
+	size uti.Cardinal,
 ) TagLike {
-	if size < 4 {
-		var message = fmt.Sprintf(
-			"A tag must be at least four bytes long: %v",
-			size,
-		)
-		panic(message)
+	if uti.IsUndefined(size) {
+		panic("The \"size\" attribute is required by this class.")
 	}
-	var generator = age.GeneratorClass().Generator()
-	var bytes = generator.RandomBytes(size)
-	return tag_(bytes)
+	var instance = &tag_{
+		// Initialize the instance attributes.
+	}
+	return instance
 }
 
 func (c *tagClass_) TagFromSequence(
-	sequence col.Sequential[byte],
+	sequence Sequential[byte],
 ) TagLike {
-	var class = col.ListClass[byte]()
-	var list = class.ListFromSequence(sequence)
-	return tag_(list.AsArray())
+	var instance TagLike
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 func (c *tagClass_) TagFromString(
 	string_ string,
 ) TagLike {
-	var matches = c.matcher_.FindStringSubmatch(string_)
-	if uti.IsUndefined(matches) {
-		var message = fmt.Sprintf(
-			"An illegal string was passed to the tag constructor method: %s",
-			string_,
-		)
-		panic(message)
-	}
-	var base32 = matches[1] // Strip off the leading "#".
-	var encoder = age.EncoderClass().Encoder()
-	var bytes = encoder.Base32Decode(base32)
-	return tag_(bytes)
+	var instance TagLike
+	// TBD - Add the constructor implementation.
+	return instance
 }
 
 // Constant Methods
@@ -85,15 +69,9 @@ func (c *tagClass_) Concatenate(
 	first TagLike,
 	second TagLike,
 ) TagLike {
-	var firstBytes = first.AsArray()
-	var secondBytes = second.AsArray()
-	var allBytes = make(
-		[]byte,
-		len(firstBytes)+len(secondBytes),
-	)
-	copy(allBytes, firstBytes)
-	copy(allBytes[len(firstBytes):], secondBytes)
-	return c.Tag(allBytes)
+	var result_ TagLike
+	// TBD - Add the function implementation.
+	return result_
 }
 
 // INSTANCE INTERFACE
@@ -109,74 +87,67 @@ func (v tag_) AsIntrinsic() []byte {
 }
 
 func (v tag_) AsString() string {
-	var encoder = age.EncoderClass().Encoder()
-	return "#" + encoder.Base32Encode(v)
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v tag_) GetHash() uint64 {
-	return bin.BigEndian.Uint64(v)
+	var result_ uint64
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // Attribute Methods
 
-// col.Sequential[byte] Methods
-
-func (v tag_) IsEmpty() bool {
-	return len(v) == 0
-}
-
-func (v tag_) GetSize() age.Cardinal {
-	return age.Cardinal(len(v))
-}
-
-func (v tag_) AsArray() []byte {
-	return uti.CopyArray(v)
-}
-
-func (v tag_) GetIterator() age.IteratorLike[byte] {
-	var array = uti.CopyArray(v)
-	var class = age.IteratorClass[byte]()
-	var iterator = class.Iterator(array)
-	return iterator
-}
-
-// col.Accessible[byte] Methods
+// Accessible[byte] Methods
 
 func (v tag_) GetValue(
-	index col.Index,
+	index uti.Index,
 ) byte {
-	var class = col.ListClass[byte]()
-	var list = class.ListFromArray(v)
-	return list.GetValue(index)
+	var result_ byte
+	// TBD - Add the method implementation.
+	return result_
 }
 
 func (v tag_) GetValues(
-	first col.Index,
-	last col.Index,
-) col.Sequential[byte] {
-	var class = col.ListClass[byte]()
-	var list = class.ListFromArray(v)
-	return list.GetValues(first, last)
+	first uti.Index,
+	last uti.Index,
+) Sequential[byte] {
+	var result_ Sequential[byte]
+	// TBD - Add the method implementation.
+	return result_
+}
+
+// Sequential[byte] Methods
+
+func (v tag_) IsEmpty() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v tag_) GetSize() uti.Cardinal {
+	var result_ uti.Cardinal
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v tag_) AsArray() []byte {
+	var result_ []byte
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v tag_) GetIterator() age.IteratorLike[byte] {
+	var result_ age.IteratorLike[byte]
+	// TBD - Add the method implementation.
+	return result_
 }
 
 // PROTECTED INTERFACE
 
-func (v tag_) String() string {
-	return v.AsString()
-}
-
 // Private Methods
-
-// NOTE:
-// These private constants are used to define the private regular expression
-// matcher that is used to match legal string patterns for this intrinsic type.
-// Unfortunately there is no way to make them private to this class since they
-// must be TRUE Go constants to be used in this way.  We append an underscore to
-// each name to lessen the chance of a name collision with other private Go
-// class constants in this package.
-const (
-	base32_ = base10_ + "|[A-DF-HJ-NP-TV-Z]"
-)
 
 // Instance Structure
 
@@ -186,7 +157,6 @@ type tag_ []byte
 
 type tagClass_ struct {
 	// Declare the class constants.
-	matcher_ *reg.Regexp
 }
 
 // Class Reference
@@ -197,5 +167,4 @@ func tagClass() *tagClass_ {
 
 var tagClassReference_ = &tagClass_{
 	// Initialize the class constants.
-	matcher_: reg.MustCompile("^#((?:" + base32_ + ")+)"),
 }
