@@ -66,8 +66,7 @@ type AngleClassLike interface {
 	) AngleLike
 
 	// Constant Methods
-	Minimum() AngleLike
-	Maximum() AngleLike
+	Undefined() AngleLike
 	Zero() AngleLike
 	Pi() AngleLike
 	Tau() AngleLike
@@ -133,8 +132,6 @@ type BooleanClassLike interface {
 	) BooleanLike
 
 	// Constant Methods
-	Minimum() BooleanLike
-	Maximum() BooleanLike
 	False() BooleanLike
 	True() BooleanLike
 
@@ -187,8 +184,7 @@ type DurationClassLike interface {
 	) DurationLike
 
 	// Constant Methods
-	Minimum() DurationLike
-	Maximum() DurationLike
+	Undefined() DurationLike
 	MillisecondsPerSecond() int
 	MillisecondsPerMinute() int
 	MillisecondsPerHour() int
@@ -219,8 +215,7 @@ type GlyphClassLike interface {
 	) GlyphLike
 
 	// Constant Methods
-	Minimum() GlyphLike
-	Maximum() GlyphLike
+	Undefined() GlyphLike
 
 	// Function Methods
 	ToLowercase(
@@ -246,8 +241,6 @@ type MomentClassLike interface {
 	) MomentLike
 
 	// Constant Methods
-	Minimum() MomentLike
-	Maximum() MomentLike
 	Epoch() MomentLike
 
 	// Function Methods
@@ -289,8 +282,7 @@ type NumberClassLike interface {
 	) NumberLike
 
 	// Constant Methods
-	Minimum() NumberLike
-	Maximum() NumberLike
+	Undefined() NumberLike
 	Zero() NumberLike
 	One() NumberLike
 	I() NumberLike
@@ -299,7 +291,6 @@ type NumberClassLike interface {
 	Phi() NumberLike
 	Tau() NumberLike
 	Infinity() NumberLike
-	Undefined() NumberLike
 
 	// Function Methods
 	Inverse(
@@ -361,6 +352,9 @@ type PercentageClassLike interface {
 	PercentageFromString(
 		string_ string,
 	) PercentageLike
+
+	// Constant Methods
+	Undefined() PercentageLike
 }
 
 /*
@@ -381,8 +375,7 @@ type ProbabilityClassLike interface {
 	) ProbabilityLike
 
 	// Constant Methods
-	Minimum() ProbabilityLike
-	Maximum() ProbabilityLike
+	Undefined() ProbabilityLike
 
 	// Function Methods
 	Random() ProbabilityLike
@@ -445,7 +438,6 @@ type AngleLike interface {
 	// Principal Methods
 	GetClass() AngleClassLike
 	AsIntrinsic() float64
-	AsString() string
 	AsUnits(
 		units Units,
 	) float64
@@ -467,7 +459,6 @@ type BooleanLike interface {
 	// Principal Methods
 	GetClass() BooleanClassLike
 	AsIntrinsic() bool
-	AsString() string
 
 	// Aspect Interfaces
 	Discrete
@@ -496,7 +487,6 @@ type DurationLike interface {
 	// Principal Methods
 	GetClass() DurationClassLike
 	AsIntrinsic() int
-	AsString() string
 
 	// Aspect Interfaces
 	Discrete
@@ -514,7 +504,6 @@ type GlyphLike interface {
 	// Principal Methods
 	GetClass() GlyphClassLike
 	AsIntrinsic() rune
-	AsString() string
 
 	// Aspect Interfaces
 	Discrete
@@ -529,7 +518,6 @@ type MomentLike interface {
 	// Principal Methods
 	GetClass() MomentClassLike
 	AsIntrinsic() int
-	AsString() string
 
 	// Aspect Interfaces
 	Discrete
@@ -546,7 +534,6 @@ type NumberLike interface {
 	// Principal Methods
 	GetClass() NumberClassLike
 	AsIntrinsic() complex128
-	AsString() string
 	GetReal() float64
 	GetImaginary() float64
 	GetMagnitude() float64
@@ -566,11 +553,9 @@ type PercentageLike interface {
 	// Principal Methods
 	GetClass() PercentageClassLike
 	AsIntrinsic() float64
-	AsString() string
 
 	// Aspect Interfaces
 	Continuous
-	Discrete
 	Polarized
 }
 
@@ -583,11 +568,9 @@ type ProbabilityLike interface {
 	// Principal Methods
 	GetClass() ProbabilityClassLike
 	AsIntrinsic() float64
-	AsString() string
 
 	// Aspect Interfaces
 	Continuous
-	Discrete
 }
 
 /*
@@ -627,11 +610,14 @@ Continuous is an aspect interface that defines a set of method signatures
 that must be supported by each instance of a continuous class.
 */
 type Continuous interface {
+	AsString() string
 	AsFloat() float64
-	IsZero() bool
-	IsInfinite() bool
-	IsUndefined() bool
 	HasMagnitude() bool
+	IsInfinite() bool
+	IsDefined() bool
+	IsMinimum() bool
+	IsZero() bool
+	IsMaximum() bool
 }
 
 /*
@@ -639,8 +625,12 @@ Discrete is an aspect interface that defines a set of method signatures
 that must be supported by each instance of a discrete class.
 */
 type Discrete interface {
-	AsBoolean() bool
+	AsString() string
 	AsInteger() int
+	IsDefined() bool
+	IsMinimum() bool
+	IsZero() bool
+	IsMaximum() bool
 }
 
 /*

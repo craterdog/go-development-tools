@@ -58,12 +58,8 @@ func (c *numberClass_) NumberFromString(
 
 // Constant Methods
 
-func (c *numberClass_) Minimum() NumberLike {
-	return c.minimum_
-}
-
-func (c *numberClass_) Maximum() NumberLike {
-	return c.maximum_
+func (c *numberClass_) Undefined() NumberLike {
+	return c.undefined_
 }
 
 func (c *numberClass_) Zero() NumberLike {
@@ -96,10 +92,6 @@ func (c *numberClass_) Tau() NumberLike {
 
 func (c *numberClass_) Infinity() NumberLike {
 	return c.infinity_
-}
-
-func (c *numberClass_) Undefined() NumberLike {
-	return c.undefined_
 }
 
 // Function Methods
@@ -212,12 +204,6 @@ func (v number_) AsIntrinsic() complex128 {
 	return complex128(v)
 }
 
-func (v number_) AsString() string {
-	var result_ string
-	// TBD - Add the method implementation.
-	return result_
-}
-
 func (v number_) GetReal() float64 {
 	var result_ float64
 	// TBD - Add the method implementation.
@@ -246,13 +232,19 @@ func (v number_) GetPhase() float64 {
 
 // Continuous Methods
 
+func (v number_) AsString() string {
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
+}
+
 func (v number_) AsFloat() float64 {
 	var result_ float64
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v number_) IsZero() bool {
+func (v number_) HasMagnitude() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
@@ -264,13 +256,25 @@ func (v number_) IsInfinite() bool {
 	return result_
 }
 
-func (v number_) IsUndefined() bool {
+func (v number_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v number_) HasMagnitude() bool {
+func (v number_) IsMinimum() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v number_) IsZero() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v number_) IsMaximum() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
@@ -296,8 +300,7 @@ type number_ complex128
 
 type numberClass_ struct {
 	// Declare the class constants.
-	minimum_   NumberLike
-	maximum_   NumberLike
+	undefined_ NumberLike
 	zero_      NumberLike
 	one_       NumberLike
 	i_         NumberLike
@@ -306,7 +309,6 @@ type numberClass_ struct {
 	phi_       NumberLike
 	tau_       NumberLike
 	infinity_  NumberLike
-	undefined_ NumberLike
 }
 
 // Class Reference
@@ -317,8 +319,7 @@ func numberClass() *numberClass_ {
 
 var numberClassReference_ = &numberClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
+	// undefined_: constantValue,
 	// zero_: constantValue,
 	// one_: constantValue,
 	// i_: constantValue,
@@ -327,5 +328,4 @@ var numberClassReference_ = &numberClass_{
 	// phi_: constantValue,
 	// tau_: constantValue,
 	// infinity_: constantValue,
-	// undefined_: constantValue,
 }

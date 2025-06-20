@@ -40,14 +40,6 @@ func (c *booleanClass_) BooleanFromString(
 
 // Constant Methods
 
-func (c *booleanClass_) Minimum() BooleanLike {
-	return c.minimum_
-}
-
-func (c *booleanClass_) Maximum() BooleanLike {
-	return c.maximum_
-}
-
 func (c *booleanClass_) False() BooleanLike {
 	return c.false_
 }
@@ -114,24 +106,42 @@ func (v boolean_) AsIntrinsic() bool {
 	return bool(v)
 }
 
+// Attribute Methods
+
+// Discrete Methods
+
 func (v boolean_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }
 
-// Attribute Methods
+func (v boolean_) AsInteger() int {
+	var result_ int
+	// TBD - Add the method implementation.
+	return result_
+}
 
-// Discrete Methods
-
-func (v boolean_) AsBoolean() bool {
+func (v boolean_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v boolean_) AsInteger() int {
-	var result_ int
+func (v boolean_) IsMinimum() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v boolean_) IsZero() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v boolean_) IsMaximum() bool {
+	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -148,10 +158,8 @@ type boolean_ bool
 
 type booleanClass_ struct {
 	// Declare the class constants.
-	minimum_ BooleanLike
-	maximum_ BooleanLike
-	false_   BooleanLike
-	true_    BooleanLike
+	false_ BooleanLike
+	true_  BooleanLike
 }
 
 // Class Reference
@@ -162,8 +170,6 @@ func booleanClass() *booleanClass_ {
 
 var booleanClassReference_ = &booleanClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
 	// false_: constantValue,
 	// true_: constantValue,
 }

@@ -40,12 +40,8 @@ func (c *durationClass_) DurationFromString(
 
 // Constant Methods
 
-func (c *durationClass_) Minimum() DurationLike {
-	return c.minimum_
-}
-
-func (c *durationClass_) Maximum() DurationLike {
-	return c.maximum_
+func (c *durationClass_) Undefined() DurationLike {
+	return c.undefined_
 }
 
 func (c *durationClass_) MillisecondsPerSecond() int {
@@ -102,24 +98,42 @@ func (v duration_) AsIntrinsic() int {
 	return int(v)
 }
 
+// Attribute Methods
+
+// Discrete Methods
+
 func (v duration_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }
 
-// Attribute Methods
+func (v duration_) AsInteger() int {
+	var result_ int
+	// TBD - Add the method implementation.
+	return result_
+}
 
-// Discrete Methods
-
-func (v duration_) AsBoolean() bool {
+func (v duration_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v duration_) AsInteger() int {
-	var result_ int
+func (v duration_) IsMinimum() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v duration_) IsZero() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v duration_) IsMaximum() bool {
+	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -244,8 +258,7 @@ type duration_ int
 
 type durationClass_ struct {
 	// Declare the class constants.
-	minimum_               DurationLike
-	maximum_               DurationLike
+	undefined_             DurationLike
 	millisecondsPerSecond_ int
 	millisecondsPerMinute_ int
 	millisecondsPerHour_   int
@@ -266,8 +279,7 @@ func durationClass() *durationClass_ {
 
 var durationClassReference_ = &durationClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
+	// undefined_: constantValue,
 	// millisecondsPerSecond_: constantValue,
 	// millisecondsPerMinute_: constantValue,
 	// millisecondsPerHour_: constantValue,

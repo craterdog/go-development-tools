@@ -101,6 +101,14 @@ func (v name_) GetValues(
 	return result_
 }
 
+func (v name_) GetIndex(
+	value Identifier,
+) uti.Index {
+	var result_ uti.Index
+	// TBD - Add the method implementation.
+	return result_
+}
+
 // Sequential[Identifier] Methods
 
 func (v name_) IsEmpty() bool {

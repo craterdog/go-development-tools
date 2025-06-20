@@ -145,6 +145,14 @@ func (v binary_) GetValues(
 	return result_
 }
 
+func (v binary_) GetIndex(
+	value byte,
+) uti.Index {
+	var result_ uti.Index
+	// TBD - Add the method implementation.
+	return result_
+}
+
 // Sequential[byte] Methods
 
 func (v binary_) IsEmpty() bool {

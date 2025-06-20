@@ -101,6 +101,14 @@ func (v narrative_) GetValues(
 	return result_
 }
 
+func (v narrative_) GetIndex(
+	value Line,
+) uti.Index {
+	var result_ uti.Index
+	// TBD - Add the method implementation.
+	return result_
+}
+
 // Sequential[Line] Methods
 
 func (v narrative_) IsEmpty() bool {

@@ -119,6 +119,14 @@ func (v version_) GetValues(
 	return result_
 }
 
+func (v version_) GetIndex(
+	value uti.Ordinal,
+) uti.Index {
+	var result_ uti.Index
+	// TBD - Add the method implementation.
+	return result_
+}
+
 // Sequential[uti.Ordinal] Methods
 
 func (v version_) IsEmpty() bool {

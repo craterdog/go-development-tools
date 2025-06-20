@@ -40,14 +40,6 @@ func (c *momentClass_) MomentFromString(
 
 // Constant Methods
 
-func (c *momentClass_) Minimum() MomentLike {
-	return c.minimum_
-}
-
-func (c *momentClass_) Maximum() MomentLike {
-	return c.maximum_
-}
-
 func (c *momentClass_) Epoch() MomentLike {
 	return c.epoch_
 }
@@ -99,24 +91,42 @@ func (v moment_) AsIntrinsic() int {
 	return int(v)
 }
 
+// Attribute Methods
+
+// Discrete Methods
+
 func (v moment_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }
 
-// Attribute Methods
+func (v moment_) AsInteger() int {
+	var result_ int
+	// TBD - Add the method implementation.
+	return result_
+}
 
-// Discrete Methods
-
-func (v moment_) AsBoolean() bool {
+func (v moment_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v moment_) AsInteger() int {
-	var result_ int
+func (v moment_) IsMinimum() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v moment_) IsZero() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v moment_) IsMaximum() bool {
+	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -233,9 +243,7 @@ type moment_ int
 
 type momentClass_ struct {
 	// Declare the class constants.
-	minimum_ MomentLike
-	maximum_ MomentLike
-	epoch_   MomentLike
+	epoch_ MomentLike
 }
 
 // Class Reference
@@ -246,7 +254,5 @@ func momentClass() *momentClass_ {
 
 var momentClassReference_ = &momentClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
 	// epoch_: constantValue,
 }

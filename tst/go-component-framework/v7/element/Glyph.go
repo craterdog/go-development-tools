@@ -48,12 +48,8 @@ func (c *glyphClass_) GlyphFromString(
 
 // Constant Methods
 
-func (c *glyphClass_) Minimum() GlyphLike {
-	return c.minimum_
-}
-
-func (c *glyphClass_) Maximum() GlyphLike {
-	return c.maximum_
+func (c *glyphClass_) Undefined() GlyphLike {
+	return c.undefined_
 }
 
 // Function Methods
@@ -86,24 +82,42 @@ func (v glyph_) AsIntrinsic() rune {
 	return rune(v)
 }
 
+// Attribute Methods
+
+// Discrete Methods
+
 func (v glyph_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }
 
-// Attribute Methods
+func (v glyph_) AsInteger() int {
+	var result_ int
+	// TBD - Add the method implementation.
+	return result_
+}
 
-// Discrete Methods
-
-func (v glyph_) AsBoolean() bool {
+func (v glyph_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v glyph_) AsInteger() int {
-	var result_ int
+func (v glyph_) IsMinimum() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v glyph_) IsZero() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v glyph_) IsMaximum() bool {
+	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -120,8 +134,7 @@ type glyph_ rune
 
 type glyphClass_ struct {
 	// Declare the class constants.
-	minimum_ GlyphLike
-	maximum_ GlyphLike
+	undefined_ GlyphLike
 }
 
 // Class Reference
@@ -132,6 +145,5 @@ func glyphClass() *glyphClass_ {
 
 var glyphClassReference_ = &glyphClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
+	// undefined_: constantValue,
 }

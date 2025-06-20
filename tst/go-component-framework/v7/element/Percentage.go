@@ -48,6 +48,10 @@ func (c *percentageClass_) PercentageFromString(
 
 // Constant Methods
 
+func (c *percentageClass_) Undefined() PercentageLike {
+	return c.undefined_
+}
+
 // Function Methods
 
 // INSTANCE INTERFACE
@@ -62,15 +66,15 @@ func (v percentage_) AsIntrinsic() float64 {
 	return float64(v)
 }
 
+// Attribute Methods
+
+// Continuous Methods
+
 func (v percentage_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }
-
-// Attribute Methods
-
-// Continuous Methods
 
 func (v percentage_) AsFloat() float64 {
 	var result_ float64
@@ -78,7 +82,7 @@ func (v percentage_) AsFloat() float64 {
 	return result_
 }
 
-func (v percentage_) IsZero() bool {
+func (v percentage_) HasMagnitude() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
@@ -90,28 +94,26 @@ func (v percentage_) IsInfinite() bool {
 	return result_
 }
 
-func (v percentage_) IsUndefined() bool {
+func (v percentage_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v percentage_) HasMagnitude() bool {
+func (v percentage_) IsMinimum() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-// Discrete Methods
-
-func (v percentage_) AsBoolean() bool {
+func (v percentage_) IsZero() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v percentage_) AsInteger() int {
-	var result_ int
+func (v percentage_) IsMaximum() bool {
+	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -136,6 +138,7 @@ type percentage_ float64
 
 type percentageClass_ struct {
 	// Declare the class constants.
+	undefined_ PercentageLike
 }
 
 // Class Reference
@@ -146,4 +149,5 @@ func percentageClass() *percentageClass_ {
 
 var percentageClassReference_ = &percentageClass_{
 	// Initialize the class constants.
+	// undefined_: constantValue,
 }

@@ -40,12 +40,8 @@ func (c *angleClass_) AngleFromString(
 
 // Constant Methods
 
-func (c *angleClass_) Minimum() AngleLike {
-	return c.minimum_
-}
-
-func (c *angleClass_) Maximum() AngleLike {
-	return c.maximum_
+func (c *angleClass_) Undefined() AngleLike {
+	return c.undefined_
 }
 
 func (c *angleClass_) Zero() AngleLike {
@@ -182,12 +178,6 @@ func (v angle_) AsIntrinsic() float64 {
 	return float64(v)
 }
 
-func (v angle_) AsString() string {
-	var result_ string
-	// TBD - Add the method implementation.
-	return result_
-}
-
 func (v angle_) AsUnits(
 	units Units,
 ) float64 {
@@ -208,13 +198,19 @@ func (v angle_) AsParts() (
 
 // Continuous Methods
 
+func (v angle_) AsString() string {
+	var result_ string
+	// TBD - Add the method implementation.
+	return result_
+}
+
 func (v angle_) AsFloat() float64 {
 	var result_ float64
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v angle_) IsZero() bool {
+func (v angle_) HasMagnitude() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
@@ -226,13 +222,25 @@ func (v angle_) IsInfinite() bool {
 	return result_
 }
 
-func (v angle_) IsUndefined() bool {
+func (v angle_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v angle_) HasMagnitude() bool {
+func (v angle_) IsMinimum() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v angle_) IsZero() bool {
+	var result_ bool
+	// TBD - Add the method implementation.
+	return result_
+}
+
+func (v angle_) IsMaximum() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
@@ -250,11 +258,10 @@ type angle_ float64
 
 type angleClass_ struct {
 	// Declare the class constants.
-	minimum_ AngleLike
-	maximum_ AngleLike
-	zero_    AngleLike
-	pi_      AngleLike
-	tau_     AngleLike
+	undefined_ AngleLike
+	zero_      AngleLike
+	pi_        AngleLike
+	tau_       AngleLike
 }
 
 // Class Reference
@@ -265,8 +272,7 @@ func angleClass() *angleClass_ {
 
 var angleClassReference_ = &angleClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
+	// undefined_: constantValue,
 	// zero_: constantValue,
 	// pi_: constantValue,
 	// tau_: constantValue,

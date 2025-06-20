@@ -48,12 +48,8 @@ func (c *probabilityClass_) ProbabilityFromString(
 
 // Constant Methods
 
-func (c *probabilityClass_) Minimum() ProbabilityLike {
-	return c.minimum_
-}
-
-func (c *probabilityClass_) Maximum() ProbabilityLike {
-	return c.maximum_
+func (c *probabilityClass_) Undefined() ProbabilityLike {
+	return c.undefined_
 }
 
 // Function Methods
@@ -120,15 +116,15 @@ func (v probability_) AsIntrinsic() float64 {
 	return float64(v)
 }
 
+// Attribute Methods
+
+// Continuous Methods
+
 func (v probability_) AsString() string {
 	var result_ string
 	// TBD - Add the method implementation.
 	return result_
 }
-
-// Attribute Methods
-
-// Continuous Methods
 
 func (v probability_) AsFloat() float64 {
 	var result_ float64
@@ -136,7 +132,7 @@ func (v probability_) AsFloat() float64 {
 	return result_
 }
 
-func (v probability_) IsZero() bool {
+func (v probability_) HasMagnitude() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
@@ -148,28 +144,26 @@ func (v probability_) IsInfinite() bool {
 	return result_
 }
 
-func (v probability_) IsUndefined() bool {
+func (v probability_) IsDefined() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v probability_) HasMagnitude() bool {
+func (v probability_) IsMinimum() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-// Discrete Methods
-
-func (v probability_) AsBoolean() bool {
+func (v probability_) IsZero() bool {
 	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
 
-func (v probability_) AsInteger() int {
-	var result_ int
+func (v probability_) IsMaximum() bool {
+	var result_ bool
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -186,8 +180,7 @@ type probability_ float64
 
 type probabilityClass_ struct {
 	// Declare the class constants.
-	minimum_ ProbabilityLike
-	maximum_ ProbabilityLike
+	undefined_ ProbabilityLike
 }
 
 // Class Reference
@@ -198,6 +191,5 @@ func probabilityClass() *probabilityClass_ {
 
 var probabilityClassReference_ = &probabilityClass_{
 	// Initialize the class constants.
-	// minimum_: constantValue,
-	// maximum_: constantValue,
+	// undefined_: constantValue,
 }

@@ -101,6 +101,14 @@ func (v bytecode_) GetValues(
 	return result_
 }
 
+func (v bytecode_) GetIndex(
+	value Instruction,
+) uti.Index {
+	var result_ uti.Index
+	// TBD - Add the method implementation.
+	return result_
+}
+
 // Sequential[Instruction] Methods
 
 func (v bytecode_) IsEmpty() bool {
