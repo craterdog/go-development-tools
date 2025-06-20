@@ -53,7 +53,6 @@ const (
 type (
 	AngleClassLike       = ele.AngleClassLike
 	BooleanClassLike     = ele.BooleanClassLike
-	CitationClassLike    = ele.CitationClassLike
 	DurationClassLike    = ele.DurationClassLike
 	GlyphClassLike       = ele.GlyphClassLike
 	MomentClassLike      = ele.MomentClassLike
@@ -67,7 +66,6 @@ type (
 type (
 	AngleLike       = ele.AngleLike
 	BooleanLike     = ele.BooleanLike
-	CitationLike    = ele.CitationLike
 	DurationLike    = ele.DurationLike
 	GlyphLike       = ele.GlyphLike
 	MomentLike      = ele.MomentLike
@@ -200,18 +198,6 @@ func BooleanFromString(
 	string_ string,
 ) BooleanLike {
 	return BooleanClass().BooleanFromString(
-		string_,
-	)
-}
-
-func CitationClass() CitationClassLike {
-	return ele.CitationClass()
-}
-
-func Citation(
-	string_ string,
-) CitationLike {
-	return CitationClass().Citation(
 		string_,
 	)
 }
