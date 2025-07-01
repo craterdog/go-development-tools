@@ -29,12 +29,16 @@ func ControllerClass() ControllerClassLike {
 func (c *controllerClass_) Controller(
 	events []Event,
 	transitions map[State]Transitions,
+	initialState State,
 ) ControllerLike {
 	if uti.IsUndefined(events) {
 		panic("The \"events\" attribute is required by this class.")
 	}
 	if uti.IsUndefined(transitions) {
 		panic("The \"transitions\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(initialState) {
+		panic("The \"initialState\" attribute is required by this class.")
 	}
 	var instance = &controller_{
 		// Initialize the instance attributes.

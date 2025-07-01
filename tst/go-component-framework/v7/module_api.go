@@ -657,10 +657,12 @@ func ControllerClass() ControllerClassLike {
 func Controller(
 	events []age.Event,
 	transitions map[State]age.Transitions,
+	initialState age.State,
 ) ControllerLike {
 	return ControllerClass().Controller(
 		events,
 		transitions,
+		initialState,
 	)
 }
 
