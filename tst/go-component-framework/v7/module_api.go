@@ -711,3 +711,11 @@ func SorterWithRanker[V any](
 }
 
 // GLOBAL FUNCTIONS
+
+func Now() MomentLike {
+	return ele.MomentClass().Now()
+}
+
+func Random() ProbabilityLike {
+	return ele.ProbabilityClass().Random()
+}

@@ -50,6 +50,10 @@ func (c *controllerClass_) Controller(
 
 // Constant Methods
 
+func (c *controllerClass_) Invalid() State {
+	return c.invalid_
+}
+
 // Function Methods
 
 // INSTANCE INTERFACE
@@ -108,6 +112,7 @@ type controller_ struct {
 
 type controllerClass_ struct {
 	// Declare the class constants.
+	invalid_ State
 }
 
 // Class Reference
@@ -118,4 +123,5 @@ func controllerClass() *controllerClass_ {
 
 var controllerClassReference_ = &controllerClass_{
 	// Initialize the class constants.
+	// invalid_: constantValue,
 }
