@@ -58,7 +58,7 @@ bin/generate-classes ${moduleName} ${directory}/v7/ string
 echo
 bin/generate-classes ${moduleName} ${directory}/v7/ agent
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ element string agent
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ element string collection agent
 echo
 cd ${directory}/v7
 gofmt -w . >/dev/null
