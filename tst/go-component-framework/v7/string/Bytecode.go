@@ -42,7 +42,7 @@ func (c *bytecodeClass_) BytecodeFromSequence(
 }
 
 func (c *bytecodeClass_) BytecodeFromString(
-	string_ string,
+	source string,
 ) BytecodeLike {
 	var instance BytecodeLike
 	// TBD - Add the constructor implementation.

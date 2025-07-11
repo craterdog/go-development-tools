@@ -42,7 +42,7 @@ func (c *narrativeClass_) NarrativeFromSequence(
 }
 
 func (c *narrativeClass_) NarrativeFromString(
-	string_ string,
+	source string,
 ) NarrativeLike {
 	var instance NarrativeLike
 	// TBD - Add the constructor implementation.

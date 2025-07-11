@@ -42,7 +42,7 @@ func (c *nameClass_) NameFromSequence(
 }
 
 func (c *nameClass_) NameFromString(
-	string_ string,
+	source string,
 ) NameLike {
 	var instance NameLike
 	// TBD - Add the constructor implementation.

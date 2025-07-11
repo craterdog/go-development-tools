@@ -31,7 +31,7 @@ func (c *durationClass_) Duration(
 }
 
 func (c *durationClass_) DurationFromString(
-	string_ string,
+	source string,
 ) DurationLike {
 	var instance DurationLike
 	// TBD - Add the constructor implementation.

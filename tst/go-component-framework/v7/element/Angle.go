@@ -31,7 +31,7 @@ func (c *angleClass_) Angle(
 }
 
 func (c *angleClass_) AngleFromString(
-	string_ string,
+	source string,
 ) AngleLike {
 	var instance AngleLike
 	// TBD - Add the constructor implementation.

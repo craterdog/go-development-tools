@@ -42,7 +42,7 @@ func (c *versionClass_) VersionFromSequence(
 }
 
 func (c *versionClass_) VersionFromString(
-	string_ string,
+	source string,
 ) VersionLike {
 	var instance VersionLike
 	// TBD - Add the constructor implementation.

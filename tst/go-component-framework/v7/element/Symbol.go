@@ -30,6 +30,14 @@ func (c *symbolClass_) Symbol(
 	return symbol_(string_)
 }
 
+func (c *symbolClass_) SymbolFromString(
+	source string,
+) SymbolLike {
+	var instance SymbolLike
+	// TBD - Add the constructor implementation.
+	return instance
+}
+
 // Constant Methods
 
 // Function Methods

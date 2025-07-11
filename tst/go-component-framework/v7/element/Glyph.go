@@ -39,7 +39,7 @@ func (c *glyphClass_) GlyphFromInteger(
 }
 
 func (c *glyphClass_) GlyphFromString(
-	string_ string,
+	source string,
 ) GlyphLike {
 	var instance GlyphLike
 	// TBD - Add the constructor implementation.

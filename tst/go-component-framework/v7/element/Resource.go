@@ -32,6 +32,14 @@ func (c *resourceClass_) Resource(
 	return resource_(string_)
 }
 
+func (c *resourceClass_) ResourceFromString(
+	source string,
+) ResourceLike {
+	var instance ResourceLike
+	// TBD - Add the constructor implementation.
+	return instance
+}
+
 func (c *resourceClass_) ResourceFromUri(
 	url *uri.URL,
 ) ResourceLike {

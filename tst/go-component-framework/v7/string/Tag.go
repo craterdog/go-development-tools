@@ -54,7 +54,7 @@ func (c *tagClass_) TagFromSequence(
 }
 
 func (c *tagClass_) TagFromString(
-	string_ string,
+	source string,
 ) TagLike {
 	var instance TagLike
 	// TBD - Add the constructor implementation.

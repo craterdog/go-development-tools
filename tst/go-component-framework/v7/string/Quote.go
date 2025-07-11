@@ -42,7 +42,7 @@ func (c *quoteClass_) QuoteFromSequence(
 }
 
 func (c *quoteClass_) QuoteFromString(
-	string_ string,
+	source string,
 ) QuoteLike {
 	var instance QuoteLike
 	// TBD - Add the constructor implementation.

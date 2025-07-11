@@ -43,7 +43,7 @@ func (c *patternClass_) PatternFromSequence(
 }
 
 func (c *patternClass_) PatternFromString(
-	string_ string,
+	source string,
 ) PatternLike {
 	var instance PatternLike
 	// TBD - Add the constructor implementation.

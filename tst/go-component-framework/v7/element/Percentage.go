@@ -39,7 +39,7 @@ func (c *percentageClass_) PercentageFromInteger(
 }
 
 func (c *percentageClass_) PercentageFromString(
-	string_ string,
+	source string,
 ) PercentageLike {
 	var instance PercentageLike
 	// TBD - Add the constructor implementation.

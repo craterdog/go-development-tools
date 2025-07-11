@@ -31,7 +31,7 @@ func (c *booleanClass_) Boolean(
 }
 
 func (c *booleanClass_) BooleanFromString(
-	string_ string,
+	source string,
 ) BooleanLike {
 	var instance BooleanLike
 	// TBD - Add the constructor implementation.

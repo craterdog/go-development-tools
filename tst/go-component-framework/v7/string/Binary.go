@@ -42,7 +42,7 @@ func (c *binaryClass_) BinaryFromSequence(
 }
 
 func (c *binaryClass_) BinaryFromString(
-	string_ string,
+	source string,
 ) BinaryLike {
 	var instance BinaryLike
 	// TBD - Add the constructor implementation.

@@ -49,7 +49,7 @@ func (c *numberClass_) NumberFromRectangular(
 }
 
 func (c *numberClass_) NumberFromString(
-	string_ string,
+	source string,
 ) NumberLike {
 	var instance NumberLike
 	// TBD - Add the constructor implementation.

@@ -31,7 +31,7 @@ func (c *momentClass_) Moment(
 }
 
 func (c *momentClass_) MomentFromString(
-	string_ string,
+	source string,
 ) MomentLike {
 	var instance MomentLike
 	// TBD - Add the constructor implementation.

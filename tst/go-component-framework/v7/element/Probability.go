@@ -39,7 +39,7 @@ func (c *probabilityClass_) ProbabilityFromBoolean(
 }
 
 func (c *probabilityClass_) ProbabilityFromString(
-	string_ string,
+	source string,
 ) ProbabilityLike {
 	var instance ProbabilityLike
 	// TBD - Add the constructor implementation.
