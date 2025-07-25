@@ -48,17 +48,27 @@ echo
 directory=./tst/go-component-framework
 moduleName=github.com/craterdog/${directory:6}/v7
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-model ${directory}/v7/agent/package_api.go
+bin/format-model ${directory}/v7/agents/package_api.go
 echo
-bin/format-model ${directory}/v7/collection/package_api.go
+bin/generate-classes ${moduleName} ${directory}/v7/ agents
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ element
+bin/format-model ${directory}/v7/collections/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ string
+#bin/generate-classes ${moduleName} ${directory}/v7/ collections
+#echo
+bin/format-model ${directory}/v7/elements/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ agent
+bin/generate-classes ${moduleName} ${directory}/v7/ elements
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ element string collection agent
+bin/format-model ${directory}/v7/ranges/package_api.go
+echo
+#bin/generate-classes ${moduleName} ${directory}/v7/ ranges
+#echo
+bin/format-model ${directory}/v7/strings/package_api.go
+echo
+bin/generate-classes ${moduleName} ${directory}/v7/ strings
+echo
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ agents collections elements ranges strings
 echo
 cd ${directory}/v7
 gofmt -w . >/dev/null
