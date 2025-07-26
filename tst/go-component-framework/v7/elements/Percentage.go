@@ -12,7 +12,13 @@
 
 package elements
 
-import ()
+import (
+	fmt "fmt"
+	uti "github.com/craterdog/go-missing-utilities/v7"
+	mat "math"
+	reg "regexp"
+	stc "strconv"
+)
 
 // CLASS INTERFACE
 
@@ -27,23 +33,29 @@ func PercentageClass() PercentageClassLike {
 func (c *percentageClass_) Percentage(
 	float float64,
 ) PercentageLike {
-	return percentage_(float)
+	return percentage_(float / 100.0)
 }
 
 func (c *percentageClass_) PercentageFromInteger(
 	integer int,
 ) PercentageLike {
-	var instance PercentageLike
-	// TBD - Add the constructor implementation.
-	return instance
+	var float = float64(integer)
+	return percentage_(float / 100.0)
 }
 
 func (c *percentageClass_) PercentageFromString(
 	source string,
 ) PercentageLike {
-	var instance PercentageLike
-	// TBD - Add the constructor implementation.
-	return instance
+	var matches = c.matcher_.FindStringSubmatch(source)
+	if uti.IsUndefined(matches) {
+		var message = fmt.Sprintf(
+			"An illegal string was passed to the percentage constructor method: %s",
+			source,
+		)
+		panic(message)
+	}
+	var float, _ = stc.ParseFloat(matches[1], 64) // Strip off the '%' suffix.
+	return percentage_(float / 100.0)
 }
 
 // Constant Methods
@@ -71,62 +83,48 @@ func (v percentage_) AsIntrinsic() float64 {
 // Continuous Methods
 
 func (v percentage_) AsString() string {
-	var result_ string
-	// TBD - Add the method implementation.
-	return result_
+	return numberClass().stringFromFloat(float64(v)*100.0) + "%"
 }
 
 func (v percentage_) AsFloat() float64 {
-	var result_ float64
-	// TBD - Add the method implementation.
-	return result_
+	return float64(v * 100.0)
 }
 
 func (v percentage_) HasMagnitude() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v.IsDefined() && !(v.IsZero() || v.IsInfinite())
 }
 
 func (v percentage_) IsInfinite() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return mat.IsInf(float64(v), 0)
 }
 
 func (v percentage_) IsDefined() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return !mat.IsNaN(float64(v))
 }
 
 func (v percentage_) IsMinimum() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v == -mat.MaxFloat64
 }
 
 func (v percentage_) IsZero() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v == 0
 }
 
 func (v percentage_) IsMaximum() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v == mat.MaxFloat64
 }
 
 // Polarized Methods
 
 func (v percentage_) IsNegative() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v < 0
 }
 
 // PROTECTED INTERFACE
+
+func (v percentage_) String() string {
+	return v.AsString()
+}
 
 // Private Methods
 
@@ -138,6 +136,7 @@ type percentage_ float64
 
 type percentageClass_ struct {
 	// Declare the class constants.
+	matcher_   *reg.Regexp
 	undefined_ PercentageLike
 }
 
@@ -149,5 +148,6 @@ func percentageClass() *percentageClass_ {
 
 var percentageClassReference_ = &percentageClass_{
 	// Initialize the class constants.
-	// undefined_: constantValue,
+	matcher_:   reg.MustCompile("^(" + real_ + ")%"),
+	undefined_: percentage_(mat.NaN()),
 }

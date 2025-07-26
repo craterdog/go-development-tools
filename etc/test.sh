@@ -58,16 +58,16 @@ echo
 #echo
 bin/format-model ${directory}/v7/elements/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ elements
-echo
+#bin/generate-classes ${moduleName} ${directory}/v7/ elements
+#echo
 bin/format-model ${directory}/v7/ranges/package_api.go
 echo
 #bin/generate-classes ${moduleName} ${directory}/v7/ ranges
 #echo
 bin/format-model ${directory}/v7/strings/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ strings
-echo
+#bin/generate-classes ${moduleName} ${directory}/v7/ strings
+#echo
 bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ agents collections elements ranges strings
 echo
 cd ${directory}/v7

@@ -12,7 +12,12 @@
 
 package elements
 
-import ()
+import (
+	fmt "fmt"
+	uti "github.com/craterdog/go-missing-utilities/v7"
+	reg "regexp"
+	stc "strconv"
+)
 
 // CLASS INTERFACE
 
@@ -33,9 +38,17 @@ func (c *booleanClass_) Boolean(
 func (c *booleanClass_) BooleanFromString(
 	source string,
 ) BooleanLike {
-	var instance BooleanLike
-	// TBD - Add the constructor implementation.
-	return instance
+	// Our booleans are more restrictive than the Go strconv package.
+	var matches = c.matcher_.FindStringSubmatch(source)
+	if uti.IsUndefined(matches) {
+		var message = fmt.Sprintf(
+			"An illegal string was passed to the boolean constructor method: %s",
+			source,
+		)
+		panic(message)
+	}
+	var boolean, _ = stc.ParseBool(matches[0])
+	return boolean_(boolean)
 }
 
 // Constant Methods
@@ -53,8 +66,7 @@ func (c *booleanClass_) True() BooleanLike {
 func (c *booleanClass_) Not(
 	boolean BooleanLike,
 ) BooleanLike {
-	var result_ BooleanLike
-	// TBD - Add the function implementation.
+	var result_ = boolean_(!boolean.AsIntrinsic())
 	return result_
 }
 
@@ -62,8 +74,7 @@ func (c *booleanClass_) And(
 	first BooleanLike,
 	second BooleanLike,
 ) BooleanLike {
-	var result_ BooleanLike
-	// TBD - Add the function implementation.
+	var result_ = boolean_(first.AsIntrinsic() && second.AsIntrinsic())
 	return result_
 }
 
@@ -71,8 +82,7 @@ func (c *booleanClass_) San(
 	first BooleanLike,
 	second BooleanLike,
 ) BooleanLike {
-	var result_ BooleanLike
-	// TBD - Add the function implementation.
+	var result_ = boolean_(first.AsIntrinsic() && !second.AsIntrinsic())
 	return result_
 }
 
@@ -80,8 +90,7 @@ func (c *booleanClass_) Ior(
 	first BooleanLike,
 	second BooleanLike,
 ) BooleanLike {
-	var result_ BooleanLike
-	// TBD - Add the function implementation.
+	var result_ = boolean_(first.AsIntrinsic() || second.AsIntrinsic())
 	return result_
 }
 
@@ -89,8 +98,7 @@ func (c *booleanClass_) Xor(
 	first BooleanLike,
 	second BooleanLike,
 ) BooleanLike {
-	var result_ BooleanLike
-	// TBD - Add the function implementation.
+	var result_ = c.Ior(c.San(first, second), c.San(second, first))
 	return result_
 }
 
@@ -111,42 +119,39 @@ func (v boolean_) AsIntrinsic() bool {
 // Discrete Methods
 
 func (v boolean_) AsString() string {
-	var result_ string
-	// TBD - Add the method implementation.
+	var result_ = stc.FormatBool(bool(v))
 	return result_
 }
 
 func (v boolean_) AsInteger() int {
 	var result_ int
-	// TBD - Add the method implementation.
+	if v {
+		result_ = 1
+	}
 	return result_
 }
 
 func (v boolean_) IsDefined() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return true
 }
 
 func (v boolean_) IsMinimum() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return !v.AsIntrinsic()
 }
 
 func (v boolean_) IsZero() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return !v.AsIntrinsic()
 }
 
 func (v boolean_) IsMaximum() bool {
-	var result_ bool
-	// TBD - Add the method implementation.
-	return result_
+	return v.AsIntrinsic()
 }
 
 // PROTECTED INTERFACE
+
+func (v boolean_) String() string {
+	return v.AsString()
+}
 
 // Private Methods
 
@@ -158,8 +163,9 @@ type boolean_ bool
 
 type booleanClass_ struct {
 	// Declare the class constants.
-	false_ BooleanLike
-	true_  BooleanLike
+	matcher_ *reg.Regexp
+	false_   BooleanLike
+	true_    BooleanLike
 }
 
 // Class Reference
@@ -170,6 +176,7 @@ func booleanClass() *booleanClass_ {
 
 var booleanClassReference_ = &booleanClass_{
 	// Initialize the class constants.
-	// false_: constantValue,
-	// true_: constantValue,
+	matcher_: reg.MustCompile("^false|true"),
+	false_:   boolean_(false),
+	true_:    boolean_(true),
 }

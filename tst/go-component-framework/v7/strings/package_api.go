@@ -340,6 +340,7 @@ type NameLike interface {
 	Accessible[Identifier]
 	Searchable[Identifier]
 	Sequential[Identifier]
+	Spectral[NameLike]
 }
 
 /*
@@ -398,6 +399,7 @@ type QuoteLike interface {
 	Accessible[Character]
 	Searchable[Character]
 	Sequential[Character]
+	Spectral[QuoteLike]
 }
 
 /*
@@ -433,6 +435,7 @@ type VersionLike interface {
 	Accessible[uti.Ordinal]
 	Searchable[uti.Ordinal]
 	Sequential[uti.Ordinal]
+	Spectral[VersionLike]
 }
 
 // ASPECT DECLARATIONS
@@ -497,4 +500,15 @@ type Sequential[V any] interface {
 	GetSize() uti.Cardinal
 	AsArray() []V
 	GetIterator() age.IteratorLike[V]
+}
+
+/*
+Spectral[V any] is an aspect interface that declares a set of method signatures
+that must be supported by each instance of a spectral concrete class.
+*/
+type Spectral[V any] interface {
+	AsString() string
+	CompareWith(
+		value V,
+	) age.Rank
 }

@@ -12,7 +12,11 @@
 
 package elements
 
-import ()
+import (
+	fmt "fmt"
+	uti "github.com/craterdog/go-missing-utilities/v7"
+	reg "regexp"
+)
 
 // CLASS INTERFACE
 
@@ -27,15 +31,21 @@ func SymbolClass() SymbolClassLike {
 func (c *symbolClass_) Symbol(
 	string_ string,
 ) SymbolLike {
-	return symbol_(string_)
+	return c.SymbolFromString("$" + string_)
 }
 
 func (c *symbolClass_) SymbolFromString(
 	source string,
 ) SymbolLike {
-	var instance SymbolLike
-	// TBD - Add the constructor implementation.
-	return instance
+	var matches = c.matcher_.FindStringSubmatch(source)
+	if uti.IsUndefined(matches) {
+		var message = fmt.Sprintf(
+			"An illegal string was passed to the symbol constructor method: %s",
+			source,
+		)
+		panic(message)
+	}
+	return symbol_(matches[1]) // Strip off the leading "$".
 }
 
 // Constant Methods
@@ -55,16 +65,34 @@ func (v symbol_) AsIntrinsic() string {
 }
 
 func (v symbol_) AsString() string {
-	var result_ string
-	// TBD - Add the method implementation.
-	return result_
+	return "$" + string(v)
 }
 
 // Attribute Methods
 
 // PROTECTED INTERFACE
 
+func (v symbol_) String() string {
+	return v.AsString()
+}
+
 // Private Methods
+
+// NOTE:
+// These private constants are used to define the private regular expression
+// matcher that is used to match legal string patterns for this intrinsic type.
+// Unfortunately there is no way to make them private to this class since they
+// must be TRUE Go constants to be used in this way.  We append an underscore to
+// each name to lessen the chance of a name collision with other private Go
+// class constants in this package.
+const (
+	digit_      = "\\p{Nd}"
+	identifier_ = "(?:" + letter_ + ")(?:" + letter_ + "|" + digit_ + "|-)*"
+	letter_     = lower_ + "|" + upper_
+	lower_      = "\\p{Ll}"
+	upper_      = "\\p{Lu}"
+	version_    = "v" + ordinal_ + "(?:\\." + ordinal_ + ")*"
+)
 
 // Instance Structure
 
@@ -74,6 +102,7 @@ type symbol_ string
 
 type symbolClass_ struct {
 	// Declare the class constants.
+	matcher_ *reg.Regexp
 }
 
 // Class Reference
@@ -84,4 +113,5 @@ func symbolClass() *symbolClass_ {
 
 var symbolClassReference_ = &symbolClass_{
 	// Initialize the class constants.
+	matcher_: reg.MustCompile("^\\$(" + identifier_ + ")"),
 }
