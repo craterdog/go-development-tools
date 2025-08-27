@@ -947,6 +947,13 @@ func (v *visitor_) visitDeclaration(
 	}
 }
 
+func (v *visitor_) visitDots(
+	dots ast.DotsLike,
+) {
+	var delimiter = dots.GetDelimiter()
+	v.processor_.ProcessDelimiter(delimiter)
+}
+
 func (v *visitor_) visitEnumeration(
 	enumeration ast.EnumerationLike,
 ) {
@@ -2167,6 +2174,18 @@ func (v *visitor_) visitWrapper(
 ) {
 	// Visit the possible wrapper rule types.
 	switch actual := wrapper.GetAny().(type) {
+	case ast.DotsLike:
+		v.processor_.PreprocessDots(
+			actual,
+			0,
+			0,
+		)
+		v.visitDots(actual)
+		v.processor_.PostprocessDots(
+			actual,
+			0,
+			0,
+		)
 	case ast.StarLike:
 		v.processor_.PreprocessStar(
 			actual,

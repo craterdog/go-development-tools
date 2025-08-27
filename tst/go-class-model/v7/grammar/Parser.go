@@ -1643,6 +1643,38 @@ func (v *parser_) parseDeclaration() (
 	return
 }
 
+func (v *parser_) parseDots() (
+	dots ast.DotsLike,
+	token TokenLike,
+	ok bool,
+) {
+	var tokens = fra.List[TokenLike]()
+
+	// Attempt to parse a single "..." literal.
+	var delimiter string
+	delimiter, token, ok = v.parseDelimiter("...")
+	if !ok {
+		if uti.IsDefined(tokens) {
+			// This is not a single Dots rule.
+			v.putBack(tokens)
+			return
+		} else {
+			// Found a syntax error.
+			var message = v.formatError("$Dots", token)
+			panic(message)
+		}
+	}
+	if uti.IsDefined(tokens) {
+		tokens.AppendValue(token)
+	}
+
+	// Found a single Dots rule.
+	ok = true
+	v.remove(tokens)
+	dots = ast.DotsClass().Dots(delimiter)
+	return
+}
+
 func (v *parser_) parseEnumeration() (
 	enumeration ast.EnumerationLike,
 	token TokenLike,
@@ -3814,6 +3846,15 @@ func (v *parser_) parseWrapper() (
 	token TokenLike,
 	ok bool,
 ) {
+	// Attempt to parse a single Dots Wrapper.
+	var dots ast.DotsLike
+	dots, token, ok = v.parseDots()
+	if ok {
+		// Found a single Dots Wrapper.
+		wrapper = ast.WrapperClass().Wrapper(dots)
+		return
+	}
+
 	// Attempt to parse a single Star Wrapper.
 	var star ast.StarLike
 	star, token, ok = v.parseStar()
@@ -4046,10 +4087,12 @@ var parserClassReference_ = &parserClass_{
 			"$AdditionalConstraint":  `"," Constraint`,
 			"$Abstraction":           `Wrapper? prefix? name Arguments?`,
 			"$Wrapper": `
+    Dots
     Star
     Array
     Map
     Channel`,
+			"$Dots":                  `"..."`,
 			"$Star":                  `"*"`,
 			"$Array":                 `"[" "]"`,
 			"$Map":                   `"map" "[" name "]"`,
