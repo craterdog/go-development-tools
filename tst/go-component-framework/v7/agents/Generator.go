@@ -12,9 +12,7 @@
 
 package agents
 
-import (
-	uti "github.com/craterdog/go-missing-utilities/v7"
-)
+import ()
 
 // CLASS INTERFACE
 
@@ -52,9 +50,9 @@ func (v *generator_) RandomBoolean() bool {
 }
 
 func (v *generator_) RandomOrdinal(
-	maximum uti.Ordinal,
-) uti.Ordinal {
-	var result_ uti.Ordinal
+	maximum uint,
+) uint {
+	var result_ uint
 	// TBD - Add the method implementation.
 	return result_
 }
@@ -66,7 +64,7 @@ func (v *generator_) RandomProbability() float64 {
 }
 
 func (v *generator_) RandomBytes(
-	size uti.Cardinal,
+	size uint,
 ) []byte {
 	var result_ []byte
 	// TBD - Add the method implementation.

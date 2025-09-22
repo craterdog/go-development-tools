@@ -65,17 +65,16 @@ func (v *interval_[V]) GetClass() IntervalClassLike[V] {
 // Accessible[V] Methods
 
 func (v *interval_[V]) GetValue(
-	index uti.Index,
+	index int,
 ) V {
 	var size = v.effectiveSize()
-	var goIndex = uti.RelativeToZeroBased(index, size)
-	var integer = v.effectiveMinimum() + goIndex
-	return v.valueOf(integer)
+	var offset = v.effectiveMinimum() + uti.RelativeToCardinal(index, size)
+	return v.valueOf(offset)
 }
 
 func (v *interval_[V]) GetValues(
-	first uti.Index,
-	last uti.Index,
+	first int,
+	last int,
 ) str.Sequential[V] {
 	var firstValue = v.GetValue(first)
 	var lastValue = v.GetValue(last)
@@ -89,8 +88,8 @@ func (v *interval_[V]) GetValues(
 
 func (v *interval_[V]) GetIndex(
 	value V,
-) uti.Index {
-	var index = uti.Index(1)
+) int {
+	var index = 1
 	var iterator = v.GetIterator()
 	for iterator.HasNext() {
 		var candidate = iterator.GetNext()
@@ -99,7 +98,7 @@ func (v *interval_[V]) GetIndex(
 		}
 		index++
 	}
-	return uti.Index(0)
+	return 0
 }
 
 // Bounded[V] Methods
@@ -190,7 +189,7 @@ func (v *interval_[V]) IsEmpty() bool {
 	return false
 }
 
-func (v *interval_[V]) GetSize() uti.Cardinal {
+func (v *interval_[V]) GetSize() uint {
 	return v.effectiveSize()
 }
 
@@ -202,8 +201,8 @@ func (v *interval_[V]) AsArray() []V {
 	}
 	var array = make([]V, size)
 	for index := 0; index < size; index++ {
-		var integer = v.effectiveMinimum() + index
-		var value = v.valueOf(integer)
+		var offset = v.effectiveMinimum() + index
+		var value = v.valueOf(offset)
 		array[index] = value
 	}
 	return array
@@ -254,10 +253,9 @@ func (v *interval_[V]) effectiveMinimum() int {
 	return minimum
 }
 
-func (v *interval_[V]) effectiveSize() uti.Cardinal {
-	var size = v.effectiveMaximum()
-	size = size - v.effectiveMinimum() + 1
-	return uti.Cardinal(size)
+func (v *interval_[V]) effectiveSize() uint {
+	var size = uint(v.effectiveMaximum() - v.effectiveMinimum() + 1)
+	return size
 }
 
 // This method ensures that the endpoints are valid.
@@ -308,9 +306,9 @@ func (v *interval_[V]) validateInterval() {
 	}
 }
 
-func (v *interval_[V]) valueOf(integer int) V {
+func (v *interval_[V]) valueOf(offset int) V {
 	// We cannot get access to the constructor we need without reflection.
-	var integerRef = ref.ValueOf(integer)
+	var offsetRef = ref.ValueOf(offset)
 	var resultRef ref.Value
 	var valueRef = ref.ValueOf(v.minimum_)
 	var method = valueRef.MethodByName("GetClass")
@@ -320,7 +318,7 @@ func (v *interval_[V]) valueOf(integer int) V {
 	for index := 0; index < count; index++ {
 		var name = typeRef.Method(index).Name
 		if sts.HasSuffix(name, "FromInteger") {
-			resultRef = classRef.MethodByName(name).Call([]ref.Value{integerRef})[0]
+			resultRef = classRef.MethodByName(name).Call([]ref.Value{offsetRef})[0]
 			break
 		}
 	}
@@ -421,8 +419,7 @@ func (v *iterator_[V]) ToStart() {
 }
 
 func (v *iterator_[V]) ToEnd() {
-	var size = age.Slot(v.interval_.GetSize())
-	v.slot_ = size
+	v.slot_ = v.interval_.GetSize()
 }
 
 func (v *iterator_[V]) HasPrevious() bool {
@@ -432,41 +429,39 @@ func (v *iterator_[V]) HasPrevious() bool {
 func (v *iterator_[V]) GetPrevious() V {
 	var result_ V
 	if v.slot_ > 0 {
-		result_ = v.interval_.GetValue(uti.Index(v.slot_))
+		result_ = v.interval_.GetValue(int(v.slot_))
 		v.slot_--
 	}
 	return result_
 }
 
 func (v *iterator_[V]) HasNext() bool {
-	var size = age.Slot(v.interval_.GetSize())
-	return v.slot_ < size
+	return v.slot_ < v.interval_.GetSize()
 }
 
 func (v *iterator_[V]) GetNext() V {
 	var result_ V
-	var size = age.Slot(v.interval_.GetSize())
-	if v.slot_ < size {
+	if v.slot_ < v.interval_.GetSize() {
 		v.slot_++
-		result_ = v.interval_.GetValue(uti.Index(v.slot_))
+		result_ = v.interval_.GetValue(int(v.slot_))
 	}
 	return result_
 }
 
 // Attribute Methods
 
-func (v *iterator_[V]) GetSize() uti.Cardinal {
+func (v *iterator_[V]) GetSize() uint {
 	return v.interval_.GetSize()
 }
 
-func (v *iterator_[V]) GetSlot() age.Slot {
+func (v *iterator_[V]) GetSlot() uint {
 	return v.slot_
 }
 
 func (v *iterator_[V]) SetSlot(
-	slot age.Slot,
+	slot uint,
 ) {
-	var size = age.Slot(v.interval_.GetSize())
+	var size = v.interval_.GetSize()
 	if slot > size {
 		slot = size
 	}
@@ -479,7 +474,7 @@ func (v *iterator_[V]) SetSlot(
 
 type iterator_[V ele.Discrete] struct {
 	// Declare the instance attributes.
-	slot_     age.Slot
+	slot_     uint
 	interval_ IntervalLike[V]
 }
 

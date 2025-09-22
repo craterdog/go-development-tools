@@ -81,29 +81,29 @@ func (v *list_[V]) GetClass() ListClassLike[V] {
 // Accessible[V] Methods
 
 func (v *list_[V]) GetValue(
-	index uti.Index,
+	index int,
 ) V {
 	var size = v.GetSize()
-	var goIndex = uti.RelativeToZeroBased(index, size)
-	var value = v.array_[goIndex]
+	var slot = uti.RelativeToCardinal(index, size)
+	var value = v.array_[slot]
 	return value
 }
 
 func (v *list_[V]) GetValues(
-	first uti.Index,
-	last uti.Index,
+	first int,
+	last int,
 ) str.Sequential[V] {
 	var size = v.GetSize()
-	var goFirst = uti.RelativeToZeroBased(first, size)
-	var goLast = uti.RelativeToZeroBased(last, size) + 1
+	var goFirst = uti.RelativeToCardinal(first, size)
+	var goLast = uti.RelativeToCardinal(last, size) + 1
 	var values = listClass[V]().ListFromArray(v.array_[goFirst:goLast])
 	return values
 }
 
 func (v *list_[V]) GetIndex(
 	value V,
-) uti.Index {
-	var index uti.Index
+) int {
+	var index int
 	var collatorClass = age.CollatorClass[V]()
 	var compare = collatorClass.Collator().CompareValues
 	var iterator = v.GetIterator()
@@ -122,7 +122,7 @@ func (v *list_[V]) GetIndex(
 // Malleable[V] Methods
 
 func (v *list_[V]) InsertValue(
-	slot age.Slot,
+	slot uint,
 	value V,
 ) {
 	// Create a new larger array.
@@ -130,30 +130,28 @@ func (v *list_[V]) InsertValue(
 	var array = make([]V, size)
 
 	// Copy the values into the new array.
-	var goIndex = int(slot) // The Go index is after the matching slot.
-	copy(array, v.array_[:goIndex])
-	array[goIndex] = value
-	copy(array[goIndex+1:], v.array_[goIndex:])
+	copy(array, v.array_[:slot])
+	array[slot] = value
+	copy(array[slot+1:], v.array_[slot:])
 
 	// Update the internal array.
 	v.array_ = array
 }
 
 func (v *list_[V]) InsertValues(
-	slot age.Slot,
+	slot uint,
 	values str.Sequential[V],
 ) {
 	// Create a new larger array.
 	var newValues = values.AsArray()
-	var delta = len(newValues)
-	var size = len(v.array_) + delta
+	var delta = uti.ArraySize(newValues)
+	var size = uti.ArraySize(v.array_) + delta
 	var array = make([]V, size)
 
 	// Copy the values into the new array.
-	var goIndex = int(slot) // The Go index is after the matching slot.
-	copy(array, v.array_[:goIndex])
-	copy(array[goIndex:], newValues)
-	copy(array[goIndex+delta:], v.array_[goIndex:])
+	copy(array, v.array_[:slot])
+	copy(array[slot:], newValues)
+	copy(array[slot+delta:], v.array_[slot:])
 
 	// Update the internal array.
 	v.array_ = array
@@ -191,20 +189,20 @@ func (v *list_[V]) AppendValues(
 }
 
 func (v *list_[V]) RemoveValue(
-	index uti.Index,
+	index int,
 ) V {
 	// Convert to zero-based index.
 	var size = v.GetSize()
-	var goIndex = uti.RelativeToZeroBased(index, size)
+	var slot = uti.RelativeToCardinal(index, size)
 
 	// Create a new smaller array.
 	size--
 	var array = make([]V, size)
 
 	// Copy the values into the new array.
-	copy(array, v.array_[:goIndex])
-	var removed = v.array_[goIndex]
-	copy(array[goIndex:], v.array_[goIndex+1:])
+	copy(array, v.array_[:slot])
+	var removed = v.array_[slot]
+	copy(array[slot:], v.array_[slot+1:])
 
 	// Update the internal array.
 	v.array_ = array
@@ -212,14 +210,14 @@ func (v *list_[V]) RemoveValue(
 }
 
 func (v *list_[V]) RemoveValues(
-	first uti.Index,
-	last uti.Index,
+	first int,
+	last int,
 ) str.Sequential[V] {
 	// Create two smaller arrays.
 	var size = v.GetSize()
-	var goFirst = uti.RelativeToZeroBased(first, size)
-	var goLast = uti.RelativeToZeroBased(last, size) + 1
-	var delta = uti.Cardinal(goLast - goFirst)
+	var goFirst = uti.RelativeToCardinal(first, size)
+	var goLast = uti.RelativeToCardinal(last, size) + 1
+	var delta = uint(goLast - goFirst)
 	size -= delta
 	var array = make([]V, size)
 	var removed = make([]V, delta)
@@ -285,8 +283,8 @@ func (v *list_[V]) IsEmpty() bool {
 	return len(v.array_) == 0
 }
 
-func (v *list_[V]) GetSize() uti.Cardinal {
-	return uti.Cardinal(len(v.array_))
+func (v *list_[V]) GetSize() uint {
+	return uti.ArraySize(v.array_)
 }
 
 func (v *list_[V]) AsArray() []V {
@@ -332,22 +330,22 @@ func (v *list_[V]) ShuffleValues() {
 // Updatable[V] Methods
 
 func (v *list_[V]) SetValue(
-	index uti.Index,
+	index int,
 	value V,
 ) {
 	var size = v.GetSize()
-	var goIndex = uti.RelativeToZeroBased(index, size)
-	v.array_[goIndex] = value
+	var slot = uti.RelativeToCardinal(index, size)
+	v.array_[slot] = value
 }
 
 func (v *list_[V]) SetValues(
-	index uti.Index,
+	index int,
 	values str.Sequential[V],
 ) {
 	var size = v.GetSize()
-	var goIndex = uti.RelativeToZeroBased(index, size)
+	var slot = uti.RelativeToCardinal(index, size)
 	var newValues = values.AsArray()
-	copy(v.array_[goIndex:], newValues)
+	copy(v.array_[slot:], newValues)
 }
 
 // PROTECTED INTERFACE

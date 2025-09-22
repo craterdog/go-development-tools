@@ -92,16 +92,16 @@ func (v *iterator_[V]) GetNext() V {
 
 // Attribute Methods
 
-func (v *iterator_[V]) GetSize() uti.Cardinal {
+func (v *iterator_[V]) GetSize() uint {
 	return v.size_
 }
 
-func (v *iterator_[V]) GetSlot() Slot {
+func (v *iterator_[V]) GetSlot() uint {
 	return v.slot_
 }
 
 func (v *iterator_[V]) SetSlot(
-	slot Slot,
+	slot uint,
 ) {
 	if uti.IsUndefined(slot) {
 		panic("The \"slot\" attribute is required by this class.")
@@ -117,8 +117,8 @@ func (v *iterator_[V]) SetSlot(
 
 type iterator_[V any] struct {
 	// Declare the instance attributes.
-	size_ uti.Cardinal
-	slot_ Slot
+	size_ uint
+	slot_ uint
 }
 
 // Class Structure
