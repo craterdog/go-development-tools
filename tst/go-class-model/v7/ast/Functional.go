@@ -29,23 +29,35 @@ import (
 
 // Access Function
 
-func AbstractionClass() AbstractionClassLike {
-	return abstractionClass()
+func FunctionalClass() FunctionalClassLike {
+	return functionalClass()
 }
 
 // Constructor Methods
 
-func (c *abstractionClass_) Abstraction(
-	optionalWrapper WrapperLike,
-	type_ TypeLike,
-) AbstractionLike {
-	if uti.IsUndefined(type_) {
-		panic("The \"type\" attribute is required by this class.")
+func (c *functionalClass_) Functional(
+	delimiter1 string,
+	delimiter2 string,
+	optionalParameterList ParameterListLike,
+	delimiter3 string,
+	optionalResult ResultLike,
+) FunctionalLike {
+	if uti.IsUndefined(delimiter1) {
+		panic("The \"delimiter1\" attribute is required by this class.")
 	}
-	var instance = &abstraction_{
+	if uti.IsUndefined(delimiter2) {
+		panic("The \"delimiter2\" attribute is required by this class.")
+	}
+	if uti.IsUndefined(delimiter3) {
+		panic("The \"delimiter3\" attribute is required by this class.")
+	}
+	var instance = &functional_{
 		// Initialize the instance attributes.
-		optionalWrapper_: optionalWrapper,
-		type_:            type_,
+		delimiter1_:            delimiter1,
+		delimiter2_:            delimiter2,
+		optionalParameterList_: optionalParameterList,
+		delimiter3_:            delimiter3,
+		optionalResult_:        optionalResult,
 	}
 	return instance
 }
@@ -54,42 +66,57 @@ func (c *abstractionClass_) Abstraction(
 
 // Principal Methods
 
-func (v *abstraction_) GetClass() AbstractionClassLike {
-	return abstractionClass()
+func (v *functional_) GetClass() FunctionalClassLike {
+	return functionalClass()
 }
 
 // Attribute Methods
 
-func (v *abstraction_) GetOptionalWrapper() WrapperLike {
-	return v.optionalWrapper_
+func (v *functional_) GetDelimiter1() string {
+	return v.delimiter1_
 }
 
-func (v *abstraction_) GetType() TypeLike {
-	return v.type_
+func (v *functional_) GetDelimiter2() string {
+	return v.delimiter2_
+}
+
+func (v *functional_) GetOptionalParameterList() ParameterListLike {
+	return v.optionalParameterList_
+}
+
+func (v *functional_) GetDelimiter3() string {
+	return v.delimiter3_
+}
+
+func (v *functional_) GetOptionalResult() ResultLike {
+	return v.optionalResult_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type abstraction_ struct {
+type functional_ struct {
 	// Declare the instance attributes.
-	optionalWrapper_ WrapperLike
-	type_            TypeLike
+	delimiter1_            string
+	delimiter2_            string
+	optionalParameterList_ ParameterListLike
+	delimiter3_            string
+	optionalResult_        ResultLike
 }
 
 // Class Structure
 
-type abstractionClass_ struct {
+type functionalClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func abstractionClass() *abstractionClass_ {
-	return abstractionClassReference_
+func functionalClass() *functionalClass_ {
+	return functionalClassReference_
 }
 
-var abstractionClassReference_ = &abstractionClass_{
+var functionalClassReference_ = &functionalClass_{
 	// Initialize the class constants.
 }

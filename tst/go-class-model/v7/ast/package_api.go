@@ -56,9 +56,7 @@ type AbstractionClassLike interface {
 	// Constructor Methods
 	Abstraction(
 		optionalWrapper WrapperLike,
-		optionalPrefix string,
-		name string,
-		optionalArguments ArgumentsLike,
+		type_ TypeLike,
 	) AbstractionLike
 }
 
@@ -444,6 +442,22 @@ type FunctionSubsectionClassLike interface {
 }
 
 /*
+FunctionalClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete functional-like class.
+*/
+type FunctionalClassLike interface {
+	// Constructor Methods
+	Functional(
+		delimiter1 string,
+		delimiter2 string,
+		optionalParameterList ParameterListLike,
+		delimiter3 string,
+		optionalResult ResultLike,
+	) FunctionalLike
+}
+
+/*
 FunctionalDeclarationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete functional-declaration-like class.
@@ -452,11 +466,7 @@ type FunctionalDeclarationClassLike interface {
 	// Constructor Methods
 	FunctionalDeclaration(
 		declaration DeclarationLike,
-		delimiter1 string,
-		delimiter2 string,
-		optionalParameterList ParameterListLike,
-		delimiter3 string,
-		result ResultLike,
+		functional FunctionalLike,
 	) FunctionalDeclarationLike
 }
 
@@ -642,6 +652,20 @@ type MultivalueClassLike interface {
 }
 
 /*
+NamedClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete named-like class.
+*/
+type NamedClassLike interface {
+	// Constructor Methods
+	Named(
+		optionalPrefix string,
+		name string,
+		optionalArguments ArgumentsLike,
+	) NamedLike
+}
+
+/*
 NoneClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete none-like class.
@@ -800,6 +824,18 @@ type StarClassLike interface {
 }
 
 /*
+TypeClassLike is a class interface that declares the
+complete set of class constructors, constants and functions that must be
+supported by each concrete type-like class.
+*/
+type TypeClassLike interface {
+	// Constructor Methods
+	Type(
+		any_ any,
+	) TypeLike
+}
+
+/*
 TypeDeclarationClassLike is a class interface that declares the
 complete set of class constructors, constants and functions that must be
 supported by each concrete type-declaration-like class.
@@ -866,9 +902,7 @@ type AbstractionLike interface {
 
 	// Attribute Methods
 	GetOptionalWrapper() WrapperLike
-	GetOptionalPrefix() string
-	GetName() string
-	GetOptionalArguments() ArgumentsLike
+	GetType() TypeLike
 }
 
 /*
@@ -1281,6 +1315,23 @@ type FunctionSubsectionLike interface {
 }
 
 /*
+FunctionalLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete functional-like class.
+*/
+type FunctionalLike interface {
+	// Principal Methods
+	GetClass() FunctionalClassLike
+
+	// Attribute Methods
+	GetDelimiter1() string
+	GetDelimiter2() string
+	GetOptionalParameterList() ParameterListLike
+	GetDelimiter3() string
+	GetOptionalResult() ResultLike
+}
+
+/*
 FunctionalDeclarationLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete functional-declaration-like class.
@@ -1291,11 +1342,7 @@ type FunctionalDeclarationLike interface {
 
 	// Attribute Methods
 	GetDeclaration() DeclarationLike
-	GetDelimiter1() string
-	GetDelimiter2() string
-	GetOptionalParameterList() ParameterListLike
-	GetDelimiter3() string
-	GetResult() ResultLike
+	GetFunctional() FunctionalLike
 }
 
 /*
@@ -1493,6 +1540,21 @@ type MultivalueLike interface {
 }
 
 /*
+NamedLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete named-like class.
+*/
+type NamedLike interface {
+	// Principal Methods
+	GetClass() NamedClassLike
+
+	// Attribute Methods
+	GetOptionalPrefix() string
+	GetName() string
+	GetOptionalArguments() ArgumentsLike
+}
+
+/*
 NoneLike is an instance interface that declares the
 complete set of principal, attribute and aspect methods that must be supported
 by each instance of a concrete none-like class.
@@ -1660,6 +1722,19 @@ type StarLike interface {
 
 	// Attribute Methods
 	GetDelimiter() string
+}
+
+/*
+TypeLike is an instance interface that declares the
+complete set of principal, attribute and aspect methods that must be supported
+by each instance of a concrete type-like class.
+*/
+type TypeLike interface {
+	// Principal Methods
+	GetClass() TypeClassLike
+
+	// Attribute Methods
+	GetAny() any
 }
 
 /*

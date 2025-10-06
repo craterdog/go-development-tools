@@ -29,23 +29,21 @@ import (
 
 // Access Function
 
-func AbstractionClass() AbstractionClassLike {
-	return abstractionClass()
+func TypeClass() TypeClassLike {
+	return typeClass()
 }
 
 // Constructor Methods
 
-func (c *abstractionClass_) Abstraction(
-	optionalWrapper WrapperLike,
-	type_ TypeLike,
-) AbstractionLike {
-	if uti.IsUndefined(type_) {
-		panic("The \"type\" attribute is required by this class.")
+func (c *typeClass_) Type(
+	any_ any,
+) TypeLike {
+	if uti.IsUndefined(any_) {
+		panic("The \"any\" attribute is required by this class.")
 	}
-	var instance = &abstraction_{
+	var instance = &type_{
 		// Initialize the instance attributes.
-		optionalWrapper_: optionalWrapper,
-		type_:            type_,
+		any_: any_,
 	}
 	return instance
 }
@@ -54,42 +52,37 @@ func (c *abstractionClass_) Abstraction(
 
 // Principal Methods
 
-func (v *abstraction_) GetClass() AbstractionClassLike {
-	return abstractionClass()
+func (v *type_) GetClass() TypeClassLike {
+	return typeClass()
 }
 
 // Attribute Methods
 
-func (v *abstraction_) GetOptionalWrapper() WrapperLike {
-	return v.optionalWrapper_
-}
-
-func (v *abstraction_) GetType() TypeLike {
-	return v.type_
+func (v *type_) GetAny() any {
+	return v.any_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type abstraction_ struct {
+type type_ struct {
 	// Declare the instance attributes.
-	optionalWrapper_ WrapperLike
-	type_            TypeLike
+	any_ any
 }
 
 // Class Structure
 
-type abstractionClass_ struct {
+type typeClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func abstractionClass() *abstractionClass_ {
-	return abstractionClassReference_
+func typeClass() *typeClass_ {
+	return typeClassReference_
 }
 
-var abstractionClassReference_ = &abstractionClass_{
+var typeClassReference_ = &typeClass_{
 	// Initialize the class constants.
 }

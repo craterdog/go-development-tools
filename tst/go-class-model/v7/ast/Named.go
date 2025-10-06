@@ -29,23 +29,25 @@ import (
 
 // Access Function
 
-func AbstractionClass() AbstractionClassLike {
-	return abstractionClass()
+func NamedClass() NamedClassLike {
+	return namedClass()
 }
 
 // Constructor Methods
 
-func (c *abstractionClass_) Abstraction(
-	optionalWrapper WrapperLike,
-	type_ TypeLike,
-) AbstractionLike {
-	if uti.IsUndefined(type_) {
-		panic("The \"type\" attribute is required by this class.")
+func (c *namedClass_) Named(
+	optionalPrefix string,
+	name string,
+	optionalArguments ArgumentsLike,
+) NamedLike {
+	if uti.IsUndefined(name) {
+		panic("The \"name\" attribute is required by this class.")
 	}
-	var instance = &abstraction_{
+	var instance = &named_{
 		// Initialize the instance attributes.
-		optionalWrapper_: optionalWrapper,
-		type_:            type_,
+		optionalPrefix_:    optionalPrefix,
+		name_:              name,
+		optionalArguments_: optionalArguments,
 	}
 	return instance
 }
@@ -54,42 +56,47 @@ func (c *abstractionClass_) Abstraction(
 
 // Principal Methods
 
-func (v *abstraction_) GetClass() AbstractionClassLike {
-	return abstractionClass()
+func (v *named_) GetClass() NamedClassLike {
+	return namedClass()
 }
 
 // Attribute Methods
 
-func (v *abstraction_) GetOptionalWrapper() WrapperLike {
-	return v.optionalWrapper_
+func (v *named_) GetOptionalPrefix() string {
+	return v.optionalPrefix_
 }
 
-func (v *abstraction_) GetType() TypeLike {
-	return v.type_
+func (v *named_) GetName() string {
+	return v.name_
+}
+
+func (v *named_) GetOptionalArguments() ArgumentsLike {
+	return v.optionalArguments_
 }
 
 // PROTECTED INTERFACE
 
 // Instance Structure
 
-type abstraction_ struct {
+type named_ struct {
 	// Declare the instance attributes.
-	optionalWrapper_ WrapperLike
-	type_            TypeLike
+	optionalPrefix_    string
+	name_              string
+	optionalArguments_ ArgumentsLike
 }
 
 // Class Structure
 
-type abstractionClass_ struct {
+type namedClass_ struct {
 	// Declare the class constants.
 }
 
 // Class Reference
 
-func abstractionClass() *abstractionClass_ {
-	return abstractionClassReference_
+func namedClass() *namedClass_ {
+	return namedClassReference_
 }
 
-var abstractionClassReference_ = &abstractionClass_{
+var namedClassReference_ = &namedClass_{
 	// Initialize the class constants.
 }
