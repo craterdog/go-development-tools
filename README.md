@@ -5,18 +5,19 @@
 ### Overview
 This project provides a set of Go based command-line tools that can be used to
 do the following:
- * Validate and reformat a Go class model declared in a `package_api.go` file;
  * Validate and reformat a language grammar defined in a `syntax.cdsn`file;
- * Generate `ast/package_api.go` and `grammar/package_api.go` files based on a `syntax.cdsn`
-   file;
- * And generate a `module_api.go` file based on a set of `package_api.go` files.
+ * Generate a fully working project based on the `syntax.cdsn` file;
+ * Validate and reformat a Go class model declared in a `package_api.go` file;
+ * Generate class skeletons for each class defined in the `package_api.go` file;
+ * And generate a `module_api.go` file based on the set of `package_api.go`
+   files defined for a project.
 
 ### Quick Links
 For more information on this project and the projects on which it depends, click
 on the following links:
  * [project documentation](https://github.com/craterdog/go-development-tools/wiki)
- * [class model](https://github.com/craterdog/go-class-model/wiki)
  * [syntax notation](https://github.com/craterdog/go-syntax-notation/wiki)
+ * [class model](https://github.com/craterdog/go-class-model/wiki)
  * [code generation](https://github.com/craterdog/go-code-generation/wiki)
 
 ### Getting Started
