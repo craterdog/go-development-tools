@@ -53,7 +53,7 @@ func (c *narrativeClass_) NarrativeFromSequence(
 	return c.Narrative(sequence.AsArray())
 }
 
-func (c *narrativeClass_) NarrativeFromString(
+func (c *narrativeClass_) NarrativeFromSource(
 	source string,
 ) NarrativeLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -112,7 +112,7 @@ func (v narrative_) AsIntrinsic() []Line {
 	return []Line(lines)
 }
 
-func (v narrative_) AsString() string {
+func (v narrative_) AsSource() string {
 	return string(v)
 }
 
@@ -216,7 +216,7 @@ func (v narrative_) GetIndex(
 // PROTECTED INTERFACE
 
 func (v narrative_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

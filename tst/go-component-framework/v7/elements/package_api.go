@@ -61,7 +61,7 @@ type AngleClassLike interface {
 	Angle(
 		radians float64,
 	) AngleLike
-	AngleFromString(
+	AngleFromSource(
 		source string,
 	) AngleLike
 
@@ -127,7 +127,7 @@ type BooleanClassLike interface {
 	Boolean(
 		boolean bool,
 	) BooleanLike
-	BooleanFromString(
+	BooleanFromSource(
 		source string,
 	) BooleanLike
 
@@ -167,7 +167,7 @@ type DurationClassLike interface {
 	Duration(
 		milliseconds int,
 	) DurationLike
-	DurationFromString(
+	DurationFromSource(
 		source string,
 	) DurationLike
 
@@ -197,7 +197,7 @@ type GlyphClassLike interface {
 	GlyphFromInteger(
 		integer int,
 	) GlyphLike
-	GlyphFromString(
+	GlyphFromSource(
 		source string,
 	) GlyphLike
 
@@ -223,7 +223,7 @@ type MomentClassLike interface {
 	Moment(
 		milliseconds int,
 	) MomentLike
-	MomentFromString(
+	MomentFromSource(
 		source string,
 	) MomentLike
 
@@ -258,7 +258,7 @@ type NumberClassLike interface {
 	) NumberLike
 	NumberFromPolar(
 		magnitude float64,
-		phase float64,
+		angle float64,
 	) NumberLike
 	NumberFromRectangular(
 		real_ float64,
@@ -270,7 +270,7 @@ type NumberClassLike interface {
 	NumberFromFloat(
 		float float64,
 	) NumberLike
-	NumberFromString(
+	NumberFromSource(
 		source string,
 	) NumberLike
 
@@ -344,7 +344,7 @@ type PercentageClassLike interface {
 	PercentageFromInteger(
 		integer int,
 	) PercentageLike
-	PercentageFromString(
+	PercentageFromSource(
 		source string,
 	) PercentageLike
 
@@ -365,7 +365,7 @@ type ProbabilityClassLike interface {
 	ProbabilityFromBoolean(
 		boolean bool,
 	) ProbabilityLike
-	ProbabilityFromString(
+	ProbabilityFromSource(
 		source string,
 	) ProbabilityLike
 
@@ -403,9 +403,9 @@ resource-like concrete class.
 type ResourceClassLike interface {
 	// Constructor Methods
 	Resource(
-		string_ string,
+		uri string,
 	) ResourceLike
-	ResourceFromString(
+	ResourceFromSource(
 		source string,
 	) ResourceLike
 	ResourceFromUri(
@@ -424,9 +424,9 @@ symbol-like concrete class.
 type SymbolClassLike interface {
 	// Constructor Methods
 	Symbol(
-		string_ string,
+		identifier string,
 	) SymbolLike
-	SymbolFromString(
+	SymbolFromSource(
 		source string,
 	) SymbolLike
 
@@ -445,7 +445,7 @@ type AngleLike interface {
 	// Principal Methods
 	GetClass() AngleClassLike
 	AsIntrinsic() float64
-	AsString() string
+	AsSource() string
 	AsUnits(
 		units Units,
 	) float64
@@ -467,7 +467,7 @@ type BooleanLike interface {
 	// Principal Methods
 	GetClass() BooleanClassLike
 	AsIntrinsic() bool
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Discrete
@@ -482,7 +482,7 @@ type DurationLike interface {
 	// Principal Methods
 	GetClass() DurationClassLike
 	AsIntrinsic() uint
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Discrete
@@ -499,7 +499,7 @@ type GlyphLike interface {
 	// Principal Methods
 	GetClass() GlyphClassLike
 	AsIntrinsic() rune
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Discrete
@@ -514,7 +514,7 @@ type MomentLike interface {
 	// Principal Methods
 	GetClass() MomentClassLike
 	AsIntrinsic() int
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Discrete
@@ -534,11 +534,11 @@ type NumberLike interface {
 	AsIntrinsic() complex128
 	AsRectangular() string
 	AsPolar() string
-	AsString() string
+	AsSource() string
 	GetReal() float64
 	GetImaginary() float64
 	GetMagnitude() float64
-	GetPhase() float64
+	GetAngle() float64
 
 	// Aspect Interfaces
 	Continuous
@@ -554,7 +554,7 @@ type PercentageLike interface {
 	// Principal Methods
 	GetClass() PercentageClassLike
 	AsIntrinsic() float64
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Continuous
@@ -570,7 +570,7 @@ type ProbabilityLike interface {
 	// Principal Methods
 	GetClass() ProbabilityClassLike
 	AsIntrinsic() float64
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Continuous
@@ -585,7 +585,7 @@ type ResourceLike interface {
 	// Principal Methods
 	GetClass() ResourceClassLike
 	AsIntrinsic() string
-	AsString() string
+	AsSource() string
 	AsUri() *uri.URL
 	GetScheme() string
 	GetAuthority() string
@@ -603,7 +603,7 @@ type SymbolLike interface {
 	// Principal Methods
 	GetClass() SymbolClassLike
 	AsIntrinsic() string
-	AsString() string
+	AsSource() string
 }
 
 // ASPECT DECLARATIONS
@@ -613,8 +613,8 @@ Continuous is an aspect interface that defines a set of method signatures
 that must be supported by each instance of a continuous class.
 */
 type Continuous interface {
-	AsString() string
 	AsFloat() float64
+	AsSource() string
 	HasMagnitude() bool
 	IsInfinite() bool
 	IsDefined() bool
@@ -628,8 +628,8 @@ Discrete is an aspect interface that defines a set of method signatures
 that must be supported by each instance of a discrete class.
 */
 type Discrete interface {
-	AsString() string
 	AsInteger() int
+	AsSource() string
 	IsDefined() bool
 	IsMinimum() bool
 	IsZero() bool

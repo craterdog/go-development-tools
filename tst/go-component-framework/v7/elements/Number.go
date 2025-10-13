@@ -96,10 +96,10 @@ func (c *numberClass_) Number(
 
 func (c *numberClass_) NumberFromPolar(
 	magnitude float64,
-	phase float64,
+	angle float64,
 ) NumberLike {
 	// Go complex types only use rectangular form so convert to rectangular.
-	var complex_ = cmp.Rect(magnitude, phase)
+	var complex_ = cmp.Rect(magnitude, angle)
 	return c.normalize(complex_)
 }
 
@@ -125,7 +125,7 @@ func (c *numberClass_) NumberFromFloat(
 	return c.normalize(complex_)
 }
 
-func (c *numberClass_) NumberFromString(
+func (c *numberClass_) NumberFromSource(
 	source string,
 ) NumberLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -310,8 +310,8 @@ func (c *numberClass_) Remainder(
 	var m2 = cmp.Abs(second.AsIntrinsic())
 	var p2 = cmp.Phase(second.AsIntrinsic())
 	var magnitude = c.lockFloat(mat.Remainder(m1, m2))
-	var phase = c.lockPhase(p2 - p1)
-	var number = c.NumberFromPolar(magnitude, phase)
+	var angle = c.lockAngle(p2 - p1)
+	var number = c.NumberFromPolar(magnitude, angle)
 	return number
 }
 
@@ -378,59 +378,59 @@ func (v number_) AsIntrinsic() complex128 {
 }
 
 func (v number_) AsRectangular() string {
-	var string_ string
+	var source string
 	switch {
 	case v.IsZero():
-		string_ = "0"
+		source = "0"
 	case v.IsMinimum():
-		string_ = "-∞"
+		source = "-∞"
 	case v.IsMaximum():
-		string_ = "+∞"
+		source = "+∞"
 	case v.IsInfinite():
-		string_ = "∞"
+		source = "∞"
 	case !v.IsDefined():
-		string_ = "undefined"
+		source = "undefined"
 	default:
 		var realPart = v.GetReal()
 		var imagPart = v.GetImaginary()
 		switch {
 		case imagPart == 0:
-			string_ = numberClass().stringFromFloat(realPart)
+			source = numberClass().sourceFromFloat(realPart)
 		case realPart == 0:
-			string_ = numberClass().stringFromFloat(imagPart) + "i"
+			source = numberClass().sourceFromFloat(imagPart) + "i"
 		default:
-			string_ = numberClass().stringFromFloat(realPart)
+			source = numberClass().sourceFromFloat(realPart)
 			if imagPart > 0 {
-				string_ += "+"
+				source += "+"
 			}
-			string_ += numberClass().stringFromFloat(imagPart) + "i"
+			source += numberClass().sourceFromFloat(imagPart) + "i"
 		}
 	}
-	return string_
+	return source
 }
 
 func (v number_) AsPolar() string {
-	var string_ string
+	var source string
 	switch {
 	case v.IsZero():
-		string_ = "0"
+		source = "0"
 	case v.IsMinimum():
-		string_ = "-∞"
+		source = "-∞"
 	case v.IsMaximum():
-		string_ = "+∞"
+		source = "+∞"
 	case v.IsInfinite():
-		string_ = "∞"
+		source = "∞"
 	case !v.IsDefined():
-		string_ = "undefined"
+		source = "undefined"
 	default:
 		var magnitude = v.GetMagnitude()
-		var phase = v.GetPhase()
-		string_ = numberClass().stringFromFloat(magnitude)
-		if phase > 0 {
-			string_ += "e^~" + numberClass().stringFromFloat(phase) + "i"
+		var angle = v.GetAngle()
+		source = numberClass().sourceFromFloat(magnitude)
+		if angle > 0 {
+			source += "e^~" + numberClass().sourceFromFloat(angle) + "i"
 		}
 	}
-	return string_
+	return source
 }
 
 func (v number_) GetReal() float64 {
@@ -445,7 +445,7 @@ func (v number_) GetMagnitude() float64 {
 	return numberClass().lockFloat(cmp.Abs(complex128(v)))
 }
 
-func (v number_) GetPhase() float64 {
+func (v number_) GetAngle() float64 {
 	return cmp.Phase(complex128(v))
 }
 
@@ -453,7 +453,7 @@ func (v number_) GetPhase() float64 {
 
 // Continuous Methods
 
-func (v number_) AsString() string {
+func (v number_) AsSource() string {
 	return v.AsRectangular()
 }
 
@@ -495,7 +495,7 @@ func (v number_) IsNegative() bool {
 // PROTECTED INTERFACE
 
 func (v number_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods
@@ -507,18 +507,18 @@ func (c *numberClass_) complexFromMatches(matches []string) complex128 {
 	switch {
 	case len(matches[1]) > 0:
 		// This is a complex number in polar form.
-		var magnitude = c.floatFromString(matches[2])
-		var phase = c.floatFromString(matches[3])
-		complex_ = cmp.Rect(magnitude, phase)
+		var magnitude = c.floatFromSource(matches[2])
+		var angle = c.floatFromSource(matches[3])
+		complex_ = cmp.Rect(magnitude, angle)
 	case len(matches[4]) > 0:
 		// This is a complex number in rectangular form.
-		var realPart = c.floatFromString(matches[5])
-		var imaginaryPart = c.floatFromString(matches[6])
+		var realPart = c.floatFromSource(matches[5])
+		var imaginaryPart = c.floatFromSource(matches[6])
 		complex_ = complex(realPart, imaginaryPart)
 	case len(matches[7]) > 0:
 		// This is a pure imaginary number.
 		var realPart = 0.0
-		var imaginaryPart = c.floatFromString(matches[7][:len(matches[7])-1])
+		var imaginaryPart = c.floatFromSource(matches[7][:len(matches[7])-1])
 		complex_ = complex(realPart, imaginaryPart)
 	case len(matches[8]) > 0:
 		// This is a pure real number.
@@ -526,7 +526,7 @@ func (c *numberClass_) complexFromMatches(matches []string) complex128 {
 		case "∞", "infinity":
 			complex_ = complex(mat.Inf(0), mat.Inf(0))
 		default:
-			var realPart = c.floatFromString(matches[8])
+			var realPart = c.floatFromSource(matches[8])
 			var imaginaryPart = 0.0
 			complex_ = complex(realPart, imaginaryPart)
 		}
@@ -536,9 +536,9 @@ func (c *numberClass_) complexFromMatches(matches []string) complex128 {
 
 // This private function returns the floating point value for the specified
 // string.
-func (c *numberClass_) floatFromString(string_ string) float64 {
+func (c *numberClass_) floatFromSource(source string) float64 {
 	var float float64
-	switch string_ {
+	switch source {
 	case "+e", "e":
 		float = mat.E
 	case "-e":
@@ -562,7 +562,7 @@ func (c *numberClass_) floatFromString(string_ string) float64 {
 	case "undefined":
 		float = mat.NaN()
 	default:
-		float, _ = stc.ParseFloat(string_, 64)
+		float, _ = stc.ParseFloat(source, 64)
 	}
 	return float
 }
@@ -590,23 +590,23 @@ func (c *numberClass_) lockFloat(float float64) float64 {
 
 // NOTE:
 // This private function uses the single precision floating point range to lock
-// a double precision floating point phase onto 0, π/2, π, or 3π/2 when the
-// phase falls outside of the single precision range for these values.
-// Otherwise, the phase is returned unchanged.
-func (c *numberClass_) lockPhase(phase float64) float64 {
-	var phase32 = float32(phase)
+// a double precision floating point angle onto 0, π/2, π, or 3π/2 when the
+// angle falls outside of the single precision range for these values.
+// Otherwise, the angle is returned unchanged.
+func (c *numberClass_) lockAngle(angle float64) float64 {
+	var angle32 = float32(angle)
 	switch {
-	case mat.Abs(phase) <= 1.2246467991473515e-16:
+	case mat.Abs(angle) <= 1.2246467991473515e-16:
 		// We must handle round-off errors for some trigonometric functions.
-		phase = 0
-	case phase32 == float32(0.5*mat.Pi):
-		phase = 0.5 * mat.Pi
-	case phase32 == float32(mat.Pi):
-		phase = mat.Pi
-	case phase32 == float32(1.5*mat.Pi):
-		phase = 1.5 * mat.Pi
+		angle = 0
+	case angle32 == float32(0.5*mat.Pi):
+		angle = 0.5 * mat.Pi
+	case angle32 == float32(mat.Pi):
+		angle = mat.Pi
+	case angle32 == float32(1.5*mat.Pi):
+		angle = 1.5 * mat.Pi
 	}
-	return phase
+	return angle
 }
 
 func (c *numberClass_) normalize(complex_ complex128) NumberLike {
@@ -636,40 +636,40 @@ func (c *numberClass_) normalize(complex_ complex128) NumberLike {
 	return number
 }
 
-func (c *numberClass_) stringFromFloat(float float64) string {
+func (c *numberClass_) sourceFromFloat(float float64) string {
 	var float63 = mat.Float64frombits(mat.Float64bits(float) &^ 1)
 	var e = mat.Float64frombits(mat.Float64bits(mat.E) &^ 1)
 	var pi = mat.Float64frombits(mat.Float64bits(mat.Pi) &^ 1)
 	var tau = mat.Float64frombits(mat.Float64bits(2.0*mat.Pi) &^ 1)
 	var phi = mat.Float64frombits(mat.Float64bits(mat.Phi) &^ 1)
-	var string_ string
+	var source string
 	switch {
 	case float63 == e:
-		string_ = "e"
+		source = "e"
 	case float63 == -e:
-		string_ = "-e"
+		source = "-e"
 	case float63 == pi:
-		string_ = "π"
+		source = "π"
 	case float63 == -pi:
-		string_ = "-π"
+		source = "-π"
 	case float63 == phi:
-		string_ = "φ"
+		source = "φ"
 	case float63 == -phi:
-		string_ = "-φ"
+		source = "-φ"
 	case float63 == tau:
-		string_ = "τ"
+		source = "τ"
 	case float63 == -tau:
-		string_ = "-τ"
+		source = "-τ"
 	case mat.IsInf(float, 1):
-		string_ = "∞"
+		source = "∞"
 	case mat.IsInf(float, -1):
-		string_ = "-∞"
+		source = "-∞"
 	case mat.IsNaN(float):
-		string_ = "undefined"
+		source = "undefined"
 	default:
-		string_ = stc.FormatFloat(float63, 'G', 15, 64)
+		source = stc.FormatFloat(float63, 'G', 15, 64)
 	}
-	return string_
+	return source
 }
 
 // This constructor creates a new number from the specified polar values.

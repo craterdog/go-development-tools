@@ -32,22 +32,22 @@ func NameClass() NameClassLike {
 // Constructor Methods
 
 func (c *nameClass_) Name(
-	identifiers []Identifier,
+	folders []Folder,
 ) NameLike {
 	var source string
-	for _, identifier := range identifiers {
-		source += "/" + string(identifier)
+	for _, folder := range folders {
+		source += "/" + string(folder)
 	}
 	return name_(source)
 }
 
 func (c *nameClass_) NameFromSequence(
-	sequence Sequential[Identifier],
+	sequence Sequential[Folder],
 ) NameLike {
 	return c.Name(sequence.AsArray())
 }
 
-func (c *nameClass_) NameFromString(
+func (c *nameClass_) NameFromSource(
 	source string,
 ) NameLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -69,15 +69,15 @@ func (c *nameClass_) Concatenate(
 	first NameLike,
 	second NameLike,
 ) NameLike {
-	var firstIdentifiers = first.AsIntrinsic()
-	var secondIdentifiers = second.AsIntrinsic()
-	var allIdentifiers = make(
-		[]Identifier,
-		len(firstIdentifiers)+len(secondIdentifiers),
+	var firstFolders = first.AsIntrinsic()
+	var secondFolders = second.AsIntrinsic()
+	var allFolders = make(
+		[]Folder,
+		len(firstFolders)+len(secondFolders),
 	)
-	copy(allIdentifiers, firstIdentifiers)
-	copy(allIdentifiers[len(firstIdentifiers):], secondIdentifiers)
-	return c.Name(allIdentifiers)
+	copy(allFolders, firstFolders)
+	copy(allFolders[len(firstFolders):], secondFolders)
+	return c.Name(allFolders)
 }
 
 // INSTANCE INTERFACE
@@ -88,17 +88,17 @@ func (v name_) GetClass() NameClassLike {
 	return nameClass()
 }
 
-func (v name_) AsIntrinsic() []Identifier {
+func (v name_) AsIntrinsic() []Folder {
 	var name = string(v)
-	var strings = sts.Split(name, "/")[1:] // Extract the identifiers.
-	var identifiers = make([]Identifier, len(strings))
-	for index, identifier := range strings {
-		identifiers[index] = Identifier(identifier)
+	var strings = sts.Split(name, "/")[1:] // Extract the folders.
+	var folders = make([]Folder, len(strings))
+	for index, folder := range strings {
+		folders[index] = Folder(folder)
 	}
-	return identifiers
+	return folders
 }
 
-func (v name_) AsString() string {
+func (v name_) AsSource() string {
 	return string(v)
 }
 
@@ -119,16 +119,16 @@ func (v name_) CompareWith(
 	}
 }
 
-// Searchable[Identifier] Methods
+// Searchable[Folder] Methods
 
 func (v name_) ContainsValue(
-	value Identifier,
+	value Folder,
 ) bool {
 	return sli.Index(v.AsIntrinsic(), value) > -1
 }
 
 func (v name_) ContainsAny(
-	values Sequential[Identifier],
+	values Sequential[Folder],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -143,7 +143,7 @@ func (v name_) ContainsAny(
 }
 
 func (v name_) ContainsAll(
-	values Sequential[Identifier],
+	values Sequential[Folder],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -157,7 +157,7 @@ func (v name_) ContainsAll(
 	return true
 }
 
-// Sequential[Identifier] Methods
+// Sequential[Folder] Methods
 
 func (v name_) IsEmpty() bool {
 	return len(v.AsIntrinsic()) == 0
@@ -167,38 +167,38 @@ func (v name_) GetSize() uint {
 	return uti.ArraySize(v.AsIntrinsic())
 }
 
-func (v name_) AsArray() []Identifier {
+func (v name_) AsArray() []Folder {
 	return v.AsIntrinsic()
 }
 
-func (v name_) GetIterator() age.IteratorLike[Identifier] {
-	return age.IteratorClass[Identifier]().Iterator(v.AsIntrinsic())
+func (v name_) GetIterator() age.IteratorLike[Folder] {
+	return age.IteratorClass[Folder]().Iterator(v.AsIntrinsic())
 }
 
-// Accessible[Identifier] Methods
+// Accessible[Folder] Methods
 
 func (v name_) GetValue(
 	index int,
-) Identifier {
-	var identifiers = v.AsIntrinsic()
-	var size = uti.ArraySize(identifiers)
+) Folder {
+	var folders = v.AsIntrinsic()
+	var size = uti.ArraySize(folders)
 	var goIndex = uti.RelativeToCardinal(index, size)
-	return identifiers[goIndex]
+	return folders[goIndex]
 }
 
 func (v name_) GetValues(
 	first int,
 	last int,
-) Sequential[Identifier] {
-	var identifiers = v.AsIntrinsic()
-	var size = uti.ArraySize(identifiers)
+) Sequential[Folder] {
+	var folders = v.AsIntrinsic()
+	var size = uti.ArraySize(folders)
 	var goFirst = uti.RelativeToCardinal(first, size)
 	var goLast = uti.RelativeToCardinal(last, size)
-	return nameClass().Name(identifiers[goFirst : goLast+1])
+	return nameClass().Name(folders[goFirst : goLast+1])
 }
 
 func (v name_) GetIndex(
-	value Identifier,
+	value Folder,
 ) int {
 	var index int
 	var iterator = v.GetIterator()
@@ -217,7 +217,7 @@ func (v name_) GetIndex(
 // PROTECTED INTERFACE
 
 func (v name_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

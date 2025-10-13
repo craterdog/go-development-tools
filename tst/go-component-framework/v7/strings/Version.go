@@ -49,7 +49,7 @@ func (c *versionClass_) VersionFromSequence(
 	return c.Version(sequence.AsArray())
 }
 
-func (c *versionClass_) VersionFromString(
+func (c *versionClass_) VersionFromSource(
 	source string,
 ) VersionLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -160,7 +160,7 @@ func (v version_) AsIntrinsic() []uint {
 	return ordinals
 }
 
-func (v version_) AsString() string {
+func (v version_) AsSource() string {
 	return string(v)
 }
 
@@ -279,7 +279,7 @@ func (v version_) GetIndex(
 // PROTECTED INTERFACE
 
 func (v version_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

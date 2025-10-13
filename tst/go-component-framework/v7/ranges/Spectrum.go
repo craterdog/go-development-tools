@@ -143,23 +143,23 @@ func (v *spectrum_[V]) ContainsAll(
 // PROTECTED INTERFACE
 
 func (v *spectrum_[V]) String() string {
-	var string_ string
+	var source string
 	switch v.left_ {
 	case Inclusive:
-		string_ += "["
+		source += "["
 	case Exclusive:
-		string_ += "("
+		source += "("
 	}
-	string_ += v.minimum_.AsString()
-	string_ += ".."
-	string_ += v.maximum_.AsString()
+	source += v.minimum_.AsSource()
+	source += ".."
+	source += v.maximum_.AsSource()
 	switch v.right_ {
 	case Inclusive:
-		string_ += "]"
+		source += "]"
 	case Exclusive:
-		string_ += ")"
+		source += ")"
 	}
-	return string_
+	return source
 }
 
 // Private Methods

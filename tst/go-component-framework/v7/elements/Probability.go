@@ -60,7 +60,7 @@ func (c *probabilityClass_) ProbabilityFromBoolean(
 	return probability
 }
 
-func (c *probabilityClass_) ProbabilityFromString(
+func (c *probabilityClass_) ProbabilityFromSource(
 	source string,
 ) ProbabilityLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -145,8 +145,8 @@ func (v probability_) AsIntrinsic() float64 {
 
 // Continuous Methods
 
-func (v probability_) AsString() string {
-	return "p" + numberClass().stringFromFloat(float64(v))
+func (v probability_) AsSource() string {
+	return "p" + numberClass().sourceFromFloat(float64(v))
 }
 
 func (v probability_) AsFloat() float64 {
@@ -180,7 +180,7 @@ func (v probability_) IsMaximum() bool {
 // PROTECTED INTERFACE
 
 func (v probability_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

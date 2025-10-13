@@ -40,7 +40,7 @@ func (c *durationClass_) Duration(
 	return duration_(uint(milliseconds))
 }
 
-func (c *durationClass_) DurationFromString(
+func (c *durationClass_) DurationFromSource(
 	source string,
 ) DurationLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -114,7 +114,7 @@ func (v duration_) AsIntrinsic() uint {
 
 // Discrete Methods
 
-func (v duration_) AsString() string {
+func (v duration_) AsSource() string {
 	var builder sts.Builder
 	builder.WriteString("~P")
 	var float = mat.Abs(v.AsWeeks())
@@ -347,7 +347,7 @@ func (v duration_) GetYears() uint {
 // PROTECTED INTERFACE
 
 func (v duration_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

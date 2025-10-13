@@ -17,7 +17,6 @@ import (
 	age "github.com/craterdog/go-component-framework/v7/agents"
 	uti "github.com/craterdog/go-missing-utilities/v7"
 	reg "regexp"
-	sli "slices"
 	sts "strings"
 )
 
@@ -58,7 +57,7 @@ func (c *binaryClass_) BinaryFromSequence(
 	return c.Binary(sequence.AsArray())
 }
 
-func (c *binaryClass_) BinaryFromString(
+func (c *binaryClass_) BinaryFromSource(
 	source string,
 ) BinaryLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -216,49 +215,11 @@ func (v binary_) AsIntrinsic() []byte {
 	return bytes
 }
 
-func (v binary_) AsString() string {
+func (v binary_) AsSource() string {
 	return string(v)
 }
 
 // Attribute Methods
-
-// Searchable[byte] Methods
-
-func (v binary_) ContainsValue(
-	value byte,
-) bool {
-	return sli.Index(v.AsIntrinsic(), value) > -1
-}
-
-func (v binary_) ContainsAny(
-	values Sequential[byte],
-) bool {
-	var iterator = values.GetIterator()
-	for iterator.HasNext() {
-		var value = iterator.GetNext()
-		if v.ContainsValue(value) {
-			// This set contains at least one of the values.
-			return true
-		}
-	}
-	// This set does not contain any of the values.
-	return false
-}
-
-func (v binary_) ContainsAll(
-	values Sequential[byte],
-) bool {
-	var iterator = values.GetIterator()
-	for iterator.HasNext() {
-		var value = iterator.GetNext()
-		if !v.ContainsValue(value) {
-			// This set is missing at least one of the values.
-			return false
-		}
-	}
-	// This set does contains all of the values.
-	return true
-}
 
 // Sequential[byte] Methods
 
@@ -278,49 +239,10 @@ func (v binary_) GetIterator() age.IteratorLike[byte] {
 	return age.IteratorClass[byte]().Iterator(v.AsIntrinsic())
 }
 
-// Accessible[byte] Methods
-
-func (v binary_) GetValue(
-	index int,
-) byte {
-	var bytes = v.AsIntrinsic()
-	var size = uti.ArraySize(bytes)
-	var goIndex = uti.RelativeToCardinal(index, size)
-	return bytes[goIndex]
-}
-
-func (v binary_) GetValues(
-	first int,
-	last int,
-) Sequential[byte] {
-	var bytes = v.AsIntrinsic()
-	var size = uti.ArraySize(bytes)
-	var goFirst = uti.RelativeToCardinal(first, size)
-	var goLast = uti.RelativeToCardinal(last, size)
-	return binaryClass().Binary(bytes[goFirst : goLast+1])
-}
-
-func (v binary_) GetIndex(
-	value byte,
-) int {
-	var index int
-	var iterator = v.GetIterator()
-	for iterator.HasNext() {
-		index++
-		var candidate = iterator.GetNext()
-		if candidate == value {
-			// Found the value.
-			return index
-		}
-	}
-	// The value was not found.
-	return 0
-}
-
 // PROTECTED INTERFACE
 
 func (v binary_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

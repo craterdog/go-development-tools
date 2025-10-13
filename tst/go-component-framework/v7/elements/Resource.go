@@ -30,12 +30,12 @@ func ResourceClass() ResourceClassLike {
 // Constructor Methods
 
 func (c *resourceClass_) Resource(
-	string_ string,
+	uri string,
 ) ResourceLike {
-	return c.ResourceFromString("<" + string_ + ">")
+	return c.ResourceFromSource("<" + uri + ">")
 }
 
-func (c *resourceClass_) ResourceFromString(
+func (c *resourceClass_) ResourceFromSource(
 	source string,
 ) ResourceLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -75,7 +75,7 @@ func (v resource_) AsIntrinsic() string {
 	return string(v)
 }
 
-func (v resource_) AsString() string {
+func (v resource_) AsSource() string {
 	return "<" + string(v) + ">"
 }
 
@@ -121,7 +121,7 @@ func (v resource_) GetFragment() string {
 // PROTECTED INTERFACE
 
 func (v resource_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

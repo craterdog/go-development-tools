@@ -43,7 +43,7 @@ func (c *percentageClass_) PercentageFromInteger(
 	return percentage_(float / 100.0)
 }
 
-func (c *percentageClass_) PercentageFromString(
+func (c *percentageClass_) PercentageFromSource(
 	source string,
 ) PercentageLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -82,8 +82,8 @@ func (v percentage_) AsIntrinsic() float64 {
 
 // Continuous Methods
 
-func (v percentage_) AsString() string {
-	return numberClass().stringFromFloat(float64(v)*100.0) + "%"
+func (v percentage_) AsSource() string {
+	return numberClass().sourceFromFloat(float64(v)*100.0) + "%"
 }
 
 func (v percentage_) AsFloat() float64 {
@@ -123,7 +123,7 @@ func (v percentage_) IsNegative() bool {
 // PROTECTED INTERFACE
 
 func (v percentage_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

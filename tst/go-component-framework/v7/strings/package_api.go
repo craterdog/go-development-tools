@@ -38,20 +38,25 @@ import (
 // TYPE DECLARATIONS
 
 /*
-Identifier is a constrained type representing a string of the form:
-(LOWER | UPPER) (LOWER | UPPER | DIGIT | '-')
+Character is a constrained type representing a single character of a quote.
 */
-type Identifier string
+type Character rune
+
+/*
+Folder is a constrained type representing a string of the form:
+['0'..'9' 'A'..'Z' 'a'..'z'] (('-' | '.')? ['0'..'9' 'A'..'Z' 'a'..'z'])+
+*/
+type Folder string
+
+/*
+Instruction is a constrained type representing a single bytecode instruction.
+*/
+type Instruction uint16
 
 /*
 Line is a constrained type representing a single line of a narrative.
 */
 type Line string
-
-/*
-Character is a constrained type representing a single character of a quote.
-*/
-type Character rune
 
 // FUNCTIONAL DECLARATIONS
 
@@ -70,7 +75,7 @@ type BinaryClassLike interface {
 	BinaryFromSequence(
 		sequence Sequential[byte],
 	) BinaryLike
-	BinaryFromString(
+	BinaryFromSource(
 		source string,
 	) BinaryLike
 
@@ -101,6 +106,24 @@ type BinaryClassLike interface {
 }
 
 /*
+BytecodeClassLike is a class interface that declares the complete set of
+class constructors, constants and functions that must be supported by each
+concrete bytecode-like class.
+*/
+type BytecodeClassLike interface {
+	// Constructor Methods
+	Bytecode(
+		instructions []Instruction,
+	) BytecodeLike
+	BytecodeFromSequence(
+		sequence Sequential[Instruction],
+	) BytecodeLike
+	BytecodeFromSource(
+		source string,
+	) BytecodeLike
+}
+
+/*
 NameClassLike is a class interface that defines the complete set of
 class constants, constructors and functions that must be supported by each
 name-like concrete class.
@@ -108,12 +131,12 @@ name-like concrete class.
 type NameClassLike interface {
 	// Constructor Methods
 	Name(
-		identifiers []Identifier,
+		folders []Folder,
 	) NameLike
 	NameFromSequence(
-		sequence Sequential[Identifier],
+		sequence Sequential[Folder],
 	) NameLike
-	NameFromString(
+	NameFromSource(
 		source string,
 	) NameLike
 
@@ -137,7 +160,7 @@ type NarrativeClassLike interface {
 	NarrativeFromSequence(
 		sequence Sequential[Line],
 	) NarrativeLike
-	NarrativeFromString(
+	NarrativeFromSource(
 		source string,
 	) NarrativeLike
 
@@ -161,7 +184,7 @@ type PatternClassLike interface {
 	PatternFromSequence(
 		sequence Sequential[Character],
 	) PatternLike
-	PatternFromString(
+	PatternFromSource(
 		source string,
 	) PatternLike
 
@@ -189,7 +212,7 @@ type QuoteClassLike interface {
 	QuoteFromSequence(
 		sequence Sequential[Character],
 	) QuoteLike
-	QuoteFromString(
+	QuoteFromSource(
 		source string,
 	) QuoteLike
 
@@ -216,7 +239,7 @@ type TagClassLike interface {
 	TagFromSequence(
 		sequence Sequential[byte],
 	) TagLike
-	TagFromString(
+	TagFromSource(
 		source string,
 	) TagLike
 
@@ -240,7 +263,7 @@ type VersionClassLike interface {
 	VersionFromSequence(
 		sequence Sequential[uint],
 	) VersionLike
-	VersionFromString(
+	VersionFromSource(
 		source string,
 	) VersionLike
 
@@ -270,12 +293,25 @@ type BinaryLike interface {
 	// Principal Methods
 	GetClass() BinaryClassLike
 	AsIntrinsic() []byte
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
-	Accessible[byte]
-	Searchable[byte]
 	Sequential[byte]
+}
+
+/*
+BytecodeLike is an instance interface that declares the complete set of
+principal, attribute and aspect methods that must be supported by each instance
+of a concrete bytecode-like class.
+*/
+type BytecodeLike interface {
+	// Principal Methods
+	GetClass() BytecodeClassLike
+	AsIntrinsic() []Instruction
+	AsSource() string
+
+	// Aspect Interfaces
+	Sequential[Instruction]
 }
 
 /*
@@ -286,13 +322,13 @@ concrete name-like class.
 type NameLike interface {
 	// Principal Methods
 	GetClass() NameClassLike
-	AsIntrinsic() []Identifier
-	AsString() string
+	AsIntrinsic() []Folder
+	AsSource() string
 
 	// Aspect Interfaces
-	Accessible[Identifier]
-	Searchable[Identifier]
-	Sequential[Identifier]
+	Accessible[Folder]
+	Searchable[Folder]
+	Sequential[Folder]
 	Spectral[NameLike]
 }
 
@@ -305,7 +341,7 @@ type NarrativeLike interface {
 	// Principal Methods
 	GetClass() NarrativeClassLike
 	AsIntrinsic() []Line
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Accessible[Line]
@@ -322,7 +358,7 @@ type PatternLike interface {
 	// Principal Methods
 	GetClass() PatternClassLike
 	AsIntrinsic() []Character
-	AsString() string
+	AsSource() string
 	AsRegexp() *reg.Regexp
 	MatchesText(
 		text string,
@@ -346,7 +382,7 @@ type QuoteLike interface {
 	// Principal Methods
 	GetClass() QuoteClassLike
 	AsIntrinsic() []Character
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Accessible[Character]
@@ -364,7 +400,7 @@ type TagLike interface {
 	// Principal Methods
 	GetClass() TagClassLike
 	AsIntrinsic() []byte
-	AsString() string
+	AsSource() string
 	GetHash() uint64
 
 	// Aspect Interfaces
@@ -382,7 +418,7 @@ type VersionLike interface {
 	// Principal Methods
 	GetClass() VersionClassLike
 	AsIntrinsic() []uint
-	AsString() string
+	AsSource() string
 
 	// Aspect Interfaces
 	Accessible[uint]
@@ -460,7 +496,7 @@ Spectral[V any] is an aspect interface that declares a set of method signatures
 that must be supported by each instance of a spectral concrete class.
 */
 type Spectral[V any] interface {
-	AsString() string
+	AsSource() string
 	CompareWith(
 		value V,
 	) age.Rank

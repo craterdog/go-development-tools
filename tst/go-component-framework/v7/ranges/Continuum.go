@@ -144,27 +144,27 @@ func (v *continuum_[V]) ContainsAll(
 // PROTECTED INTERFACE
 
 func (v *continuum_[V]) String() string {
-	var string_ string
+	var source string
 	switch v.left_ {
 	case Inclusive:
-		string_ += "["
+		source += "["
 	case Exclusive:
-		string_ += "("
+		source += "("
 	}
 	if v.minimum_.IsDefined() {
-		string_ += v.minimum_.AsString()
+		source += v.minimum_.AsSource()
 	}
-	string_ += ".."
+	source += ".."
 	if v.maximum_.IsDefined() {
-		string_ += v.maximum_.AsString()
+		source += v.maximum_.AsSource()
 	}
 	switch v.right_ {
 	case Inclusive:
-		string_ += "]"
+		source += "]"
 	case Exclusive:
-		string_ += ")"
+		source += ")"
 	}
-	return string_
+	return source
 }
 
 // Private Methods

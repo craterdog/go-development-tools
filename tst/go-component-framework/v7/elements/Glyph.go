@@ -43,7 +43,7 @@ func (c *glyphClass_) GlyphFromInteger(
 	return glyph_(integer)
 }
 
-func (c *glyphClass_) GlyphFromString(
+func (c *glyphClass_) GlyphFromSource(
 	source string,
 ) GlyphLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -94,7 +94,7 @@ func (v glyph_) AsIntrinsic() rune {
 
 // Discrete Methods
 
-func (v glyph_) AsString() string {
+func (v glyph_) AsSource() string {
 	return "'" + string([]rune{rune(v)}) + "'"
 }
 
@@ -121,7 +121,7 @@ func (v glyph_) IsMaximum() bool {
 // PROTECTED INTERFACE
 
 func (v glyph_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

@@ -36,7 +36,7 @@ func (c *angleClass_) Angle(
 	return c.angleFromFloat(radians)
 }
 
-func (c *angleClass_) AngleFromString(
+func (c *angleClass_) AngleFromSource(
 	source string,
 ) AngleLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -284,8 +284,8 @@ func (v angle_) AsParts() (
 
 // Continuous Methods
 
-func (v angle_) AsString() string {
-	var result_ = angleClass().stringFromAngle(v)
+func (v angle_) AsSource() string {
+	var result_ = angleClass().sourceFromAngle(v)
 	return result_
 }
 
@@ -320,31 +320,31 @@ func (v angle_) IsMaximum() bool {
 // PROTECTED INTERFACE
 
 func (v Units) String() string {
-	var string_ string
+	var source string
 	switch v {
 	case Degrees:
-		string_ = "Degrees"
+		source = "Degrees"
 	case Radians:
-		string_ = "Radians"
+		source = "Radians"
 	case Gradians:
-		string_ = "Gradians"
+		source = "Gradians"
 	}
-	return string_
+	return source
 }
 
 func (v angle_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods
 
 func (c *angleClass_) angleFromFloat(float float64) angle_ {
 	float = c.normalizeValue(float)
-	float = c.lockPhase(float)
+	float = c.lockAngle(float)
 	return angle_(float)
 }
 
-func (c *angleClass_) lockPhase(value float64) float64 {
+func (c *angleClass_) lockAngle(value float64) float64 {
 	var pi = angleClass().Pi().AsIntrinsic()
 	var value32 = float32(value)
 	switch {
@@ -373,17 +373,17 @@ func (c *angleClass_) normalizeValue(value float64) float64 {
 	return value
 }
 
-func (c *angleClass_) stringFromAngle(angle angle_) string {
-	var string_ string
+func (c *angleClass_) sourceFromAngle(angle angle_) string {
+	var source string
 	switch angle {
 	case c.pi_:
-		string_ = "~π"
+		source = "~π"
 	case c.tau_:
-		string_ = "~τ"
+		source = "~τ"
 	default:
-		string_ = "~" + stc.FormatFloat(float64(angle), 'G', 15, 64)
+		source = "~" + stc.FormatFloat(float64(angle), 'G', 15, 64)
 	}
-	return string_
+	return source
 }
 
 // Instance Structure

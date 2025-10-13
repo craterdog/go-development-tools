@@ -57,7 +57,7 @@ func (c *tagClass_) TagFromSequence(
 	return c.Tag(bytes)
 }
 
-func (c *tagClass_) TagFromString(
+func (c *tagClass_) TagFromSource(
 	source string,
 ) TagLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -105,7 +105,7 @@ func (v tag_) AsIntrinsic() []byte {
 	return bytes
 }
 
-func (v tag_) AsString() string {
+func (v tag_) AsSource() string {
 	return string(v)
 }
 
@@ -213,7 +213,7 @@ func (v tag_) GetIndex(
 // PROTECTED INTERFACE
 
 func (v tag_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

@@ -54,7 +54,7 @@ func (c *patternClass_) PatternFromSequence(
 	return c.Pattern(sequence.AsArray())
 }
 
-func (c *patternClass_) PatternFromString(
+func (c *patternClass_) PatternFromSource(
 	source string,
 ) PatternLike {
 
@@ -110,7 +110,7 @@ func (v pattern_) AsIntrinsic() []Character {
 	}
 }
 
-func (v pattern_) AsString() string {
+func (v pattern_) AsSource() string {
 	return string(v)
 }
 
@@ -235,7 +235,7 @@ func (v pattern_) GetIndex(
 // PROTECTED INTERFACE
 
 func (v pattern_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

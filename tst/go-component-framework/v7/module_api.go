@@ -185,13 +185,15 @@ type (
 // Strings
 
 type (
-	Identifier = str.Identifier
-	Line       = str.Line
-	Character  = str.Character
+	Character   = str.Character
+	Folder      = str.Folder
+	Instruction = str.Instruction
+	Line        = str.Line
 )
 
 type (
 	BinaryClassLike    = str.BinaryClassLike
+	BytecodeClassLike  = str.BytecodeClassLike
 	NameClassLike      = str.NameClassLike
 	NarrativeClassLike = str.NarrativeClassLike
 	PatternClassLike   = str.PatternClassLike
@@ -202,6 +204,7 @@ type (
 
 type (
 	BinaryLike    = str.BinaryLike
+	BytecodeLike  = str.BytecodeLike
 	NameLike      = str.NameLike
 	NarrativeLike = str.NarrativeLike
 	PatternLike   = str.PatternLike
@@ -479,10 +482,10 @@ func Angle(
 	)
 }
 
-func AngleFromString(
+func AngleFromSource(
 	source string,
 ) AngleLike {
-	return AngleClass().AngleFromString(
+	return AngleClass().AngleFromSource(
 		source,
 	)
 }
@@ -499,10 +502,10 @@ func Boolean(
 	)
 }
 
-func BooleanFromString(
+func BooleanFromSource(
 	source string,
 ) BooleanLike {
-	return BooleanClass().BooleanFromString(
+	return BooleanClass().BooleanFromSource(
 		source,
 	)
 }
@@ -519,10 +522,10 @@ func Duration(
 	)
 }
 
-func DurationFromString(
+func DurationFromSource(
 	source string,
 ) DurationLike {
-	return DurationClass().DurationFromString(
+	return DurationClass().DurationFromSource(
 		source,
 	)
 }
@@ -547,10 +550,10 @@ func GlyphFromInteger(
 	)
 }
 
-func GlyphFromString(
+func GlyphFromSource(
 	source string,
 ) GlyphLike {
-	return GlyphClass().GlyphFromString(
+	return GlyphClass().GlyphFromSource(
 		source,
 	)
 }
@@ -567,10 +570,10 @@ func Moment(
 	)
 }
 
-func MomentFromString(
+func MomentFromSource(
 	source string,
 ) MomentLike {
-	return MomentClass().MomentFromString(
+	return MomentClass().MomentFromSource(
 		source,
 	)
 }
@@ -589,11 +592,11 @@ func Number(
 
 func NumberFromPolar(
 	magnitude float64,
-	phase float64,
+	angle float64,
 ) NumberLike {
 	return NumberClass().NumberFromPolar(
 		magnitude,
-		phase,
+		angle,
 	)
 }
 
@@ -623,10 +626,10 @@ func NumberFromFloat(
 	)
 }
 
-func NumberFromString(
+func NumberFromSource(
 	source string,
 ) NumberLike {
-	return NumberClass().NumberFromString(
+	return NumberClass().NumberFromSource(
 		source,
 	)
 }
@@ -651,10 +654,10 @@ func PercentageFromInteger(
 	)
 }
 
-func PercentageFromString(
+func PercentageFromSource(
 	source string,
 ) PercentageLike {
-	return PercentageClass().PercentageFromString(
+	return PercentageClass().PercentageFromSource(
 		source,
 	)
 }
@@ -679,10 +682,10 @@ func ProbabilityFromBoolean(
 	)
 }
 
-func ProbabilityFromString(
+func ProbabilityFromSource(
 	source string,
 ) ProbabilityLike {
-	return ProbabilityClass().ProbabilityFromString(
+	return ProbabilityClass().ProbabilityFromSource(
 		source,
 	)
 }
@@ -692,17 +695,17 @@ func ResourceClass() ResourceClassLike {
 }
 
 func Resource(
-	string_ string,
+	uri string,
 ) ResourceLike {
 	return ResourceClass().Resource(
-		string_,
+		uri,
 	)
 }
 
-func ResourceFromString(
+func ResourceFromSource(
 	source string,
 ) ResourceLike {
-	return ResourceClass().ResourceFromString(
+	return ResourceClass().ResourceFromSource(
 		source,
 	)
 }
@@ -720,17 +723,17 @@ func SymbolClass() SymbolClassLike {
 }
 
 func Symbol(
-	string_ string,
+	identifier string,
 ) SymbolLike {
 	return SymbolClass().Symbol(
-		string_,
+		identifier,
 	)
 }
 
-func SymbolFromString(
+func SymbolFromSource(
 	source string,
 ) SymbolLike {
-	return SymbolClass().SymbolFromString(
+	return SymbolClass().SymbolFromSource(
 		source,
 	)
 }
@@ -813,10 +816,38 @@ func BinaryFromSequence(
 	)
 }
 
-func BinaryFromString(
+func BinaryFromSource(
 	source string,
 ) BinaryLike {
-	return BinaryClass().BinaryFromString(
+	return BinaryClass().BinaryFromSource(
+		source,
+	)
+}
+
+func BytecodeClass() BytecodeClassLike {
+	return str.BytecodeClass()
+}
+
+func Bytecode(
+	instructions []str.Instruction,
+) BytecodeLike {
+	return BytecodeClass().Bytecode(
+		instructions,
+	)
+}
+
+func BytecodeFromSequence(
+	sequence str.Sequential[str.Instruction],
+) BytecodeLike {
+	return BytecodeClass().BytecodeFromSequence(
+		sequence,
+	)
+}
+
+func BytecodeFromSource(
+	source string,
+) BytecodeLike {
+	return BytecodeClass().BytecodeFromSource(
 		source,
 	)
 }
@@ -826,25 +857,25 @@ func NameClass() NameClassLike {
 }
 
 func Name(
-	identifiers []str.Identifier,
+	folders []str.Folder,
 ) NameLike {
 	return NameClass().Name(
-		identifiers,
+		folders,
 	)
 }
 
 func NameFromSequence(
-	sequence str.Sequential[str.Identifier],
+	sequence str.Sequential[str.Folder],
 ) NameLike {
 	return NameClass().NameFromSequence(
 		sequence,
 	)
 }
 
-func NameFromString(
+func NameFromSource(
 	source string,
 ) NameLike {
-	return NameClass().NameFromString(
+	return NameClass().NameFromSource(
 		source,
 	)
 }
@@ -869,10 +900,10 @@ func NarrativeFromSequence(
 	)
 }
 
-func NarrativeFromString(
+func NarrativeFromSource(
 	source string,
 ) NarrativeLike {
-	return NarrativeClass().NarrativeFromString(
+	return NarrativeClass().NarrativeFromSource(
 		source,
 	)
 }
@@ -897,10 +928,10 @@ func PatternFromSequence(
 	)
 }
 
-func PatternFromString(
+func PatternFromSource(
 	source string,
 ) PatternLike {
-	return PatternClass().PatternFromString(
+	return PatternClass().PatternFromSource(
 		source,
 	)
 }
@@ -925,10 +956,10 @@ func QuoteFromSequence(
 	)
 }
 
-func QuoteFromString(
+func QuoteFromSource(
 	source string,
 ) QuoteLike {
-	return QuoteClass().QuoteFromString(
+	return QuoteClass().QuoteFromSource(
 		source,
 	)
 }
@@ -961,10 +992,10 @@ func TagFromSequence(
 	)
 }
 
-func TagFromString(
+func TagFromSource(
 	source string,
 ) TagLike {
-	return TagClass().TagFromString(
+	return TagClass().TagFromSource(
 		source,
 	)
 }
@@ -989,10 +1020,10 @@ func VersionFromSequence(
 	)
 }
 
-func VersionFromString(
+func VersionFromSource(
 	source string,
 ) VersionLike {
-	return VersionClass().VersionFromString(
+	return VersionClass().VersionFromSource(
 		source,
 	)
 }
@@ -1000,9 +1031,9 @@ func VersionFromString(
 // GLOBAL FUNCTIONS
 
 func Now() MomentLike {
-	return ele.MomentClass().Now()
+	return MomentClass().Now()
 }
 
 func Random() ProbabilityLike {
-	return ele.ProbabilityClass().Random()
+	return ProbabilityClass().Random()
 }

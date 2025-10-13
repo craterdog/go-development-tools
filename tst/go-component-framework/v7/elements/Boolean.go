@@ -35,7 +35,7 @@ func (c *booleanClass_) Boolean(
 	return boolean_(boolean)
 }
 
-func (c *booleanClass_) BooleanFromString(
+func (c *booleanClass_) BooleanFromSource(
 	source string,
 ) BooleanLike {
 	// Our booleans are more restrictive than the Go strconv package.
@@ -118,7 +118,7 @@ func (v boolean_) AsIntrinsic() bool {
 
 // Discrete Methods
 
-func (v boolean_) AsString() string {
+func (v boolean_) AsSource() string {
 	var result_ = stc.FormatBool(bool(v))
 	return result_
 }
@@ -150,7 +150,7 @@ func (v boolean_) IsMaximum() bool {
 // PROTECTED INTERFACE
 
 func (v boolean_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

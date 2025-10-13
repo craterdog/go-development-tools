@@ -29,12 +29,12 @@ func SymbolClass() SymbolClassLike {
 // Constructor Methods
 
 func (c *symbolClass_) Symbol(
-	string_ string,
+	identifier string,
 ) SymbolLike {
-	return c.SymbolFromString("$" + string_)
+	return c.SymbolFromSource("$" + identifier)
 }
 
-func (c *symbolClass_) SymbolFromString(
+func (c *symbolClass_) SymbolFromSource(
 	source string,
 ) SymbolLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -68,7 +68,7 @@ func (v symbol_) AsIntrinsic() string {
 	return string(v)
 }
 
-func (v symbol_) AsString() string {
+func (v symbol_) AsSource() string {
 	return "$" + string(v)
 }
 
@@ -77,7 +77,7 @@ func (v symbol_) AsString() string {
 // PROTECTED INTERFACE
 
 func (v symbol_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

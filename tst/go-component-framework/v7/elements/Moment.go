@@ -38,7 +38,7 @@ func (c *momentClass_) Moment(
 	return moment_(milliseconds)
 }
 
-func (c *momentClass_) MomentFromString(
+func (c *momentClass_) MomentFromSource(
 	source string,
 ) MomentLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -102,7 +102,7 @@ func (v moment_) AsIntrinsic() int {
 
 // Discrete Methods
 
-func (v moment_) AsString() string {
+func (v moment_) AsSource() string {
 	var builder sts.Builder
 	var year = v.GetYears()
 	var month = v.GetMonths()
@@ -254,7 +254,7 @@ func (v moment_) GetYears() uint {
 // PROTECTED INTERFACE
 
 func (v moment_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods

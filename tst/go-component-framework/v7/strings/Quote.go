@@ -43,7 +43,7 @@ func (c *quoteClass_) QuoteFromSequence(
 	return c.Quote(sequence.AsArray())
 }
 
-func (c *quoteClass_) QuoteFromString(
+func (c *quoteClass_) QuoteFromSource(
 	source string,
 ) QuoteLike {
 	var matches = c.matcher_.FindStringSubmatch(source)
@@ -81,7 +81,7 @@ func (v quote_) AsIntrinsic() []Character {
 	return []Character(unquoted)
 }
 
-func (v quote_) AsString() string {
+func (v quote_) AsSource() string {
 	return string(v)
 }
 
@@ -204,7 +204,7 @@ func (v Character) String() string {
 }
 
 func (v quote_) String() string {
-	return v.AsString()
+	return v.AsSource()
 }
 
 // Private Methods
