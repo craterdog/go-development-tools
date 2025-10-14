@@ -32,7 +32,7 @@ func PatternClass() PatternClassLike {
 // Constructor Methods
 
 func (c *patternClass_) Pattern(
-	characters []Character,
+	characters []rune,
 ) PatternLike {
 	var pattern = string(characters)
 	reg.MustCompile(pattern)
@@ -49,7 +49,7 @@ func (c *patternClass_) Pattern(
 }
 
 func (c *patternClass_) PatternFromSequence(
-	sequence Sequential[Character],
+	sequence Sequential[rune],
 ) PatternLike {
 	return c.Pattern(sequence.AsArray())
 }
@@ -96,17 +96,17 @@ func (v pattern_) GetClass() PatternClassLike {
 	return patternClass()
 }
 
-func (v pattern_) AsIntrinsic() []Character {
+func (v pattern_) AsIntrinsic() []rune {
 	var pattern = string(v)
 	switch pattern {
 	case "none":
-		return []Character(`^none$`)
+		return []rune(`^none$`)
 	case "any":
-		return []Character(`.*`)
+		return []rune(`.*`)
 	default:
 		pattern = pattern[:len(pattern)-1]     // Strip off the trailing "?".
 		var unquoted, _ = stc.Unquote(pattern) // Strip off the double quotes.
-		return []Character(unquoted)
+		return []rune(unquoted)
 	}
 }
 
@@ -137,16 +137,16 @@ func (v pattern_) GetMatches(
 
 // Attribute Methods
 
-// Searchable[Character] Methods
+// Searchable[rune] Methods
 
 func (v pattern_) ContainsValue(
-	value Character,
+	value rune,
 ) bool {
 	return sli.Index(v.AsIntrinsic(), value) > -1
 }
 
 func (v pattern_) ContainsAny(
-	values Sequential[Character],
+	values Sequential[rune],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -161,7 +161,7 @@ func (v pattern_) ContainsAny(
 }
 
 func (v pattern_) ContainsAll(
-	values Sequential[Character],
+	values Sequential[rune],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -175,7 +175,7 @@ func (v pattern_) ContainsAll(
 	return true
 }
 
-// Sequential[Character] Methods
+// Sequential[rune] Methods
 
 func (v pattern_) IsEmpty() bool {
 	return len(v.AsIntrinsic()) == 0
@@ -185,19 +185,19 @@ func (v pattern_) GetSize() uint {
 	return uti.ArraySize(v.AsIntrinsic())
 }
 
-func (v pattern_) AsArray() []Character {
+func (v pattern_) AsArray() []rune {
 	return v.AsIntrinsic()
 }
 
-func (v pattern_) GetIterator() age.IteratorLike[Character] {
-	return age.IteratorClass[Character]().Iterator(v.AsIntrinsic())
+func (v pattern_) GetIterator() age.IteratorLike[rune] {
+	return age.IteratorClass[rune]().Iterator(v.AsIntrinsic())
 }
 
-// Accessible[Character] Methods
+// Accessible[rune] Methods
 
 func (v pattern_) GetValue(
 	index int,
-) Character {
+) rune {
 	var characters = v.AsIntrinsic()
 	var size = uti.ArraySize(characters)
 	var goIndex = uti.RelativeToCardinal(index, size)
@@ -207,7 +207,7 @@ func (v pattern_) GetValue(
 func (v pattern_) GetValues(
 	first int,
 	last int,
-) Sequential[Character] {
+) Sequential[rune] {
 	var characters = v.AsIntrinsic()
 	var size = uti.ArraySize(characters)
 	var goFirst = uti.RelativeToCardinal(first, size)
@@ -216,7 +216,7 @@ func (v pattern_) GetValues(
 }
 
 func (v pattern_) GetIndex(
-	value Character,
+	value rune,
 ) int {
 	var index int
 	var iterator = v.GetIterator()

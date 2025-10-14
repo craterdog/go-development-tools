@@ -38,25 +38,10 @@ import (
 // TYPE DECLARATIONS
 
 /*
-Character is a constrained type representing a single character of a quote.
-*/
-type Character rune
-
-/*
 Folder is a constrained type representing a string of the form:
 ['0'..'9' 'A'..'Z' 'a'..'z'] (('-' | '.')? ['0'..'9' 'A'..'Z' 'a'..'z'])+
 */
 type Folder string
-
-/*
-Instruction is a constrained type representing a single bytecode instruction.
-*/
-type Instruction uint16
-
-/*
-Line is a constrained type representing a single line of a narrative.
-*/
-type Line string
 
 // FUNCTIONAL DECLARATIONS
 
@@ -113,10 +98,10 @@ concrete bytecode-like class.
 type BytecodeClassLike interface {
 	// Constructor Methods
 	Bytecode(
-		instructions []Instruction,
+		instructions []uint16,
 	) BytecodeLike
 	BytecodeFromSequence(
-		sequence Sequential[Instruction],
+		sequence Sequential[uint16],
 	) BytecodeLike
 	BytecodeFromSource(
 		source string,
@@ -155,10 +140,10 @@ narrative-like concrete class.
 type NarrativeClassLike interface {
 	// Constructor Methods
 	Narrative(
-		lines []Line,
+		lines []string,
 	) NarrativeLike
 	NarrativeFromSequence(
-		sequence Sequential[Line],
+		sequence Sequential[string],
 	) NarrativeLike
 	NarrativeFromSource(
 		source string,
@@ -179,10 +164,10 @@ pattern-like concrete class.
 type PatternClassLike interface {
 	// Constructor Methods
 	Pattern(
-		characters []Character,
+		characters []rune,
 	) PatternLike
 	PatternFromSequence(
-		sequence Sequential[Character],
+		sequence Sequential[rune],
 	) PatternLike
 	PatternFromSource(
 		source string,
@@ -207,10 +192,10 @@ quote-like concrete class.
 type QuoteClassLike interface {
 	// Constructor Methods
 	Quote(
-		characters []Character,
+		characters []rune,
 	) QuoteLike
 	QuoteFromSequence(
-		sequence Sequential[Character],
+		sequence Sequential[rune],
 	) QuoteLike
 	QuoteFromSource(
 		source string,
@@ -307,11 +292,11 @@ of a concrete bytecode-like class.
 type BytecodeLike interface {
 	// Principal Methods
 	GetClass() BytecodeClassLike
-	AsIntrinsic() []Instruction
+	AsIntrinsic() []uint16
 	AsSource() string
 
 	// Aspect Interfaces
-	Sequential[Instruction]
+	Sequential[uint16]
 }
 
 /*
@@ -340,13 +325,13 @@ concrete narrative-like class.
 type NarrativeLike interface {
 	// Principal Methods
 	GetClass() NarrativeClassLike
-	AsIntrinsic() []Line
+	AsIntrinsic() []string
 	AsSource() string
 
 	// Aspect Interfaces
-	Accessible[Line]
-	Searchable[Line]
-	Sequential[Line]
+	Accessible[string]
+	Searchable[string]
+	Sequential[string]
 }
 
 /*
@@ -357,7 +342,7 @@ instance of a pattern-like elemental class.
 type PatternLike interface {
 	// Principal Methods
 	GetClass() PatternClassLike
-	AsIntrinsic() []Character
+	AsIntrinsic() []rune
 	AsSource() string
 	AsRegexp() *reg.Regexp
 	MatchesText(
@@ -368,9 +353,9 @@ type PatternLike interface {
 	) []string
 
 	// Aspect Interfaces
-	Accessible[Character]
-	Searchable[Character]
-	Sequential[Character]
+	Accessible[rune]
+	Searchable[rune]
+	Sequential[rune]
 }
 
 /*
@@ -381,13 +366,13 @@ concrete quote-like class.
 type QuoteLike interface {
 	// Principal Methods
 	GetClass() QuoteClassLike
-	AsIntrinsic() []Character
+	AsIntrinsic() []rune
 	AsSource() string
 
 	// Aspect Interfaces
-	Accessible[Character]
-	Searchable[Character]
-	Sequential[Character]
+	Accessible[rune]
+	Searchable[rune]
+	Sequential[rune]
 	Spectral[QuoteLike]
 }
 

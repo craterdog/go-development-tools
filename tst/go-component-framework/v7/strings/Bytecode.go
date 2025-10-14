@@ -33,7 +33,7 @@ func BytecodeClass() BytecodeClassLike {
 // Constructor Methods
 
 func (c *bytecodeClass_) Bytecode(
-	instructions []Instruction,
+	instructions []uint16,
 ) BytecodeLike {
 	var source = "'>"
 	var newline = "\n    "
@@ -49,7 +49,7 @@ func (c *bytecodeClass_) Bytecode(
 }
 
 func (c *bytecodeClass_) BytecodeFromSequence(
-	sequence Sequential[Instruction],
+	sequence Sequential[uint16],
 ) BytecodeLike {
 	return c.Bytecode(sequence.AsArray())
 }
@@ -80,16 +80,16 @@ func (v bytecode_) GetClass() BytecodeClassLike {
 	return bytecodeClass()
 }
 
-func (v bytecode_) AsIntrinsic() []Instruction {
+func (v bytecode_) AsIntrinsic() []uint16 {
 	var base16 = string(v)
 	base16 = base16[2 : len(base16)-2]        // Strip off the delimiters.
 	base16 = sts.ReplaceAll(base16, "\n", "") // Remove all newlines.
 	base16 = sts.ReplaceAll(base16, " ", "")  // Remove all spaces.
 	var strings = sts.Split(base16, ":")[1:]  // Extract the instructions.
-	var instructions = make([]Instruction, len(strings))
+	var instructions = make([]uint16, len(strings))
 	for index, hex := range strings {
 		var integer, _ = stc.ParseUint(hex, 16, 16)
-		var instruction = Instruction(integer)
+		var instruction = uint16(integer)
 		instructions[index] = instruction
 	}
 	return instructions
@@ -101,7 +101,7 @@ func (v bytecode_) AsSource() string {
 
 // Attribute Methods
 
-// Sequential[Instruction] Methods
+// Sequential[uint16] Methods
 
 func (v bytecode_) IsEmpty() bool {
 	return len(v.AsIntrinsic()) == 0
@@ -111,12 +111,12 @@ func (v bytecode_) GetSize() uint {
 	return uti.ArraySize(v.AsIntrinsic())
 }
 
-func (v bytecode_) AsArray() []Instruction {
+func (v bytecode_) AsArray() []uint16 {
 	return v.AsIntrinsic()
 }
 
-func (v bytecode_) GetIterator() age.IteratorLike[Instruction] {
-	return age.IteratorClass[Instruction]().Iterator(v.AsIntrinsic())
+func (v bytecode_) GetIterator() age.IteratorLike[uint16] {
+	return age.IteratorClass[uint16]().Iterator(v.AsIntrinsic())
 }
 
 // PROTECTED INTERFACE

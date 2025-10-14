@@ -32,7 +32,7 @@ func NarrativeClass() NarrativeClassLike {
 // Constructor Methods
 
 func (c *narrativeClass_) Narrative(
-	lines []Line,
+	lines []string,
 ) NarrativeLike {
 	var source = "\">"
 	if len(lines) > 0 {
@@ -48,7 +48,7 @@ func (c *narrativeClass_) Narrative(
 }
 
 func (c *narrativeClass_) NarrativeFromSequence(
-	sequence Sequential[Line],
+	sequence Sequential[string],
 ) NarrativeLike {
 	return c.Narrative(sequence.AsArray())
 }
@@ -78,7 +78,7 @@ func (c *narrativeClass_) Concatenate(
 	var firstLines = first.AsArray()
 	var secondLines = second.AsArray()
 	var allLines = make(
-		[]Line,
+		[]string,
 		len(firstLines)+len(secondLines),
 	)
 	copy(allLines, firstLines)
@@ -94,22 +94,18 @@ func (v narrative_) GetClass() NarrativeClassLike {
 	return narrativeClass()
 }
 
-func (v narrative_) AsIntrinsic() []Line {
+func (v narrative_) AsIntrinsic() []string {
 	var narrative = string(v)
 	var decoded = sts.ReplaceAll(narrative[2:len(v)-2], `\">`, `">`)
 	decoded = sts.ReplaceAll(decoded, `<\"`, `<"`)
-	var strings = sts.Split(decoded, "\n")
-	strings = strings[1:] // Ignore the first empty line.
-	var size = len(strings)
+	var lines = sts.Split(decoded, "\n")
+	lines = lines[1:] // Ignore the first empty line.
+	var size = len(lines)
 	if size > 0 {
 		size--
-		strings = strings[:size] // Ignore the last empty line.
+		lines = lines[:size] // Ignore the last empty line.
 	}
-	var lines = make([]Line, size)
-	for index, line := range strings {
-		lines[index] = Line(line)
-	}
-	return []Line(lines)
+	return lines
 }
 
 func (v narrative_) AsSource() string {
@@ -118,16 +114,16 @@ func (v narrative_) AsSource() string {
 
 // Attribute Methods
 
-// Searchable[Line] Methods
+// Searchable[string] Methods
 
 func (v narrative_) ContainsValue(
-	value Line,
+	value string,
 ) bool {
 	return sli.Index(v.AsIntrinsic(), value) > -1
 }
 
 func (v narrative_) ContainsAny(
-	values Sequential[Line],
+	values Sequential[string],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -142,7 +138,7 @@ func (v narrative_) ContainsAny(
 }
 
 func (v narrative_) ContainsAll(
-	values Sequential[Line],
+	values Sequential[string],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -156,7 +152,7 @@ func (v narrative_) ContainsAll(
 	return true
 }
 
-// Sequential[Line] Methods
+// Sequential[string] Methods
 
 func (v narrative_) IsEmpty() bool {
 	return len(v.AsIntrinsic()) == 0
@@ -166,19 +162,19 @@ func (v narrative_) GetSize() uint {
 	return uti.ArraySize(v.AsIntrinsic())
 }
 
-func (v narrative_) AsArray() []Line {
+func (v narrative_) AsArray() []string {
 	return v.AsIntrinsic()
 }
 
-func (v narrative_) GetIterator() age.IteratorLike[Line] {
-	return age.IteratorClass[Line]().Iterator(v.AsIntrinsic())
+func (v narrative_) GetIterator() age.IteratorLike[string] {
+	return age.IteratorClass[string]().Iterator(v.AsIntrinsic())
 }
 
-// Accessible[Line] Methods
+// Accessible[string] Methods
 
 func (v narrative_) GetValue(
 	index int,
-) Line {
+) string {
 	var lines = v.AsIntrinsic()
 	var size = uti.ArraySize(lines)
 	var goIndex = uti.RelativeToCardinal(index, size)
@@ -188,7 +184,7 @@ func (v narrative_) GetValue(
 func (v narrative_) GetValues(
 	first int,
 	last int,
-) Sequential[Line] {
+) Sequential[string] {
 	var lines = v.AsIntrinsic()
 	var size = uti.ArraySize(lines)
 	var goFirst = uti.RelativeToCardinal(first, size)
@@ -197,7 +193,7 @@ func (v narrative_) GetValues(
 }
 
 func (v narrative_) GetIndex(
-	value Line,
+	value string,
 ) int {
 	var index int
 	var iterator = v.GetIterator()

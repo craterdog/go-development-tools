@@ -32,13 +32,13 @@ func QuoteClass() QuoteClassLike {
 // Constructor Methods
 
 func (c *quoteClass_) Quote(
-	characters []Character,
+	characters []rune,
 ) QuoteLike {
 	return quote_(stc.Quote(string(characters)))
 }
 
 func (c *quoteClass_) QuoteFromSequence(
-	sequence Sequential[Character],
+	sequence Sequential[rune],
 ) QuoteLike {
 	return c.Quote(sequence.AsArray())
 }
@@ -76,9 +76,9 @@ func (v quote_) GetClass() QuoteClassLike {
 	return quoteClass()
 }
 
-func (v quote_) AsIntrinsic() []Character {
+func (v quote_) AsIntrinsic() []rune {
 	var unquoted, _ = stc.Unquote(string(v)) // Strip off the double quotes.
-	return []Character(unquoted)
+	return []rune(unquoted)
 }
 
 func (v quote_) AsSource() string {
@@ -102,16 +102,16 @@ func (v quote_) CompareWith(
 	}
 }
 
-// Searchable[Character] Methods
+// Searchable[rune] Methods
 
 func (v quote_) ContainsValue(
-	value Character,
+	value rune,
 ) bool {
 	return sli.Index(v.AsIntrinsic(), value) > -1
 }
 
 func (v quote_) ContainsAny(
-	values Sequential[Character],
+	values Sequential[rune],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -126,7 +126,7 @@ func (v quote_) ContainsAny(
 }
 
 func (v quote_) ContainsAll(
-	values Sequential[Character],
+	values Sequential[rune],
 ) bool {
 	var iterator = values.GetIterator()
 	for iterator.HasNext() {
@@ -140,7 +140,7 @@ func (v quote_) ContainsAll(
 	return true
 }
 
-// Sequential[Character] Methods
+// Sequential[rune] Methods
 
 func (v quote_) IsEmpty() bool {
 	return len(v.AsIntrinsic()) == 0
@@ -150,19 +150,19 @@ func (v quote_) GetSize() uint {
 	return uti.ArraySize(v.AsIntrinsic())
 }
 
-func (v quote_) AsArray() []Character {
+func (v quote_) AsArray() []rune {
 	return v.AsIntrinsic()
 }
 
-func (v quote_) GetIterator() age.IteratorLike[Character] {
-	return age.IteratorClass[Character]().Iterator(v.AsIntrinsic())
+func (v quote_) GetIterator() age.IteratorLike[rune] {
+	return age.IteratorClass[rune]().Iterator(v.AsIntrinsic())
 }
 
-// Accessible[Character] Methods
+// Accessible[rune] Methods
 
 func (v quote_) GetValue(
 	index int,
-) Character {
+) rune {
 	var characters = v.AsIntrinsic()
 	var size = uti.ArraySize(characters)
 	var goIndex = uti.RelativeToCardinal(index, size)
@@ -172,7 +172,7 @@ func (v quote_) GetValue(
 func (v quote_) GetValues(
 	first int,
 	last int,
-) Sequential[Character] {
+) Sequential[rune] {
 	var characters = v.AsIntrinsic()
 	var size = uti.ArraySize(characters)
 	var goFirst = uti.RelativeToCardinal(first, size)
@@ -181,7 +181,7 @@ func (v quote_) GetValues(
 }
 
 func (v quote_) GetIndex(
-	value Character,
+	value rune,
 ) int {
 	var index int
 	var iterator = v.GetIterator()
@@ -198,10 +198,6 @@ func (v quote_) GetIndex(
 }
 
 // PROTECTED INTERFACE
-
-func (v Character) String() string {
-	return fmt.Sprintf("%c", rune(v))
-}
 
 func (v quote_) String() string {
 	return v.AsSource()

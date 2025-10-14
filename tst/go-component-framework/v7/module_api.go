@@ -185,10 +185,7 @@ type (
 // Strings
 
 type (
-	Character   = str.Character
-	Folder      = str.Folder
-	Instruction = str.Instruction
-	Line        = str.Line
+	Folder = str.Folder
 )
 
 type (
@@ -829,7 +826,7 @@ func BytecodeClass() BytecodeClassLike {
 }
 
 func Bytecode(
-	instructions []str.Instruction,
+	instructions []uint16,
 ) BytecodeLike {
 	return BytecodeClass().Bytecode(
 		instructions,
@@ -837,7 +834,7 @@ func Bytecode(
 }
 
 func BytecodeFromSequence(
-	sequence str.Sequential[str.Instruction],
+	sequence str.Sequential[uint16],
 ) BytecodeLike {
 	return BytecodeClass().BytecodeFromSequence(
 		sequence,
@@ -885,7 +882,7 @@ func NarrativeClass() NarrativeClassLike {
 }
 
 func Narrative(
-	lines []str.Line,
+	lines []string,
 ) NarrativeLike {
 	return NarrativeClass().Narrative(
 		lines,
@@ -893,7 +890,7 @@ func Narrative(
 }
 
 func NarrativeFromSequence(
-	sequence str.Sequential[str.Line],
+	sequence str.Sequential[string],
 ) NarrativeLike {
 	return NarrativeClass().NarrativeFromSequence(
 		sequence,
@@ -913,7 +910,7 @@ func PatternClass() PatternClassLike {
 }
 
 func Pattern(
-	characters []str.Character,
+	characters []rune,
 ) PatternLike {
 	return PatternClass().Pattern(
 		characters,
@@ -921,7 +918,7 @@ func Pattern(
 }
 
 func PatternFromSequence(
-	sequence str.Sequential[str.Character],
+	sequence str.Sequential[rune],
 ) PatternLike {
 	return PatternClass().PatternFromSequence(
 		sequence,
@@ -941,7 +938,7 @@ func QuoteClass() QuoteClassLike {
 }
 
 func Quote(
-	characters []str.Character,
+	characters []rune,
 ) QuoteLike {
 	return QuoteClass().Quote(
 		characters,
@@ -949,7 +946,7 @@ func Quote(
 }
 
 func QuoteFromSequence(
-	sequence str.Sequential[str.Character],
+	sequence str.Sequential[rune],
 ) QuoteLike {
 	return QuoteClass().QuoteFromSequence(
 		sequence,
