@@ -51,8 +51,8 @@ func generatePackage(
 		var classDeclaration = classDeclarations.GetNext()
 		var className = classDeclaration.GetDeclaration().GetName()
 		className = sts.TrimSuffix(className, "ClassLike")
-		className = uti.MakeLowerCase(className)
 		fmt.Printf("    %s/%s.go\n", packageName, className)
+		className = uti.MakeLowerCase(className)
 		var source = gen.GenerateClass(
 			moduleName,
 			packageName,
