@@ -1,14 +1,14 @@
 etc/build.sh
 directory=./tst/go-syntax-notation
-moduleName=github.com/craterdog/${directory:6}/v7
+moduleName=github.com/craterdog/${directory:6}/v8
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-syntax ${directory}/v7/syntax.cdsn
+bin/format-syntax ${directory}/v8/syntax.cdsn
 echo
-bin/generate-project ${moduleName} ${wikiPath} ${directory}/v7/
+bin/generate-project ${moduleName} ${wikiPath} ${directory}/v8/
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ ast grammar
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v8/ ast grammar
 echo
-cd ${directory}/v7
+cd ${directory}/v8
 gofmt -w . >/dev/null
 echo "Updating the dependencies..."
 cat <<EOF > go.mod
@@ -23,15 +23,15 @@ echo "Done."
 echo
 
 directory=./tst/go-class-model
-moduleName=github.com/craterdog/${directory:6}/v7
+moduleName=github.com/craterdog/${directory:6}/v8
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-syntax ${directory}/v7/syntax.cdsn
+bin/format-syntax ${directory}/v8/syntax.cdsn
 echo
-bin/generate-project ${moduleName} ${wikiPath} ${directory}/v7/
+bin/generate-project ${moduleName} ${wikiPath} ${directory}/v8/
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ ast grammar
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v8/ ast grammar
 echo
-cd ${directory}/v7
+cd ${directory}/v8
 gofmt -w . >/dev/null
 echo "Updating the dependencies..."
 cat <<EOF > go.mod
@@ -45,32 +45,20 @@ cd - >/dev/null
 echo "Done."
 echo
 
-directory=./tst/go-component-framework
-moduleName=github.com/craterdog/${directory:6}/v7
+directory=./tst/go-collection-framework
+moduleName=github.com/craterdog/${directory:6}/v8
 wikiPath=https://github.com/craterdog/${directory:6}/wiki
-bin/format-model ${directory}/v7/agents/package_api.go
+bin/format-model ${directory}/v8/agents/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory}/v7/ agents
+bin/generate-classes ${moduleName} ${directory}/v8/ agents
 echo
-bin/format-model ${directory}/v7/collections/package_api.go
+bin/format-model ${directory}/v8/collections/package_api.go
 echo
-#bin/generate-classes ${moduleName} ${directory}/v7/ collections
-#echo
-bin/format-model ${directory}/v7/elements/package_api.go
+bin/generate-classes ${moduleName} ${directory}/v8/ collections
 echo
-#bin/generate-classes ${moduleName} ${directory}/v7/ elements
-#echo
-bin/format-model ${directory}/v7/ranges/package_api.go
+bin/generate-module ${moduleName} ${wikiPath} ${directory}/v8/ agents collections
 echo
-#bin/generate-classes ${moduleName} ${directory}/v7/ ranges
-#echo
-bin/format-model ${directory}/v7/strings/package_api.go
-echo
-#bin/generate-classes ${moduleName} ${directory}/v7/ strings
-#echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory}/v7/ agents collections elements ranges strings
-echo
-cd ${directory}/v7
+cd ${directory}/v8
 gofmt -w . >/dev/null
 echo "Updating the dependencies..."
 cat <<EOF > go.mod

@@ -3,9 +3,9 @@ module github.com/craterdog/go-development-tools
 go 1.25
 
 require (
-	github.com/craterdog/go-class-model/v7 v7.43.0
-	github.com/craterdog/go-code-generation/v7 v7.55.0
-	github.com/craterdog/go-component-framework/v7 v7.28.0
-	github.com/craterdog/go-missing-utilities/v7 v7.18.0
-	github.com/craterdog/go-syntax-notation/v7 v7.45.0
+	github.com/craterdog/go-class-model/v8 v8.0.0
+	github.com/craterdog/go-code-generation/v8 v8.0.0
+	github.com/craterdog/go-collection-framework/v8 v8.1.0
+	github.com/craterdog/go-missing-utilities/v8 v8.1.0
+	github.com/craterdog/go-syntax-notation/v8 v8.0.0
 )

@@ -14,11 +14,11 @@ package main
 
 import (
 	fmt "fmt"
-	mod "github.com/craterdog/go-class-model/v7"
-	gen "github.com/craterdog/go-code-generation/v7"
-	com "github.com/craterdog/go-component-framework/v7"
-	uti "github.com/craterdog/go-missing-utilities/v7"
-	not "github.com/craterdog/go-syntax-notation/v7"
+	mod "github.com/craterdog/go-class-model/v8"
+	gen "github.com/craterdog/go-code-generation/v8"
+	com "github.com/craterdog/go-collection-framework/v8"
+	uti "github.com/craterdog/go-missing-utilities/v8"
+	not "github.com/craterdog/go-syntax-notation/v8"
 	osx "os"
 	sts "strings"
 )
