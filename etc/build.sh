@@ -11,11 +11,17 @@ go mod tidy >/dev/null 2>&1
 echo "Done."
 echo
 
-echo "Compiling the following tools:"
+echo "Compiling the following language syntax tools:"
 echo "  create-syntax"
 go build -o ./bin/ ./src/create-syntax
 echo "  format-syntax"
 go build -o ./bin/ ./src/format-syntax
+echo "  generate-project"
+go build -o ./bin/ ./src/generate-project
+echo "Done."
+echo
+
+echo "Compiling the following class model tools:"
 echo "  create-model"
 go build -o ./bin/ ./src/create-model
 echo "  format-model"
@@ -24,7 +30,5 @@ echo "  generate-classes"
 go build -o ./bin/ ./src/generate-classes
 echo "  generate-module"
 go build -o ./bin/ ./src/generate-module
-echo "  generate-project"
-go build -o ./bin/ ./src/generate-project
 echo "Done."
 echo
