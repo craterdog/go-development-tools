@@ -35,11 +35,11 @@ packageName=example
 mkdir -p ${directory}
 bin/create-model ${moduleName} ${wikiPath} ${packageName} ${directory}
 echo
-bin/format-model ${directory}/example/package_api.go
+bin/format-model ${directory}/${packageName}/package_api.go
 echo
-bin/generate-classes ${moduleName} ${directory} example
+bin/generate-classes ${moduleName} ${directory} ${packageName}
 echo
-bin/generate-module ${moduleName} ${wikiPath} ${directory} example
+bin/generate-module ${moduleName} ${wikiPath} ${directory} ${packageName}
 cd ${directory}
 gofmt -w . >/dev/null
 echo "Updating the dependencies..."
