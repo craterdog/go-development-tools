@@ -22,7 +22,7 @@ module ${moduleName}
 go 1.25
 EOF
 go mod tidy >/dev/null 2>&1
-#golangci-lint run
+golangci-lint run
 cd - >/dev/null
 echo "Done."
 echo
