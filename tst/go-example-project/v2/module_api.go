@@ -31,7 +31,7 @@ For detailed documentation on this entire module refer to the wiki:
 package module
 
 import (
-	fra "github.com/craterdog/go-essential-composites/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 	ast "github.com/craterdog/go-example-project/v2/ast"
 	gra "github.com/craterdog/go-example-project/v2/grammar"
 )
@@ -131,7 +131,7 @@ func DocumentClass() DocumentClassLike {
 }
 
 func Document(
-	components fra.Sequential[ast.ComponentLike],
+	components com.Sequential[ast.ComponentLike],
 ) DocumentLike {
 	return DocumentClass().Document(
 		components,
@@ -157,7 +157,7 @@ func ListClass() ListClassLike {
 func List(
 	delimiter1 string,
 	component ast.ComponentLike,
-	additionals fra.Sequential[ast.AdditionalLike],
+	additionals com.Sequential[ast.AdditionalLike],
 	delimiter2 string,
 ) ListLike {
 	return ListClass().List(
@@ -200,7 +200,7 @@ func ScannerClass() ScannerClassLike {
 
 func Scanner(
 	source string,
-	tokens fra.QueueLike[gra.TokenLike],
+	tokens com.QueueLike[gra.TokenLike],
 ) ScannerLike {
 	return ScannerClass().Scanner(
 		source,

@@ -17,7 +17,7 @@ import (
 	mod "github.com/craterdog/go-class-model/v8"
 	gen "github.com/craterdog/go-code-generation/v8"
 	com "github.com/craterdog/go-essential-composites/v8"
-	uti "github.com/craterdog/go-missing-utilities/v8"
+	uti "github.com/craterdog/go-essential-utilities/v8"
 	osx "os"
 	sts "strings"
 )

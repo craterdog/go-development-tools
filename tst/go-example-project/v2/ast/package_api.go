@@ -38,7 +38,7 @@ on interfaces, not on each other.
 package ast
 
 import (
-	fra "github.com/craterdog/go-essential-composites/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 )
 
 // TYPE DECLARATIONS
@@ -80,7 +80,7 @@ supported by each concrete document-like class.
 type DocumentClassLike interface {
 	// Constructor Methods
 	Document(
-		components fra.Sequential[ComponentLike],
+		components com.Sequential[ComponentLike],
 	) DocumentLike
 }
 
@@ -106,7 +106,7 @@ type ListClassLike interface {
 	List(
 		delimiter1 string,
 		component ComponentLike,
-		additionals fra.Sequential[AdditionalLike],
+		additionals com.Sequential[AdditionalLike],
 		delimiter2 string,
 	) ListLike
 }
@@ -150,7 +150,7 @@ type DocumentLike interface {
 	GetClass() DocumentClassLike
 
 	// Attribute Methods
-	GetComponents() fra.Sequential[ComponentLike]
+	GetComponents() com.Sequential[ComponentLike]
 }
 
 /*
@@ -178,7 +178,7 @@ type ListLike interface {
 	// Attribute Methods
 	GetDelimiter1() string
 	GetComponent() ComponentLike
-	GetAdditionals() fra.Sequential[AdditionalLike]
+	GetAdditionals() com.Sequential[AdditionalLike]
 	GetDelimiter2() string
 }
 
