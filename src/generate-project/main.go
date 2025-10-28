@@ -16,7 +16,7 @@ import (
 	fmt "fmt"
 	mod "github.com/craterdog/go-class-model/v8"
 	gen "github.com/craterdog/go-code-generation/v8"
-	com "github.com/craterdog/go-collection-framework/v8"
+	com "github.com/craterdog/go-essential-composites/v8"
 	uti "github.com/craterdog/go-missing-utilities/v8"
 	not "github.com/craterdog/go-syntax-notation/v8"
 	osx "os"
